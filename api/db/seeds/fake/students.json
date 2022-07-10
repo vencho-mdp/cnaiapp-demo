@@ -1,0 +1,3002 @@
+[
+    {
+        "Nº": 0,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "RICE, Teresa"
+    },
+    {
+        "Nº": 1,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "RUNTE, Constance"
+    },
+    {
+        "Nº": 2,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "MILLER, Hassan"
+    },
+    {
+        "Nº": 3,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "HAGENES, Elyssa"
+    },
+    {
+        "Nº": 4,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "HOWE, Carlotta"
+    },
+    {
+        "Nº": 5,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "BARTELL, Rollin"
+    },
+    {
+        "Nº": 6,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "LUETTGEN, Hermina"
+    },
+    {
+        "Nº": 7,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "HINTZ, Drew"
+    },
+    {
+        "Nº": 8,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "ORN, Mac"
+    },
+    {
+        "Nº": 9,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "KUVALIS, Elijah"
+    },
+    {
+        "Nº": 10,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "DOOLEY, Melyssa"
+    },
+    {
+        "Nº": 11,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "RUNTE, Marta"
+    },
+    {
+        "Nº": 12,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "CORKERY, Jordy"
+    },
+    {
+        "Nº": 13,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "BAILEY, Lisette"
+    },
+    {
+        "Nº": 14,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "HOMENICK, Sabrina"
+    },
+    {
+        "Nº": 15,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "STOLTENBERG, Consuelo"
+    },
+    {
+        "Nº": 16,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "MULLER, Dexter"
+    },
+    {
+        "Nº": 17,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "KIHN, Emily"
+    },
+    {
+        "Nº": 18,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "HALVORSON, Kaylin"
+    },
+    {
+        "Nº": 19,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "CASPER, Jeremy"
+    },
+    {
+        "Nº": 20,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "FERRY, Tamara"
+    },
+    {
+        "Nº": 21,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "CORWIN, Ernest"
+    },
+    {
+        "Nº": 22,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "MANN, Royal"
+    },
+    {
+        "Nº": 23,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "WATERS, Cathryn"
+    },
+    {
+        "Nº": 24,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "ROLFSON, Cole"
+    },
+    {
+        "Nº": 25,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "RUNTE, Pasquale"
+    },
+    {
+        "Nº": 26,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "WYMAN, Zula"
+    },
+    {
+        "Nº": 27,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "CORKERY, Cary"
+    },
+    {
+        "Nº": 28,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "KRIS, Ova"
+    },
+    {
+        "Nº": 29,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "JACOBSON, Orpha"
+    },
+    {
+        "Nº": 30,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "LANGWORTH, Liliana"
+    },
+    {
+        "Nº": 31,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "KLEIN, Stefan"
+    },
+    {
+        "Nº": 32,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "ULLRICH, Marta"
+    },
+    {
+        "Nº": 33,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "GORCZANY, Princess"
+    },
+    {
+        "Nº": 34,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "LOWE, Karianne"
+    },
+    {
+        "Nº": 35,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "REICHERT, Kadin"
+    },
+    {
+        "Nº": 36,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "CORWIN, Ethel"
+    },
+    {
+        "Nº": 37,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "JOHNSON, Erick"
+    },
+    {
+        "Nº": 38,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "CHAMPLIN, Carole"
+    },
+    {
+        "Nº": 39,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "ALTENWERTH, Carolina"
+    },
+    {
+        "Nº": 40,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "VOLKMAN, Merl"
+    },
+    {
+        "Nº": 41,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "SCHUSTER, Jalen"
+    },
+    {
+        "Nº": 42,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "WALKER, Dayton"
+    },
+    {
+        "Nº": 43,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "HOMENICK, Sidney"
+    },
+    {
+        "Nº": 44,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "MACGYVER, Axel"
+    },
+    {
+        "Nº": 45,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "MILLER, Francis"
+    },
+    {
+        "Nº": 46,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "STAMM, Dereck"
+    },
+    {
+        "Nº": 47,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "WINTHEISER, Marie"
+    },
+    {
+        "Nº": 48,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "GLOVER, Bulah"
+    },
+    {
+        "Nº": 49,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "OSINSKI, Patrick"
+    },
+    {
+        "Nº": 50,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "MOEN, Kim"
+    },
+    {
+        "Nº": 51,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "ANKUNDING, Alva"
+    },
+    {
+        "Nº": 52,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "KEMMER, Elroy"
+    },
+    {
+        "Nº": 53,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "BUCKRIDGE, Lloyd"
+    },
+    {
+        "Nº": 54,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "LEANNON, Millie"
+    },
+    {
+        "Nº": 55,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "BERNHARD, Haleigh"
+    },
+    {
+        "Nº": 56,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "HARVEY, Jennie"
+    },
+    {
+        "Nº": 57,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "GREENHOLT, Eloise"
+    },
+    {
+        "Nº": 58,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "KUNZE, Vernon"
+    },
+    {
+        "Nº": 59,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "NIKOLAUS, Erin"
+    },
+    {
+        "Nº": 60,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "HAMMES, Arnold"
+    },
+    {
+        "Nº": 61,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "CRONA, Mitchell"
+    },
+    {
+        "Nº": 62,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "FRAMI, Mona"
+    },
+    {
+        "Nº": 63,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "QUITZON, Donny"
+    },
+    {
+        "Nº": 64,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "PADBERG, Erwin"
+    },
+    {
+        "Nº": 65,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "DICKI, Eddie"
+    },
+    {
+        "Nº": 66,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "HAMMES, Lonny"
+    },
+    {
+        "Nº": 67,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "EMMERICH, Maia"
+    },
+    {
+        "Nº": 68,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "BAILEY, Russel"
+    },
+    {
+        "Nº": 69,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "WEST, Laney"
+    },
+    {
+        "Nº": 70,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "WILL, Johan"
+    },
+    {
+        "Nº": 71,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "KUNDE, Pedro"
+    },
+    {
+        "Nº": 72,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "O'REILLY, Lottie"
+    },
+    {
+        "Nº": 73,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "WYMAN, Dejuan"
+    },
+    {
+        "Nº": 74,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "LAKIN, Tyrel"
+    },
+    {
+        "Nº": 75,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "SCHROEDER, Althea"
+    },
+    {
+        "Nº": 76,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "MCCULLOUGH, Cedrick"
+    },
+    {
+        "Nº": 77,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "ROWE, Mike"
+    },
+    {
+        "Nº": 78,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "ZIEMANN, Naomie"
+    },
+    {
+        "Nº": 79,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "BLICK, Imelda"
+    },
+    {
+        "Nº": 80,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "CARROLL, Corine"
+    },
+    {
+        "Nº": 81,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "HOEGER, Axel"
+    },
+    {
+        "Nº": 82,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "GLEASON, Madelynn"
+    },
+    {
+        "Nº": 83,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "CRONIN, Morgan"
+    },
+    {
+        "Nº": 84,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "LANGOSH, Jayce"
+    },
+    {
+        "Nº": 85,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "JASKOLSKI, Donato"
+    },
+    {
+        "Nº": 86,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "MURAZIK, Eladio"
+    },
+    {
+        "Nº": 87,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "STEHR, Luigi"
+    },
+    {
+        "Nº": 88,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "BLOCK, Giovanny"
+    },
+    {
+        "Nº": 89,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "HOEGER, Paula"
+    },
+    {
+        "Nº": 90,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "KUVALIS, Abdiel"
+    },
+    {
+        "Nº": 91,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "MARQUARDT, Roscoe"
+    },
+    {
+        "Nº": 92,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "FEENEY, Thora"
+    },
+    {
+        "Nº": 93,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "LARKIN, Jerome"
+    },
+    {
+        "Nº": 94,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "CORWIN, Liliana"
+    },
+    {
+        "Nº": 95,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "BEDNAR, Daisha"
+    },
+    {
+        "Nº": 96,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "MAYER, Foster"
+    },
+    {
+        "Nº": 97,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "KUB, Ashleigh"
+    },
+    {
+        "Nº": 98,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "MEDHURST, Judge"
+    },
+    {
+        "Nº": 99,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "KUB, Nya"
+    },
+    {
+        "Nº": 100,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "BLOCK, Francis"
+    },
+    {
+        "Nº": 101,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "NITZSCHE, Lola"
+    },
+    {
+        "Nº": 102,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "BAHRINGER, Laura"
+    },
+    {
+        "Nº": 103,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "MITCHELL, Dax"
+    },
+    {
+        "Nº": 104,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "BREKKE, Theresa"
+    },
+    {
+        "Nº": 105,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "WAELCHI, Cindy"
+    },
+    {
+        "Nº": 106,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "HINTZ, Trenton"
+    },
+    {
+        "Nº": 107,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "BOYER, Alessandra"
+    },
+    {
+        "Nº": 108,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "STROSIN, Daryl"
+    },
+    {
+        "Nº": 109,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "SKILES, Clarissa"
+    },
+    {
+        "Nº": 110,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "FEENEY, Karelle"
+    },
+    {
+        "Nº": 111,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "ROMAGUERA, Armani"
+    },
+    {
+        "Nº": 112,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "MARVIN, Porter"
+    },
+    {
+        "Nº": 113,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "ERDMAN, Yessenia"
+    },
+    {
+        "Nº": 114,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "HELLER, London"
+    },
+    {
+        "Nº": 115,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "GUTMANN, Genevieve"
+    },
+    {
+        "Nº": 116,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "BAYER, Kaylee"
+    },
+    {
+        "Nº": 117,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "GRADY, Trent"
+    },
+    {
+        "Nº": 118,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "BERGE, Mason"
+    },
+    {
+        "Nº": 119,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "FUNK, Thelma"
+    },
+    {
+        "Nº": 120,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "VEUM, Angelo"
+    },
+    {
+        "Nº": 121,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "CROOKS, Ibrahim"
+    },
+    {
+        "Nº": 122,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "MRAZ, Asha"
+    },
+    {
+        "Nº": 123,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "JENKINS, Foster"
+    },
+    {
+        "Nº": 124,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "BECHTELAR, Edmund"
+    },
+    {
+        "Nº": 125,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "WISOZK, Elwyn"
+    },
+    {
+        "Nº": 126,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "HUDSON, Mercedes"
+    },
+    {
+        "Nº": 127,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "LEBSACK, Wilmer"
+    },
+    {
+        "Nº": 128,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "KOEPP, Adela"
+    },
+    {
+        "Nº": 129,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "GLOVER, Arvilla"
+    },
+    {
+        "Nº": 130,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "KEEBLER, Jessyca"
+    },
+    {
+        "Nº": 131,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "FEEST, Kyler"
+    },
+    {
+        "Nº": 132,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "MOHR, Nasir"
+    },
+    {
+        "Nº": 133,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "SCHMELER, Brenna"
+    },
+    {
+        "Nº": 134,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "DOOLEY, Lisette"
+    },
+    {
+        "Nº": 135,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "VONRUEDEN, Jasen"
+    },
+    {
+        "Nº": 136,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "BAHRINGER, Emerson"
+    },
+    {
+        "Nº": 137,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "TILLMAN, Shanel"
+    },
+    {
+        "Nº": 138,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "FLATLEY, Enid"
+    },
+    {
+        "Nº": 139,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "KOHLER, Rosemary"
+    },
+    {
+        "Nº": 140,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "HUEL, D'angelo"
+    },
+    {
+        "Nº": 141,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "TRANTOW, Courtney"
+    },
+    {
+        "Nº": 142,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "STARK, Amira"
+    },
+    {
+        "Nº": 143,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "KUNZE, Maeve"
+    },
+    {
+        "Nº": 144,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "ANKUNDING, Odie"
+    },
+    {
+        "Nº": 145,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "BOYLE, Clarabelle"
+    },
+    {
+        "Nº": 146,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "SCHULIST, Jody"
+    },
+    {
+        "Nº": 147,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "LEFFLER, Thora"
+    },
+    {
+        "Nº": 148,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "HAGENES, Briana"
+    },
+    {
+        "Nº": 149,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "LITTEL, Bria"
+    },
+    {
+        "Nº": 150,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "RUECKER, Susana"
+    },
+    {
+        "Nº": 151,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "BECKER, Darrin"
+    },
+    {
+        "Nº": 152,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "ULLRICH, Amelie"
+    },
+    {
+        "Nº": 153,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "UPTON, Litzy"
+    },
+    {
+        "Nº": 154,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "LEBSACK, Tom"
+    },
+    {
+        "Nº": 155,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "BRUEN, Sigrid"
+    },
+    {
+        "Nº": 156,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "WINDLER, Angelina"
+    },
+    {
+        "Nº": 157,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "SCHINNER, Brain"
+    },
+    {
+        "Nº": 158,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "SCHROEDER, Camilla"
+    },
+    {
+        "Nº": 159,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "KUNZE, Emmy"
+    },
+    {
+        "Nº": 160,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "GERHOLD, Elaina"
+    },
+    {
+        "Nº": 161,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "TURCOTTE, Winona"
+    },
+    {
+        "Nº": 162,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "LANG, Janick"
+    },
+    {
+        "Nº": 163,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "EMARD, Emery"
+    },
+    {
+        "Nº": 164,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "SCHADEN, Dock"
+    },
+    {
+        "Nº": 165,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "HAUCK, Casandra"
+    },
+    {
+        "Nº": 166,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "HUDSON, Claire"
+    },
+    {
+        "Nº": 167,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "STARK, Taurean"
+    },
+    {
+        "Nº": 168,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "BARTON, Althea"
+    },
+    {
+        "Nº": 169,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "ARMSTRONG, Sterling"
+    },
+    {
+        "Nº": 170,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "O'KON, Khalid"
+    },
+    {
+        "Nº": 171,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "WUCKERT, Kobe"
+    },
+    {
+        "Nº": 172,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "DAVIS, Coleman"
+    },
+    {
+        "Nº": 173,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "TOY, Elza"
+    },
+    {
+        "Nº": 174,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "HEANEY, Lucy"
+    },
+    {
+        "Nº": 175,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "GERHOLD, Orrin"
+    },
+    {
+        "Nº": 176,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "O'CONNER, Anabel"
+    },
+    {
+        "Nº": 177,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "JENKINS, Carson"
+    },
+    {
+        "Nº": 178,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "HICKLE, Cornelius"
+    },
+    {
+        "Nº": 179,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "BAILEY, Kody"
+    },
+    {
+        "Nº": 180,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "SIMONIS, Wade"
+    },
+    {
+        "Nº": 181,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "SIMONIS, Juliana"
+    },
+    {
+        "Nº": 182,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "SCHUPPE, Trace"
+    },
+    {
+        "Nº": 183,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "PFEFFER, Devon"
+    },
+    {
+        "Nº": 184,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "HYATT, Macie"
+    },
+    {
+        "Nº": 185,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "SENGER, Harvey"
+    },
+    {
+        "Nº": 186,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "MANTE, Sadie"
+    },
+    {
+        "Nº": 187,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "TORPHY, Gretchen"
+    },
+    {
+        "Nº": 188,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "SCHUMM, Taryn"
+    },
+    {
+        "Nº": 189,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "BRADTKE, Dagmar"
+    },
+    {
+        "Nº": 190,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "BOSCO, Ayana"
+    },
+    {
+        "Nº": 191,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "ROBEL, Scarlett"
+    },
+    {
+        "Nº": 192,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "WEST, Declan"
+    },
+    {
+        "Nº": 193,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "REYNOLDS, Sage"
+    },
+    {
+        "Nº": 194,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "DAVIS, Rigoberto"
+    },
+    {
+        "Nº": 195,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "HAAG, Chester"
+    },
+    {
+        "Nº": 196,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "DICKINSON, Leanna"
+    },
+    {
+        "Nº": 197,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "ROMAGUERA, Antonette"
+    },
+    {
+        "Nº": 198,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "MORAR, Delilah"
+    },
+    {
+        "Nº": 199,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "BAHRINGER, Janice"
+    },
+    {
+        "Nº": 200,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "BERGSTROM, Royce"
+    },
+    {
+        "Nº": 201,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "CROOKS, Sterling"
+    },
+    {
+        "Nº": 202,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "JACOBS, Maegan"
+    },
+    {
+        "Nº": 203,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "OKUNEVA, Quentin"
+    },
+    {
+        "Nº": 204,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "NOLAN, Christ"
+    },
+    {
+        "Nº": 205,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "SCHINNER, Paula"
+    },
+    {
+        "Nº": 206,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "LABADIE, Jordan"
+    },
+    {
+        "Nº": 207,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "KASSULKE, Vilma"
+    },
+    {
+        "Nº": 208,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "CARTER, Melyna"
+    },
+    {
+        "Nº": 209,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "PARISIAN, Maida"
+    },
+    {
+        "Nº": 210,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "TURCOTTE, Guiseppe"
+    },
+    {
+        "Nº": 211,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "HETTINGER, Aditya"
+    },
+    {
+        "Nº": 212,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "ROWE, Emmitt"
+    },
+    {
+        "Nº": 213,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "DIETRICH, Brandy"
+    },
+    {
+        "Nº": 214,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "LEHNER, Braulio"
+    },
+    {
+        "Nº": 215,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "ROBEL, Molly"
+    },
+    {
+        "Nº": 216,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "BAYER, Marshall"
+    },
+    {
+        "Nº": 217,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "GRANT, Tia"
+    },
+    {
+        "Nº": 218,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "LEBSACK, Korey"
+    },
+    {
+        "Nº": 219,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "MORAR, Rebecca"
+    },
+    {
+        "Nº": 220,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "DENESIK, Pansy"
+    },
+    {
+        "Nº": 221,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "WUNSCH, Leann"
+    },
+    {
+        "Nº": 222,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "HUELS, Hobart"
+    },
+    {
+        "Nº": 223,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "DOYLE, Maudie"
+    },
+    {
+        "Nº": 224,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "KOVACEK, Kassandra"
+    },
+    {
+        "Nº": 225,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "O'HARA, Skylar"
+    },
+    {
+        "Nº": 226,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "BAILEY, Rigoberto"
+    },
+    {
+        "Nº": 227,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "HELLER, Emile"
+    },
+    {
+        "Nº": 228,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "PFANNERSTILL, Cierra"
+    },
+    {
+        "Nº": 229,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "ABBOTT, Sigurd"
+    },
+    {
+        "Nº": 230,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "HOWE, Wilfredo"
+    },
+    {
+        "Nº": 231,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "KLEIN, Yolanda"
+    },
+    {
+        "Nº": 232,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "STOKES, Clay"
+    },
+    {
+        "Nº": 233,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "YUNDT, Velva"
+    },
+    {
+        "Nº": 234,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "KUVALIS, Enrico"
+    },
+    {
+        "Nº": 235,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "WELCH, Hanna"
+    },
+    {
+        "Nº": 236,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "HARBER, Claude"
+    },
+    {
+        "Nº": 237,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "CORKERY, Blanche"
+    },
+    {
+        "Nº": 238,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "TOY, Zaria"
+    },
+    {
+        "Nº": 239,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "SMITHAM, Newton"
+    },
+    {
+        "Nº": 240,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "LAKIN, Payton"
+    },
+    {
+        "Nº": 241,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "THOMPSON, Stephany"
+    },
+    {
+        "Nº": 242,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "CARTWRIGHT, Karina"
+    },
+    {
+        "Nº": 243,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "JACOBS, Edythe"
+    },
+    {
+        "Nº": 244,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "WISOKY, Jameson"
+    },
+    {
+        "Nº": 245,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "SCHMITT, Matilda"
+    },
+    {
+        "Nº": 246,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "KREIGER, Lauriane"
+    },
+    {
+        "Nº": 247,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "CARTWRIGHT, Gwen"
+    },
+    {
+        "Nº": 248,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "FAHEY, Kiera"
+    },
+    {
+        "Nº": 249,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "EMMERICH, Devante"
+    },
+    {
+        "Nº": 250,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "HICKLE, Kristopher"
+    },
+    {
+        "Nº": 251,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "DICKI, Trycia"
+    },
+    {
+        "Nº": 252,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "DOOLEY, Zora"
+    },
+    {
+        "Nº": 253,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "GREENFELDER, Leila"
+    },
+    {
+        "Nº": 254,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "HUDSON, Deshaun"
+    },
+    {
+        "Nº": 255,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "ROSENBAUM, Karlie"
+    },
+    {
+        "Nº": 256,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "BECKER, Marty"
+    },
+    {
+        "Nº": 257,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "HETTINGER, Jadon"
+    },
+    {
+        "Nº": 258,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "RATKE, Wilma"
+    },
+    {
+        "Nº": 259,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "MRAZ, Adelia"
+    },
+    {
+        "Nº": 260,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "CORMIER, Collin"
+    },
+    {
+        "Nº": 261,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "MURPHY, Glen"
+    },
+    {
+        "Nº": 262,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "DANIEL, Johanna"
+    },
+    {
+        "Nº": 263,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "REICHERT, Chesley"
+    },
+    {
+        "Nº": 264,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "LUETTGEN, Edwin"
+    },
+    {
+        "Nº": 265,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "O'KEEFE, Zachery"
+    },
+    {
+        "Nº": 266,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "HAHN, Creola"
+    },
+    {
+        "Nº": 267,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "HILLL, Lavina"
+    },
+    {
+        "Nº": 268,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "WALKER, Jerrod"
+    },
+    {
+        "Nº": 269,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "GRIMES, Tara"
+    },
+    {
+        "Nº": 270,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "BODE, Sandy"
+    },
+    {
+        "Nº": 271,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "ORN, Maci"
+    },
+    {
+        "Nº": 272,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "HETTINGER, Genesis"
+    },
+    {
+        "Nº": 273,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "GLEICHNER, Antwon"
+    },
+    {
+        "Nº": 274,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "MACGYVER, Gabrielle"
+    },
+    {
+        "Nº": 275,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "ROOB, Ally"
+    },
+    {
+        "Nº": 276,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "BUCKRIDGE, Danny"
+    },
+    {
+        "Nº": 277,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "MCCLURE, Glen"
+    },
+    {
+        "Nº": 278,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "MITCHELL, Clay"
+    },
+    {
+        "Nº": 279,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "SCHAEFER, Kyleigh"
+    },
+    {
+        "Nº": 280,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "KLING, Arielle"
+    },
+    {
+        "Nº": 281,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "ROMAGUERA, Dameon"
+    },
+    {
+        "Nº": 282,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "HOPPE, Grayson"
+    },
+    {
+        "Nº": 283,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "BREITENBERG, Laney"
+    },
+    {
+        "Nº": 284,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "GLEICHNER, Luella"
+    },
+    {
+        "Nº": 285,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "HEGMANN, Devonte"
+    },
+    {
+        "Nº": 286,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "SIMONIS, Rory"
+    },
+    {
+        "Nº": 287,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "TOY, Annette"
+    },
+    {
+        "Nº": 288,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "DANIEL, Stacy"
+    },
+    {
+        "Nº": 289,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "MCDERMOTT, Parker"
+    },
+    {
+        "Nº": 290,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "LIND, Ramona"
+    },
+    {
+        "Nº": 291,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "KIEHN, Shayna"
+    },
+    {
+        "Nº": 292,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "ORTIZ, Aliza"
+    },
+    {
+        "Nº": 293,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "STOLTENBERG, Carolyn"
+    },
+    {
+        "Nº": 294,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "HAMMES, Catherine"
+    },
+    {
+        "Nº": 295,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "ROBERTS, Michele"
+    },
+    {
+        "Nº": 296,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "KLEIN, Gabriel"
+    },
+    {
+        "Nº": 297,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "PURDY, Denis"
+    },
+    {
+        "Nº": 298,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "PFANNERSTILL, Lucious"
+    },
+    {
+        "Nº": 299,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "REICHERT, Dorothea"
+    },
+    {
+        "Nº": 300,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "MCLAUGHLIN, Jaycee"
+    },
+    {
+        "Nº": 301,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "MARKS, Wilfred"
+    },
+    {
+        "Nº": 302,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "TROMP, Dorothea"
+    },
+    {
+        "Nº": 303,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "BAUCH, Xzavier"
+    },
+    {
+        "Nº": 304,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "ANKUNDING, Frank"
+    },
+    {
+        "Nº": 305,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "SCHNEIDER, Ardith"
+    },
+    {
+        "Nº": 306,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "ROLFSON, Pietro"
+    },
+    {
+        "Nº": 307,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "PAGAC, Esther"
+    },
+    {
+        "Nº": 308,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "BERGSTROM, Ralph"
+    },
+    {
+        "Nº": 309,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "UPTON, Celine"
+    },
+    {
+        "Nº": 310,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "SCHUMM, Norwood"
+    },
+    {
+        "Nº": 311,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "ZULAUF, Marianne"
+    },
+    {
+        "Nº": 312,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "MARKS, Daren"
+    },
+    {
+        "Nº": 313,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "MOORE, Raheem"
+    },
+    {
+        "Nº": 314,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "HAAG, Heather"
+    },
+    {
+        "Nº": 315,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "SAWAYN, Ari"
+    },
+    {
+        "Nº": 316,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "HALVORSON, Yvonne"
+    },
+    {
+        "Nº": 317,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "STOKES, Amina"
+    },
+    {
+        "Nº": 318,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "SMITH, Emanuel"
+    },
+    {
+        "Nº": 319,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "MCCULLOUGH, Emelia"
+    },
+    {
+        "Nº": 320,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "DIBBERT, Myles"
+    },
+    {
+        "Nº": 321,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "VEUM, Delphia"
+    },
+    {
+        "Nº": 322,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "BRAUN, Bulah"
+    },
+    {
+        "Nº": 323,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "BODE, Julianne"
+    },
+    {
+        "Nº": 324,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "WUNSCH, Alexys"
+    },
+    {
+        "Nº": 325,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "JOHNS, Emmet"
+    },
+    {
+        "Nº": 326,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "SCHMITT, Jessika"
+    },
+    {
+        "Nº": 327,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "PADBERG, Wilber"
+    },
+    {
+        "Nº": 328,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "KOCH, Lessie"
+    },
+    {
+        "Nº": 329,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "RICE, Bruce"
+    },
+    {
+        "Nº": 330,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "BAUCH, Alisha"
+    },
+    {
+        "Nº": 331,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "RICE, Billie"
+    },
+    {
+        "Nº": 332,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "HALVORSON, Terrence"
+    },
+    {
+        "Nº": 333,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "SIMONIS, Ophelia"
+    },
+    {
+        "Nº": 334,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "LANGOSH, Johnpaul"
+    },
+    {
+        "Nº": 335,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "STARK, Sammie"
+    },
+    {
+        "Nº": 336,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "MCCULLOUGH, Johnson"
+    },
+    {
+        "Nº": 337,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "TOWNE, Adela"
+    },
+    {
+        "Nº": 338,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "HANSEN, Bernadette"
+    },
+    {
+        "Nº": 339,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "ABERNATHY, Shania"
+    },
+    {
+        "Nº": 340,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "DECKOW, Gerson"
+    },
+    {
+        "Nº": 341,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "ZBONCAK, Teagan"
+    },
+    {
+        "Nº": 342,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "KONOPELSKI, D'angelo"
+    },
+    {
+        "Nº": 343,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "TRANTOW, Obie"
+    },
+    {
+        "Nº": 344,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "SENGER, Adalberto"
+    },
+    {
+        "Nº": 345,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "REILLY, Brennon"
+    },
+    {
+        "Nº": 346,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "CRONA, Malinda"
+    },
+    {
+        "Nº": 347,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "ANDERSON, Ahmad"
+    },
+    {
+        "Nº": 348,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "CHRISTIANSEN, Amanda"
+    },
+    {
+        "Nº": 349,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "POUROS, Dario"
+    },
+    {
+        "Nº": 350,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "LEHNER, Emmitt"
+    },
+    {
+        "Nº": 351,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "BARTON, Minnie"
+    },
+    {
+        "Nº": 352,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "GOYETTE, Mercedes"
+    },
+    {
+        "Nº": 353,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "SCHUMM, Johnson"
+    },
+    {
+        "Nº": 354,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "NIKOLAUS, Jalyn"
+    },
+    {
+        "Nº": 355,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "HAUCK, Sim"
+    },
+    {
+        "Nº": 356,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "HARRIS, Roselyn"
+    },
+    {
+        "Nº": 357,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "STRACKE, Bernita"
+    },
+    {
+        "Nº": 358,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "HUDSON, Golda"
+    },
+    {
+        "Nº": 359,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "RUNOLFSSON, Mitchell"
+    },
+    {
+        "Nº": 360,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "NADER, Blanche"
+    },
+    {
+        "Nº": 361,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "KING, Hester"
+    },
+    {
+        "Nº": 362,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "MOHR, Clair"
+    },
+    {
+        "Nº": 363,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "O'HARA, Josue"
+    },
+    {
+        "Nº": 364,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "STOLTENBERG, Arvilla"
+    },
+    {
+        "Nº": 365,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "MOSCISKI, Sheldon"
+    },
+    {
+        "Nº": 366,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "ZIEMANN, Donna"
+    },
+    {
+        "Nº": 367,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "KLING, Gustave"
+    },
+    {
+        "Nº": 368,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "HYATT, Kasey"
+    },
+    {
+        "Nº": 369,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "HELLER, Dolly"
+    },
+    {
+        "Nº": 370,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "BUCKRIDGE, Rachel"
+    },
+    {
+        "Nº": 371,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "ROBEL, Newell"
+    },
+    {
+        "Nº": 372,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "BINS, Anissa"
+    },
+    {
+        "Nº": 373,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "GISLASON, Florida"
+    },
+    {
+        "Nº": 374,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "CUMMERATA, Cyrus"
+    },
+    {
+        "Nº": 375,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "RATH, Khalil"
+    },
+    {
+        "Nº": 376,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "CORWIN, Horacio"
+    },
+    {
+        "Nº": 377,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "SWANIAWSKI, Naomi"
+    },
+    {
+        "Nº": 378,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "LITTLE, Ambrose"
+    },
+    {
+        "Nº": 379,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "MURAZIK, Donato"
+    },
+    {
+        "Nº": 380,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "SPORER, Russ"
+    },
+    {
+        "Nº": 381,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "KOCH, Axel"
+    },
+    {
+        "Nº": 382,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "ABBOTT, Cicero"
+    },
+    {
+        "Nº": 383,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "SANFORD, Jesse"
+    },
+    {
+        "Nº": 384,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "MCKENZIE, Jovany"
+    },
+    {
+        "Nº": 385,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "HOWE, Era"
+    },
+    {
+        "Nº": 386,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "HEATHCOTE, Herman"
+    },
+    {
+        "Nº": 387,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "WATERS, Carmel"
+    },
+    {
+        "Nº": 388,
+        "AÑO": "5to",
+        "DIV": "2da",
+        "APYNOM": "STIEDEMANN, Barry"
+    },
+    {
+        "Nº": 389,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "GERHOLD, Rosemary"
+    },
+    {
+        "Nº": 390,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "MCGLYNN, Delfina"
+    },
+    {
+        "Nº": 391,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "HUDSON, Verlie"
+    },
+    {
+        "Nº": 392,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "SCHUSTER, Nyasia"
+    },
+    {
+        "Nº": 393,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "NICOLAS, Bernita"
+    },
+    {
+        "Nº": 394,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "BEER, Emelia"
+    },
+    {
+        "Nº": 395,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "CORMIER, Marcellus"
+    },
+    {
+        "Nº": 396,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "D'AMORE, Bill"
+    },
+    {
+        "Nº": 397,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "KUVALIS, Guillermo"
+    },
+    {
+        "Nº": 398,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "HOWELL, Henry"
+    },
+    {
+        "Nº": 399,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "BREKKE, Victoria"
+    },
+    {
+        "Nº": 400,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "WALSH, Weldon"
+    },
+    {
+        "Nº": 401,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "MOORE, Laurianne"
+    },
+    {
+        "Nº": 402,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "FEIL, Andreanne"
+    },
+    {
+        "Nº": 403,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "MCCULLOUGH, Imelda"
+    },
+    {
+        "Nº": 404,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "HINTZ, Leta"
+    },
+    {
+        "Nº": 405,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "SCHOEN, Lorena"
+    },
+    {
+        "Nº": 406,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "FRANEY, Audrey"
+    },
+    {
+        "Nº": 407,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "CARTER, Meghan"
+    },
+    {
+        "Nº": 408,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "ZBONCAK, Jodie"
+    },
+    {
+        "Nº": 409,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "D'AMORE, Asa"
+    },
+    {
+        "Nº": 410,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "BOYLE, Heidi"
+    },
+    {
+        "Nº": 411,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "LUBOWITZ, Evie"
+    },
+    {
+        "Nº": 412,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "HAHN, Morton"
+    },
+    {
+        "Nº": 413,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "JOHNS, Elouise"
+    },
+    {
+        "Nº": 414,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "PREDOVIC, Nya"
+    },
+    {
+        "Nº": 415,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "CROOKS, Hiram"
+    },
+    {
+        "Nº": 416,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "FRIESEN, Soledad"
+    },
+    {
+        "Nº": 417,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "VOLKMAN, Odie"
+    },
+    {
+        "Nº": 418,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "HARRIS, Lazaro"
+    },
+    {
+        "Nº": 419,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "BAUMBACH, Nasir"
+    },
+    {
+        "Nº": 420,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "HALEY, Diego"
+    },
+    {
+        "Nº": 421,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "FERRY, Camille"
+    },
+    {
+        "Nº": 422,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "REMPEL, Lysanne"
+    },
+    {
+        "Nº": 423,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "TROMP, Natasha"
+    },
+    {
+        "Nº": 424,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "FRANECKI, Julio"
+    },
+    {
+        "Nº": 425,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "STOLTENBERG, Elsa"
+    },
+    {
+        "Nº": 426,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "CORMIER, Frank"
+    },
+    {
+        "Nº": 427,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "LANG, Dessie"
+    },
+    {
+        "Nº": 428,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "REMPEL, Tanner"
+    },
+    {
+        "Nº": 429,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "KULAS, Vincenza"
+    },
+    {
+        "Nº": 430,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "RITCHIE, Valentine"
+    },
+    {
+        "Nº": 431,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "JACOBS, Margarette"
+    },
+    {
+        "Nº": 432,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "ERNSER, Rusty"
+    },
+    {
+        "Nº": 433,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "HOPPE, Myron"
+    },
+    {
+        "Nº": 434,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "HAUCK, Astrid"
+    },
+    {
+        "Nº": 435,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "HEATHCOTE, Anastasia"
+    },
+    {
+        "Nº": 436,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "VOLKMAN, Wava"
+    },
+    {
+        "Nº": 437,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "KESSLER, Roderick"
+    },
+    {
+        "Nº": 438,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "SCHUSTER, Cristal"
+    },
+    {
+        "Nº": 439,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "BOYLE, Kelly"
+    },
+    {
+        "Nº": 440,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "BARTOLETTI, Creola"
+    },
+    {
+        "Nº": 441,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "LEBSACK, Spencer"
+    },
+    {
+        "Nº": 442,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "HARRIS, Ethyl"
+    },
+    {
+        "Nº": 443,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "REINGER, Trey"
+    },
+    {
+        "Nº": 444,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "STANTON, Ray"
+    },
+    {
+        "Nº": 445,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "TILLMAN, Kariane"
+    },
+    {
+        "Nº": 446,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "FAHEY, Elwin"
+    },
+    {
+        "Nº": 447,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "MANTE, Tyree"
+    },
+    {
+        "Nº": 448,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "REYNOLDS, Marilou"
+    },
+    {
+        "Nº": 449,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "HAHN, Triston"
+    },
+    {
+        "Nº": 450,
+        "AÑO": "1ro",
+        "DIV": "3ra",
+        "APYNOM": "HAMILL, Deanna"
+    },
+    {
+        "Nº": 451,
+        "AÑO": "5to",
+        "DIV": "1ra",
+        "APYNOM": "WIZA, Jaeden"
+    },
+    {
+        "Nº": 452,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "LITTEL, Jacques"
+    },
+    {
+        "Nº": 453,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "CONN, Jaylon"
+    },
+    {
+        "Nº": 454,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "HEGMANN, Tyra"
+    },
+    {
+        "Nº": 455,
+        "AÑO": "5to",
+        "DIV": "3ra",
+        "APYNOM": "GREENFELDER, Leslie"
+    },
+    {
+        "Nº": 456,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "WILL, Reginald"
+    },
+    {
+        "Nº": 457,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "NITZSCHE, Candice"
+    },
+    {
+        "Nº": 458,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "DONNELLY, Clint"
+    },
+    {
+        "Nº": 459,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "D'AMORE, Carrie"
+    },
+    {
+        "Nº": 460,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "BAUCH, Dane"
+    },
+    {
+        "Nº": 461,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "WIEGAND, Agustin"
+    },
+    {
+        "Nº": 462,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "GORCZANY, Mallie"
+    },
+    {
+        "Nº": 463,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "LARSON, Fausto"
+    },
+    {
+        "Nº": 464,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "EFFERTZ, Willie"
+    },
+    {
+        "Nº": 465,
+        "AÑO": "1ro",
+        "DIV": "1ra",
+        "APYNOM": "KERLUKE, Hoyt"
+    },
+    {
+        "Nº": 466,
+        "AÑO": "4to",
+        "DIV": "2da",
+        "APYNOM": "KOHLER, Darrel"
+    },
+    {
+        "Nº": 467,
+        "AÑO": "6to",
+        "DIV": "3ra",
+        "APYNOM": "SPINKA, Milan"
+    },
+    {
+        "Nº": 468,
+        "AÑO": "6to",
+        "DIV": "1ra",
+        "APYNOM": "ROBERTS, Ari"
+    },
+    {
+        "Nº": 469,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "HAMMES, Raina"
+    },
+    {
+        "Nº": 470,
+        "AÑO": "3ro",
+        "DIV": "3ra",
+        "APYNOM": "O'CONNELL, Jedediah"
+    },
+    {
+        "Nº": 471,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "PFANNERSTILL, Faustino"
+    },
+    {
+        "Nº": 472,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "HYATT, Hellen"
+    },
+    {
+        "Nº": 473,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "RAYNOR, Ursula"
+    },
+    {
+        "Nº": 474,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "REINGER, Claudia"
+    },
+    {
+        "Nº": 475,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "RUTHERFORD, Jaylin"
+    },
+    {
+        "Nº": 476,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "MCKENZIE, Gonzalo"
+    },
+    {
+        "Nº": 477,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "MCGLYNN, Brionna"
+    },
+    {
+        "Nº": 478,
+        "AÑO": "5to",
+        "DIV": "4ta",
+        "APYNOM": "SCHUMM, Annabel"
+    },
+    {
+        "Nº": 479,
+        "AÑO": "2do",
+        "DIV": "1ra",
+        "APYNOM": "BARTOLETTI, Kole"
+    },
+    {
+        "Nº": 480,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "TURCOTTE, Mariano"
+    },
+    {
+        "Nº": 481,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "HAGENES, Mina"
+    },
+    {
+        "Nº": 482,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "GLEICHNER, Alene"
+    },
+    {
+        "Nº": 483,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "RYAN, Lila"
+    },
+    {
+        "Nº": 484,
+        "AÑO": "6to",
+        "DIV": "2da",
+        "APYNOM": "MARQUARDT, Shakira"
+    },
+    {
+        "Nº": 485,
+        "AÑO": "2do",
+        "DIV": "4ta",
+        "APYNOM": "SWIFT, Xavier"
+    },
+    {
+        "Nº": 486,
+        "AÑO": "4to",
+        "DIV": "3ra",
+        "APYNOM": "RUNOLFSSON, Raina"
+    },
+    {
+        "Nº": 487,
+        "AÑO": "1ro",
+        "DIV": "4ta",
+        "APYNOM": "FRIESEN, Ava"
+    },
+    {
+        "Nº": 488,
+        "AÑO": "6to",
+        "DIV": "4ta",
+        "APYNOM": "HAGENES, Zoe"
+    },
+    {
+        "Nº": 489,
+        "AÑO": "3ro",
+        "DIV": "2da",
+        "APYNOM": "ALTENWERTH, Abagail"
+    },
+    {
+        "Nº": 490,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "RIPPIN, Evalyn"
+    },
+    {
+        "Nº": 491,
+        "AÑO": "3ro",
+        "DIV": "4ta",
+        "APYNOM": "ROBEL, Raheem"
+    },
+    {
+        "Nº": 492,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "CRONA, Althea"
+    },
+    {
+        "Nº": 493,
+        "AÑO": "3ro",
+        "DIV": "1ra",
+        "APYNOM": "MILLS, Ida"
+    },
+    {
+        "Nº": 494,
+        "AÑO": "2do",
+        "DIV": "3ra",
+        "APYNOM": "MOORE, Destiney"
+    },
+    {
+        "Nº": 495,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "MAGGIO, Edison"
+    },
+    {
+        "Nº": 496,
+        "AÑO": "4to",
+        "DIV": "1ra",
+        "APYNOM": "GAYLORD, Cornell"
+    },
+    {
+        "Nº": 497,
+        "AÑO": "4to",
+        "DIV": "4ta",
+        "APYNOM": "OBERBRUNNER, Alta"
+    },
+    {
+        "Nº": 498,
+        "AÑO": "1ro",
+        "DIV": "2da",
+        "APYNOM": "KLEIN, Paris"
+    },
+    {
+        "Nº": 499,
+        "AÑO": "2do",
+        "DIV": "2da",
+        "APYNOM": "LOCKMAN, Kavon"
+    }
+]

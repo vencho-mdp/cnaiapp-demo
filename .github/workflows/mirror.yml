@@ -1,0 +1,20 @@
+name: Push File
+
+on: push
+
+jobs:
+  copy-file:
+    runs-on: ubuntu-latest      
+    steps:
+    - name: Copy
+      uses: andstor/copycat-action@v3
+      with:
+        personal_token: ${{ secrets.API_TOKEN_GITHUB }}
+        src_path: /.
+        dst_owner: vencho-mdp
+        dst_repo_name: cnaiapp-demo
+        src_branch: develop
+        dst_branch: main
+        exclude: "*/seeds/real/*"
+        commit_message: "Mirroring files from upstream repo"
+        email: beniciocardozomdp@gmail.com 

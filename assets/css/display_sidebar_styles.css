@@ -1,0 +1,11 @@
+.sidebar  p, .sidebar  span, .sidebar  ul, .sidebar  ol, .sidebar  em, .sidebar  u{
+@apply text-sm leading-relaxed !text-white;
+}
+.sidebar  ul, .sidebar  ol {
+  @apply list-disc ml-4;
+}
+
+ .sidebar  * {
+  max-width: 320px;
+  overflow-wrap: break-word;
+}

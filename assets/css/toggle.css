@@ -1,0 +1,35 @@
+
+.toggle-label {
+  position: relative;
+}
+.toggle-label:before {
+  @apply bg-white bg-center bg-no-repeat h-5 w-5 absolute block;
+  top: 0.125rem;
+  left: 0.125rem;
+  content: "";
+  border-radius: 9999%;
+  background-size: 40%;
+  transition: transform 0.15s cubic-bezier(0, 0, 0.2, 1);
+  transform: translateX(0);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.toggle-checkbox:checked + .toggle-label:before {
+  transform: translateX(1.5rem);
+}
+.toggle.slim .toggle-label:before {
+  top: -0.15rem;
+  left: 0;
+}
+.toggle.slim .toggle-checkbox:checked + .toggle-label:before {
+  transform: translateX(1.75rem);
+}
+.toggle.colour .toggle-label {
+  @apply bg-gray-300;
+}
+.toggle.colour .toggle-checkbox:checked + .toggle-label:not(.shift-toggler) {
+  @apply bg-primary-darkblue;
+}
+.toggle.colour .toggle-checkbox:checked + .toggle-label:not(.justification-toggler) {
+  @apply bg-primary-blue;
+}

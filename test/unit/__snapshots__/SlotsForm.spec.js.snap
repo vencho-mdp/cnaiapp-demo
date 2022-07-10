@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SlotsForm renders correctly 1`] = `
+"<form class=\\"flex flex-col flex-grow my-2 mx-4 justify-evenly\\">
+  <div class=\\"flex\\">
+    <div class=\\"flex flex-col flex-grow mr-2 justify-between\\">
+      <v-label-stub class=\\"mb-2 !text-white\\">
+        Año
+      </v-label-stub>
+      <v-dropdown-stub options=\\"1ro,2do,3ro,4to,5to,6to\\" data-test=\\"grade\\" class=\\"w-full\\"></v-dropdown-stub>
+    </div>
+    <div class=\\"flex flex-col flex-grow ml-2 justify-between\\">
+      <v-label-stub class=\\"mb-2 !text-white\\">
+        División
+      </v-label-stub>
+      <v-dropdown-stub options=\\"1ra,2da,3ra,4ta,5ta\\" date-test=\\"grade_number\\" class=\\"w-full\\"></v-dropdown-stub>
+    </div>
+  </div>
+  <div class=\\"flex flex-col mt-6 justify-between\\">
+    <v-label-stub class=\\"!text-white\\">
+      Horario
+    </v-label-stub>
+    <slots-accordion-stub assignments=\\"\\" teachers=\\"\\" edit=\\"true\\" defaultindex=\\"0\\" firstproptoshow=\\"subject_name\\"></slots-accordion-stub>
+  </div>
+  <form-buttons-stub isaddbuttoninvalid=\\"true\\" addbuttontext=\\"Guardar\\" type=\\"submit\\" class=\\"my-10\\"></form-buttons-stub>
+</form>"
+`;

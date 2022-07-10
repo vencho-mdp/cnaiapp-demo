@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SlotsAccordionForm matches snapshot 1`] = `
+"<div class=\\"flex flex-col gap-4 mx-auto w-60\\">
+  <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Profesor </label>
+    <div tabindex=\\"0\\" class=\\"multiselect border-2 rounded-xl !w-full border-primary-lightblue !box-border py-1\\">
+      <div class=\\"multiselect__select\\"></div>
+      <div class=\\"multiselect__tags\\">
+        <div class=\\"multiselect__tags-wrap\\" style=\\"display: none;\\"></div>
+        <!---->
+        <transition-stub name=\\"multiselect__loading\\">
+          <div class=\\"multiselect__spinner\\" style=\\"display: none;\\"></div>
+        </transition-stub>
+        <!---->
+        <!----> <span class=\\"multiselect__placeholder\\">
+
+        </span>
+      </div>
+      <transition-stub name=\\"multiselect\\">
+        <div tabindex=\\"-1\\" class=\\"multiselect__content-wrapper\\" style=\\"max-height: 300px; display: none;\\">
+          <ul class=\\"multiselect__content\\" style=\\"display: block;\\">
+            <!---->
+            <li style=\\"display: none;\\"><span class=\\"multiselect__option\\">No elements found. Consider changing the search query.</span></li>
+            <li><span class=\\"multiselect__option\\">List is empty.</span></li>
+          </ul>
+        </div>
+      </transition-stub>
+    </div>
+  </div>
+  <div class=\\"flex flex-col\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Materia </label> <select class=\\"py-1.5 px-2 outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue h-10\\">
+      <option hidden=\\"hidden\\" value=\\"\\">
+
+      </option>
+    </select></div>
+  <div class=\\"flex justify-around\\">
+    <div class=\\"flex flex-col justify-between mr-4\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Desde </label>
+      <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"from\\"></div>
+    </div>
+    <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Hasta </label>
+      <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"to\\"></div>
+    </div>
+  </div> <button class=\\"shadow px-4 py-1 text-tiny rounded-md disabled:bg-gray disabled:border-0 font-semibold !text-white bg-primary-darkblue hover-effect self-start !p-2 !text-xs !rounded-md\\" disabled=\\"disabled\\" type=\\"button\\" data-test=\\"slot_add\\">
+    Guardar
+  </button>
+</div>"
+`;

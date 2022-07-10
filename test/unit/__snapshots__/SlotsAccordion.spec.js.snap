@@ -1,0 +1,362 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SlotsAccordion matches snapshot 1`] = `
+"<div class=\\"c-accordion !border-0\\" id=\\"c-accordion\\">
+  <div class=\\"c-accordion__item -active\\" data-el=\\"item-0\\">
+    <div data-el=\\"title\\" class=\\"c-accordion__title\\"><span data-test=\\"Lunes\\" class=\\"flex mr-2 w-full justify-between\\"><span class=\\"font-bold text-xs text-black weekday\\">Lunes</span> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-darkblue shadow-md p-1.5 duration-500 hover:scale-105\\" data-test=\\"lunes_add_btn\\" type=\\"button\\"><img src=\\"~/assets/images/plus.svg\\" alt=\\"Agregar\\" class=\\"h-4\\"></button></span><span data-el=\\"toggle\\" class=\\"c-accordion__toggle\\"><img src=\\"~/assets/images/close-icon.svg\\" alt=\\"Cerrar\\" class=\\"h-6 filter invert\\"></span></div>
+    <transition-stub name=\\"collapse\\" duration=\\"350\\">
+      <div data-el=\\"body\\" class=\\"c-accordion__body\\">
+        <div data-el=\\"content\\" class=\\"c-accordion__content\\">
+          <div data-test=\\"lunes_acc_body\\" style=\\"display: none;\\">
+            <div class=\\"flex flex-col gap-4 mx-auto w-60\\" data-test=\\"slots-accordion-form\\">
+              <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Profesor </label>
+                <div tabindex=\\"0\\" class=\\"multiselect border-2 rounded-xl !w-full border-primary-lightblue !box-border py-1\\">
+                  <div class=\\"multiselect__select\\"></div>
+                  <div class=\\"multiselect__tags\\">
+                    <div class=\\"multiselect__tags-wrap\\" style=\\"display: none;\\"></div>
+                    <!---->
+                    <transition-stub name=\\"multiselect__loading\\">
+                      <div class=\\"multiselect__spinner\\" style=\\"display: none;\\"></div>
+                    </transition-stub>
+                    <!---->
+                    <!----> <span class=\\"multiselect__placeholder\\">
+
+        </span>
+                  </div>
+                  <transition-stub name=\\"multiselect\\">
+                    <div tabindex=\\"-1\\" class=\\"multiselect__content-wrapper\\" style=\\"max-height: 300px; display: none;\\">
+                      <ul class=\\"multiselect__content\\" style=\\"display: block;\\">
+                        <!---->
+                        <li style=\\"display: none;\\"><span class=\\"multiselect__option\\">No elements found. Consider changing the search query.</span></li>
+                        <li><span class=\\"multiselect__option\\">List is empty.</span></li>
+                      </ul>
+                    </div>
+                  </transition-stub>
+                </div>
+              </div>
+              <div class=\\"flex flex-col\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Materia </label> <select class=\\"py-1.5 px-2 outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue h-10\\">
+                  <option hidden=\\"hidden\\" value=\\"\\">
+
+                  </option>
+                </select></div>
+              <div class=\\"flex justify-around\\">
+                <div class=\\"flex flex-col justify-between mr-4\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Desde </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"from\\"></div>
+                </div>
+                <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Hasta </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"to\\"></div>
+                </div>
+              </div> <button class=\\"shadow px-4 py-1 text-tiny rounded-md disabled:bg-gray disabled:border-0 font-semibold !text-white bg-primary-darkblue hover-effect self-start !p-2 !text-xs !rounded-md\\" disabled=\\"disabled\\" type=\\"button\\" data-test=\\"slot_add\\">
+                Guardar
+              </button>
+            </div>
+          </div> <span><transition-group-stub name=\\"list\\" class=\\"h-full w-full\\"><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Ainchil, Paula
+    </h5> <h6 class=\\"text-xs text-black\\">
+      12:55 - 14:10
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Gorostegui, Maia
+    </h5> <h6 class=\\"text-xs text-black\\">
+      14:10 - 15:30
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Santoiani, Silvia
+    </h5> <h6 class=\\"text-xs text-black\\">
+      15:45 - 17:00
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span></transition-group-stub></span>
+        </div>
+      </div>
+    </transition-stub>
+  </div>
+  <div class=\\"c-accordion__item\\" data-el=\\"item-1\\">
+    <div data-el=\\"title\\" class=\\"c-accordion__title\\"><span data-test=\\"Martes\\" class=\\"flex mr-2 w-full justify-between\\"><span class=\\"font-bold text-xs text-black weekday\\">Martes</span> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-darkblue shadow-md p-1.5 duration-500 hover:scale-105\\" data-test=\\"martes_add_btn\\" type=\\"button\\"><img src=\\"~/assets/images/plus.svg\\" alt=\\"Agregar\\" class=\\"h-4\\"></button></span><span data-el=\\"toggle\\" class=\\"c-accordion__toggle\\"><img src=\\"~/assets/images/chevron.svg\\" alt=\\"Abrir\\" class=\\"h-6\\"></span></div>
+    <transition-stub name=\\"collapse\\" duration=\\"350\\">
+      <div data-el=\\"body\\" class=\\"c-accordion__body\\" style=\\"display: none;\\">
+        <div data-el=\\"content\\" class=\\"c-accordion__content\\">
+          <div data-test=\\"martes_acc_body\\" style=\\"display: none;\\">
+            <div class=\\"flex flex-col gap-4 mx-auto w-60\\" data-test=\\"slots-accordion-form\\">
+              <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Profesor </label>
+                <div tabindex=\\"0\\" class=\\"multiselect border-2 rounded-xl !w-full border-primary-lightblue !box-border py-1\\">
+                  <div class=\\"multiselect__select\\"></div>
+                  <div class=\\"multiselect__tags\\">
+                    <div class=\\"multiselect__tags-wrap\\" style=\\"display: none;\\"></div>
+                    <!---->
+                    <transition-stub name=\\"multiselect__loading\\">
+                      <div class=\\"multiselect__spinner\\" style=\\"display: none;\\"></div>
+                    </transition-stub>
+                    <!---->
+                    <!----> <span class=\\"multiselect__placeholder\\">
+
+        </span>
+                  </div>
+                  <transition-stub name=\\"multiselect\\">
+                    <div tabindex=\\"-1\\" class=\\"multiselect__content-wrapper\\" style=\\"max-height: 300px; display: none;\\">
+                      <ul class=\\"multiselect__content\\" style=\\"display: block;\\">
+                        <!---->
+                        <li style=\\"display: none;\\"><span class=\\"multiselect__option\\">No elements found. Consider changing the search query.</span></li>
+                        <li><span class=\\"multiselect__option\\">List is empty.</span></li>
+                      </ul>
+                    </div>
+                  </transition-stub>
+                </div>
+              </div>
+              <div class=\\"flex flex-col\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Materia </label> <select class=\\"py-1.5 px-2 outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue h-10\\">
+                  <option hidden=\\"hidden\\" value=\\"\\">
+
+                  </option>
+                </select></div>
+              <div class=\\"flex justify-around\\">
+                <div class=\\"flex flex-col justify-between mr-4\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Desde </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"from\\"></div>
+                </div>
+                <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Hasta </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"to\\"></div>
+                </div>
+              </div> <button class=\\"shadow px-4 py-1 text-tiny rounded-md disabled:bg-gray disabled:border-0 font-semibold !text-white bg-primary-darkblue hover-effect self-start !p-2 !text-xs !rounded-md\\" disabled=\\"disabled\\" type=\\"button\\" data-test=\\"slot_add\\">
+                Guardar
+              </button>
+            </div>
+          </div> <span><transition-group-stub name=\\"list\\" class=\\"h-full w-full\\"><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Ainchil, Paula
+    </h5> <h6 class=\\"text-xs text-black\\">
+      12:55 - 14:10
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Gorostegui, Maia
+    </h5> <h6 class=\\"text-xs text-black\\">
+      14:10 - 15:30
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Rusos, Mario
+    </h5> <h6 class=\\"text-xs text-black\\">
+      15:45 - 17:35
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span></transition-group-stub></span>
+        </div>
+      </div>
+    </transition-stub>
+  </div>
+  <div class=\\"c-accordion__item\\" data-el=\\"item-2\\">
+    <div data-el=\\"title\\" class=\\"c-accordion__title\\"><span data-test=\\"Miércoles\\" class=\\"flex mr-2 w-full justify-between\\"><span class=\\"font-bold text-xs text-black weekday\\">Miércoles</span> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-darkblue shadow-md p-1.5 duration-500 hover:scale-105\\" data-test=\\"miércoles_add_btn\\" type=\\"button\\"><img src=\\"~/assets/images/plus.svg\\" alt=\\"Agregar\\" class=\\"h-4\\"></button></span><span data-el=\\"toggle\\" class=\\"c-accordion__toggle\\"><img src=\\"~/assets/images/chevron.svg\\" alt=\\"Abrir\\" class=\\"h-6\\"></span></div>
+    <transition-stub name=\\"collapse\\" duration=\\"350\\">
+      <div data-el=\\"body\\" class=\\"c-accordion__body\\" style=\\"display: none;\\">
+        <div data-el=\\"content\\" class=\\"c-accordion__content\\">
+          <div data-test=\\"miércoles_acc_body\\" style=\\"display: none;\\">
+            <div class=\\"flex flex-col gap-4 mx-auto w-60\\" data-test=\\"slots-accordion-form\\">
+              <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Profesor </label>
+                <div tabindex=\\"0\\" class=\\"multiselect border-2 rounded-xl !w-full border-primary-lightblue !box-border py-1\\">
+                  <div class=\\"multiselect__select\\"></div>
+                  <div class=\\"multiselect__tags\\">
+                    <div class=\\"multiselect__tags-wrap\\" style=\\"display: none;\\"></div>
+                    <!---->
+                    <transition-stub name=\\"multiselect__loading\\">
+                      <div class=\\"multiselect__spinner\\" style=\\"display: none;\\"></div>
+                    </transition-stub>
+                    <!---->
+                    <!----> <span class=\\"multiselect__placeholder\\">
+
+        </span>
+                  </div>
+                  <transition-stub name=\\"multiselect\\">
+                    <div tabindex=\\"-1\\" class=\\"multiselect__content-wrapper\\" style=\\"max-height: 300px; display: none;\\">
+                      <ul class=\\"multiselect__content\\" style=\\"display: block;\\">
+                        <!---->
+                        <li style=\\"display: none;\\"><span class=\\"multiselect__option\\">No elements found. Consider changing the search query.</span></li>
+                        <li><span class=\\"multiselect__option\\">List is empty.</span></li>
+                      </ul>
+                    </div>
+                  </transition-stub>
+                </div>
+              </div>
+              <div class=\\"flex flex-col\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Materia </label> <select class=\\"py-1.5 px-2 outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue h-10\\">
+                  <option hidden=\\"hidden\\" value=\\"\\">
+
+                  </option>
+                </select></div>
+              <div class=\\"flex justify-around\\">
+                <div class=\\"flex flex-col justify-between mr-4\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Desde </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"from\\"></div>
+                </div>
+                <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Hasta </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"to\\"></div>
+                </div>
+              </div> <button class=\\"shadow px-4 py-1 text-tiny rounded-md disabled:bg-gray disabled:border-0 font-semibold !text-white bg-primary-darkblue hover-effect self-start !p-2 !text-xs !rounded-md\\" disabled=\\"disabled\\" type=\\"button\\" data-test=\\"slot_add\\">
+                Guardar
+              </button>
+            </div>
+          </div> <span><transition-group-stub name=\\"list\\" class=\\"h-full w-full\\"><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Ainchil, Paula
+    </h5> <h6 class=\\"text-xs text-black\\">
+      13:30 - 14:10
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Pérez, Gabriel
+    </h5> <h6 class=\\"text-xs text-black\\">
+      14:10 - 15:30
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Wibaux, Matías
+    </h5> <h6 class=\\"text-xs text-black\\">
+      15:45 - 17:35
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span></transition-group-stub></span>
+        </div>
+      </div>
+    </transition-stub>
+  </div>
+  <div class=\\"c-accordion__item\\" data-el=\\"item-3\\">
+    <div data-el=\\"title\\" class=\\"c-accordion__title\\"><span data-test=\\"Jueves\\" class=\\"flex mr-2 w-full justify-between\\"><span class=\\"font-bold text-xs text-black weekday\\">Jueves</span> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-darkblue shadow-md p-1.5 duration-500 hover:scale-105\\" data-test=\\"jueves_add_btn\\" type=\\"button\\"><img src=\\"~/assets/images/plus.svg\\" alt=\\"Agregar\\" class=\\"h-4\\"></button></span><span data-el=\\"toggle\\" class=\\"c-accordion__toggle\\"><img src=\\"~/assets/images/chevron.svg\\" alt=\\"Abrir\\" class=\\"h-6\\"></span></div>
+    <transition-stub name=\\"collapse\\" duration=\\"350\\">
+      <div data-el=\\"body\\" class=\\"c-accordion__body\\" style=\\"display: none;\\">
+        <div data-el=\\"content\\" class=\\"c-accordion__content\\">
+          <div data-test=\\"jueves_acc_body\\" style=\\"display: none;\\">
+            <div class=\\"flex flex-col gap-4 mx-auto w-60\\" data-test=\\"slots-accordion-form\\">
+              <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Profesor </label>
+                <div tabindex=\\"0\\" class=\\"multiselect border-2 rounded-xl !w-full border-primary-lightblue !box-border py-1\\">
+                  <div class=\\"multiselect__select\\"></div>
+                  <div class=\\"multiselect__tags\\">
+                    <div class=\\"multiselect__tags-wrap\\" style=\\"display: none;\\"></div>
+                    <!---->
+                    <transition-stub name=\\"multiselect__loading\\">
+                      <div class=\\"multiselect__spinner\\" style=\\"display: none;\\"></div>
+                    </transition-stub>
+                    <!---->
+                    <!----> <span class=\\"multiselect__placeholder\\">
+
+        </span>
+                  </div>
+                  <transition-stub name=\\"multiselect\\">
+                    <div tabindex=\\"-1\\" class=\\"multiselect__content-wrapper\\" style=\\"max-height: 300px; display: none;\\">
+                      <ul class=\\"multiselect__content\\" style=\\"display: block;\\">
+                        <!---->
+                        <li style=\\"display: none;\\"><span class=\\"multiselect__option\\">No elements found. Consider changing the search query.</span></li>
+                        <li><span class=\\"multiselect__option\\">List is empty.</span></li>
+                      </ul>
+                    </div>
+                  </transition-stub>
+                </div>
+              </div>
+              <div class=\\"flex flex-col\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Materia </label> <select class=\\"py-1.5 px-2 outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue h-10\\">
+                  <option hidden=\\"hidden\\" value=\\"\\">
+
+                  </option>
+                </select></div>
+              <div class=\\"flex justify-around\\">
+                <div class=\\"flex flex-col justify-between mr-4\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Desde </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"from\\"></div>
+                </div>
+                <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Hasta </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"to\\"></div>
+                </div>
+              </div> <button class=\\"shadow px-4 py-1 text-tiny rounded-md disabled:bg-gray disabled:border-0 font-semibold !text-white bg-primary-darkblue hover-effect self-start !p-2 !text-xs !rounded-md\\" disabled=\\"disabled\\" type=\\"button\\" data-test=\\"slot_add\\">
+                Guardar
+              </button>
+            </div>
+          </div> <span><transition-group-stub name=\\"list\\" class=\\"h-full w-full\\"><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Gorostegui, Maia
+    </h5> <h6 class=\\"text-xs text-black\\">
+      14:10 - 15:30
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Villavicencio, Alberto
+    </h5> <h6 class=\\"text-xs text-black\\">
+      15:45 - 17:35
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span></transition-group-stub></span>
+        </div>
+      </div>
+    </transition-stub>
+  </div>
+  <div class=\\"c-accordion__item\\" data-el=\\"item-4\\">
+    <div data-el=\\"title\\" class=\\"c-accordion__title\\"><span data-test=\\"Viernes\\" class=\\"flex mr-2 w-full justify-between\\"><span class=\\"font-bold text-xs text-black weekday\\">Viernes</span> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-darkblue shadow-md p-1.5 duration-500 hover:scale-105\\" data-test=\\"viernes_add_btn\\" type=\\"button\\"><img src=\\"~/assets/images/plus.svg\\" alt=\\"Agregar\\" class=\\"h-4\\"></button></span><span data-el=\\"toggle\\" class=\\"c-accordion__toggle\\"><img src=\\"~/assets/images/chevron.svg\\" alt=\\"Abrir\\" class=\\"h-6\\"></span></div>
+    <transition-stub name=\\"collapse\\" duration=\\"350\\">
+      <div data-el=\\"body\\" class=\\"c-accordion__body\\" style=\\"display: none;\\">
+        <div data-el=\\"content\\" class=\\"c-accordion__content\\">
+          <div data-test=\\"viernes_acc_body\\" style=\\"display: none;\\">
+            <div class=\\"flex flex-col gap-4 mx-auto w-60\\" data-test=\\"slots-accordion-form\\">
+              <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Profesor </label>
+                <div tabindex=\\"0\\" class=\\"multiselect border-2 rounded-xl !w-full border-primary-lightblue !box-border py-1\\">
+                  <div class=\\"multiselect__select\\"></div>
+                  <div class=\\"multiselect__tags\\">
+                    <div class=\\"multiselect__tags-wrap\\" style=\\"display: none;\\"></div>
+                    <!---->
+                    <transition-stub name=\\"multiselect__loading\\">
+                      <div class=\\"multiselect__spinner\\" style=\\"display: none;\\"></div>
+                    </transition-stub>
+                    <!---->
+                    <!----> <span class=\\"multiselect__placeholder\\">
+
+        </span>
+                  </div>
+                  <transition-stub name=\\"multiselect\\">
+                    <div tabindex=\\"-1\\" class=\\"multiselect__content-wrapper\\" style=\\"max-height: 300px; display: none;\\">
+                      <ul class=\\"multiselect__content\\" style=\\"display: block;\\">
+                        <!---->
+                        <li style=\\"display: none;\\"><span class=\\"multiselect__option\\">No elements found. Consider changing the search query.</span></li>
+                        <li><span class=\\"multiselect__option\\">List is empty.</span></li>
+                      </ul>
+                    </div>
+                  </transition-stub>
+                </div>
+              </div>
+              <div class=\\"flex flex-col\\"><label class=\\"text-xs font-extrabold text-black mb-2\\"> Materia </label> <select class=\\"py-1.5 px-2 outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue h-10\\">
+                  <option hidden=\\"hidden\\" value=\\"\\">
+
+                  </option>
+                </select></div>
+              <div class=\\"flex justify-around\\">
+                <div class=\\"flex flex-col justify-between mr-4\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Desde </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"from\\"></div>
+                </div>
+                <div class=\\"flex flex-col justify-between\\"><label class=\\"text-xs font-extrabold text-black mb-1\\"> Hasta </label>
+                  <div class=\\"!w-full time-picker vc-container vc-blue\\" data-test=\\"to\\"></div>
+                </div>
+              </div> <button class=\\"shadow px-4 py-1 text-tiny rounded-md disabled:bg-gray disabled:border-0 font-semibold !text-white bg-primary-darkblue hover-effect self-start !p-2 !text-xs !rounded-md\\" disabled=\\"disabled\\" type=\\"button\\" data-test=\\"slot_add\\">
+                Guardar
+              </button>
+            </div>
+          </div> <span><transition-group-stub name=\\"list\\" class=\\"h-full w-full\\"><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Pitaluga, Jorge
+    </h5> <h6 class=\\"text-xs text-black\\">
+      14:10 - 15:30
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span><span class=\\"flex flex-col flex-wrap w-full justify-between\\"><span class=\\"flex max-w-full justify-between\\" data-test=\\"slots-accordion-item\\"><span class=\\"flex flex-col flex-shrink\\"><h5 class=\\"font-bold text-xs text-black\\">
+      
+    </h5> <h5 class=\\"text-xs text-black\\">
+      Martinez, Mara
+    </h5> <h6 class=\\"text-xs text-black\\">
+      15:45 - 17:35
+    </h6></span> <span class=\\"flex mx-1 justify-evenly items-center\\"><button class=\\"p-2 flex items-center justify-center rounded-full bg-red-light border-red border border-opacity-25 h-9 w-9 duration-500 md:mr-2 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/trash.svg\\" alt=\\"Eliminar\\"></button> <button class=\\"p-2 flex items-center justify-center rounded-full bg-primary-lightblue border-primary-blue border border-opacity-25 h-9 ml-4 w-9 duration-500 hover:scale-105\\" type=\\"button\\"><img src=\\"~/assets/images/pencil.svg\\" alt=\\"Editar\\"></button></span></span>
+          <hr class=\\"my-2 text-primary-lightblue w-full\\"></span></transition-group-stub></span>
+        </div>
+      </div>
+    </transition-stub>
+  </div>
+</div>"
+`;

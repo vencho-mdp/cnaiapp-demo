@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VSidebar renders correctly 1`] = `
+"<div data-test=\\"sidebar\\" class=\\"bg-black-light flex min-h-screen w-screen top-0 left-0 absolute justify-end\\">
+  <aside class=\\"bg-primary-darkblue flex flex-col h-screen max-h-screen w-80 overflow-auto\\"><button class=\\"flex items-center justify-end\\"><img src=\\"~/assets/images/close-icon.svg\\" alt=\\"Cerrar\\" class=\\"cursor-pointer h-6 m-4 w-6\\"></button>
+    <h1 class=\\"text-base font-bold mt-8 text-center text-white\\">
+
+    </h1>
+    <!---->
+  </aside>
+</div>"
+`;

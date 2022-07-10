@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ComingSoonCard should render correctly 1`] = `
+"<div class=\\"bg-gray shadow-md h-20 w-80 sm:w-96 p-4 rounded-md flex items-center justify-center\\">
+  <h2 class=\\"text-base font-bold !text-white\\"><span> Proximamente </span></h2>
+</div>"
+`;

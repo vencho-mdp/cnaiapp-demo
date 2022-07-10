@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "@nuxtjs"
+  ],
+   "rules": {
+     "global-require": 0,
+      "no-console": 1,
+      "camelcase": 0,
+      "vue/multiword-component-names": "off"
+  }
+}

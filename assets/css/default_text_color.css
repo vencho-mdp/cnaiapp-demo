@@ -1,0 +1,8 @@
+* {
+   @apply text-black
+}
+
+b,
+strong, p, u, em, li {
+  @apply text-white;
+}

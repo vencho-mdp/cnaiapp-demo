@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VTitle should render correctly 1`] = `
+"<footer class=\\"bg-primary-darkblue flex mt-2 w-full p-2 items-center justify-between\\"><button data-test=\\"bug_report_btn\\" class=\\"bg-primary-blue rounded font-bold shadow-sm text-xs text-center py-1 px-2 w-1/3 hover-effect !text-white\\" style=\\"max-width: 200px;\\">
+    Comunicar un error
+  </button> <span class=\\"flex font-p font-bold text-xs pl-4 !text-white\\">
+    Hecho por: &nbsp;
+    <a href=\\"mailto:beniciocardozomdp@gmail.com\\" class=\\"underline\\">
+      Benicio Cardozo</a></span></footer>"
+`;

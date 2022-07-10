@@ -1,0 +1,68 @@
+const {
+  get_students,
+  add_students_that_were_absent,
+  get_absent_students,
+  get_suspicious_cases,
+} = require("../services/students");
+const jwt = require("jsonwebtoken");
+
+class students_controller {
+  async get_students(req, res) {
+    try {
+      const students = await get_students(JSON.parse(req.query.classes_ids));
+      res.status(201).json(students);
+    } catch (error) {
+      console.error(error);
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
+  async add_students_that_were_absent({ headers, body }, res) {
+    const user_token = headers.authorization.split(" ")[1];
+    const user_id = jwt.verify(user_token, process.env.ACCESS_TOKEN_SECRET).id;
+    try {
+      const students = await add_students_that_were_absent(
+        body.list,
+        body.date,
+        user_id
+      );
+      res.status(200).json(students);
+    } catch (error) {
+      console.error(error);
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
+  async get_absent_students(req, res) {
+    try {
+      const students = await get_absent_students(
+        req.query.date,
+        JSON.parse(req.query.classes_ids)
+      );
+      res.status(200).json(students);
+    } catch (error) {
+      console.error(error);
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
+  async get_suspicious_cases(req, res) {
+    try {
+      const students = await get_suspicious_cases();
+      res.status(200).json(students);
+    } catch (error) {
+      console.error(error);
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+}
+
+module.exports = new students_controller();

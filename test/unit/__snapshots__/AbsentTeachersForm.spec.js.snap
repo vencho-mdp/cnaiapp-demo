@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AbsentTeachersForm should match snapshot 1`] = `
+"<form class=\\"flex flex-col flex-grow mx-4 justify-evenly\\">
+  <div class=\\"flex flex-col flex-grow justify-evenly\\">
+    <div class=\\"flex flex-col justify-between\\">
+      <v-label-stub class=\\"mb-2 !text-white\\">
+        Profesor
+      </v-label-stub>
+      <v-dropdown-stub options=\\"\\" value=\\" \\" class=\\"w-full\\"></v-dropdown-stub>
+    </div>
+    <div class=\\"flex w-full justify-center items-center\\">
+      <div class=\\"w-96\\">
+        <v-label-stub class=\\"!text-white\\">
+          Fechas
+        </v-label-stub> <span><v-date-picker-stub locale=\\"es\\" mindate=\\"Mon Mar 28 2022 15:09:58 GMT-0300 (Argentina Standard Time)\\" mode=\\"date\\" value=\\"[object Object]\\" modelconfig=\\"[object Object]\\" isrange=\\"true\\" popover=\\"[object Object]\\"></v-date-picker-stub></span>
+      </div>
+    </div>
+  </div>
+  <form-buttons-stub isaddbuttoninvalid=\\"true\\" addbuttontext=\\"Guardar\\" class=\\"my-20\\"></form-buttons-stub>
+</form>"
+`;

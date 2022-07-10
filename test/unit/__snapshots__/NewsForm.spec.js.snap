@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewsForm renders correctly 1`] = `
+"<form class=\\"flex flex-col flex-grow mx-4 justify-evenly\\">
+  <div class=\\"flex flex-col justify-between my-8\\">
+    <v-label-stub class=\\"mb-2 !text-white\\">
+      Título
+    </v-label-stub>
+    <v-text-input-stub data-test=\\"title\\" class=\\"w-full\\"></v-text-input-stub>
+  </div>
+  <div class=\\"flex flex-col justify-between my-8\\">
+    <v-label-stub class=\\"mb-2 !text-white\\">
+      Contenido
+    </v-label-stub> <span><vue-editor editor-toolbar=\\"bold,italic,underline,[object Object],[object Object]\\" data-test=\\"content\\" class=\\"rounded-xl\\"></vue-editor></span>
+  </div>
+  <file-input-stub data-test=\\"file_uploader\\" class=\\"mt-16\\"></file-input-stub>
+  <form-buttons-stub isaddbuttoninvalid=\\"true\\" addbuttontext=\\"Guardar\\" class=\\"my-12\\"></form-buttons-stub>
+</form>"
+`;

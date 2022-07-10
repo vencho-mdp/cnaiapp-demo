@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventsForm renders correctly 1`] = `
+"<form class=\\"flex flex-col flex-grow mx-4 justify-around gap-4\\">
+  <div class=\\"flex flex-col mb-1 justify-between\\">
+    <v-label-stub class=\\"mb-2 !text-white\\">
+      Nombre
+    </v-label-stub>
+    <v-text-input-stub data-test=\\"name\\" value=\\"\\" class=\\"w-full\\"></v-text-input-stub>
+  </div>
+  <div class=\\"flex flex-col justify-between mb-12\\">
+    <v-label-stub class=\\"mb-2 !text-white\\">
+      Descripción
+    </v-label-stub> <span><vue-editor editor-toolbar=\\"bold,italic,underline,[object Object],[object Object]\\" class=\\"rounded-xl min-h-min\\"></vue-editor></span>
+  </div>
+  <div class=\\"flex justify-center items-center\\">
+    <div class=\\"w-96\\">
+      <v-label-stub class=\\"!text-white\\">
+        Fecha/s
+      </v-label-stub> <span><v-date-picker-stub locale=\\"es\\" mode=\\"date\\" value=\\"[object Object]\\" modelconfig=\\"[object Object]\\" isrange=\\"true\\" popover=\\"[object Object]\\"></v-date-picker-stub></span>
+    </div>
+  </div>
+  <file-input-stub image=\\"\\"></file-input-stub>
+  <form-buttons-stub isaddbuttoninvalid=\\"true\\" addbuttontext=\\"Guardar\\" class=\\"mt-4 mb-8\\"></form-buttons-stub>
+</form>"
+`;

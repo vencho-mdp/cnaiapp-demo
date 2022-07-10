@@ -1,0 +1,3 @@
+.hover-effect {
+    @apply transition duration-200 hover:-translate-y-0.5;
+}
