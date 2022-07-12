@@ -347,10 +347,14 @@ export default {
         get_absent_students,
         get_classes,
       ]);
+      console.log(absent_students);
       absent_students = absent_students.map((el) => ({
         ...el,
         // replace null with false, or true with true
-        is_justified: !!el.is_justified,
+        is_justified:
+          el.is_justified === "true" || el.is_justified === "false"
+            ? JSON.parse(el.is_justified)
+            : el.is_justified,
       }));
       // Poner primero a las clases del preceptor
       const preceptors_classes = classes.filter((el) =>
