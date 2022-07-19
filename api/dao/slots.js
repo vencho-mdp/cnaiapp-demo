@@ -69,7 +69,8 @@ class slot_DAO {
         "subject.id",
         "subject.name",
         "slot.id"
-      );
+      )
+      .orderBy("slot.start_time");
     const organized_slots = slots.reduce(
       (acc, { weekday, ...rest }) => {
         const index_of_weekday_object = acc.findIndex(

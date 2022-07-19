@@ -1,7 +1,7 @@
 <template>
   <main
     v-if="showPage"
-    class="flex flex-col min-h-full p-8 justify-center sm:px-24"
+    class="flex flex-col min-h-full pl-8 pt-8 justify-center sm:px-24"
   >
     <v-title> Asistencia </v-title>
     <div class="flex flex-wrap mb-auto mt-12 w-full items-start">
@@ -25,7 +25,11 @@
             class="bg-white-full"
             :options="
               classes
-                ? classes.map((c) => ({ label: c.class, value: c.id }))
+                ? classes.map((c) => ({
+                    label: c.class,
+                    value: c.id,
+                    class_id: c.class_id,
+                  }))
                 : []
             "
           />
@@ -53,148 +57,93 @@
               mode="out-in"
               tag="div"
               name="list"
-              class="flex flex-col flex-wrap list-none mb-8 -ml-12 w-full justify-between items-start"
+              class="flex md:!w-auto flex-wrap flex-grow pr-6 w-full mb-8"
             >
               <div
                 v-for="(el, idx) of absent_students_without_duplicates"
                 :key="`${el.id}-${idx}`"
                 data-test="absent_student"
                 :class="{ 'mb-12': idx + 1 !== absent_students.length }"
-                class="bg-white-full rounded-md flex flex-col min-w-full w-72 shadow mr-4 text-sm ml-12 p-4 z-0 justify-around items-start"
+                style="width: -moz-available; width: -webkit-fill-available"
+                class="flex-shrink-0 bg-white-full rounded-md flex flex-col max-w-md border border-gray-200 text-sm p-4 z-0 justify-around items-start"
               >
                 <div
-                  class="border-primary-darkblue border-b flex min-w-full pb-4 justify-between"
+                  class="border-primary-darkblue w-full border-b flex pb-4 justify-between"
                 >
                   <span class="font-bold mt-auto">
                     {{ el.last_name }}, {{ el.first_name }}
                   </span>
                 </div>
                 <div
-                  class="flex min-w-full h-24 mt-2 items-center justify-between"
+                  class="flex w-full h-24 my-4 items-center justify-between"
+                  v-for="(shift_data, i) in el.shifts"
+                  :key="`${shift_data.shift}-${el.id}`"
                 >
-                  <div class="w-20">
-                    <label class="text-xs"> {{ el.shift }}</label>
-                    <div class="mt-4 toggle colour">
-                      <input
-                        :id="`check-${el.id}-shift`"
-                        class="toggle-checkbox hidden"
-                        type="checkbox"
-                        :checked="el.shift === 'Turno'"
-                        :disabled="
-                          absent_students.filter(
-                            (student) => student.id === el.id
-                          ).length === 2 ||
-                          // if students has been added 1 time and is not in students list
-                          // that means that the other shift has been deleted
-                          // and it should not be possible to add it again
-                          // therefore, disable this
-                          (absent_students.filter(
-                            (student) => student.id === el.id
-                          ).length === 1 &&
-                            !valid_students.some(
-                              (student) => student.id === el.id
-                            ))
-                        "
-                        @click="changeShift(el)"
-                      />
-                      <label
-                        :for="`check-${el.id}-shift`"
-                        class="rounded-full h-6 transition-color ease-out w-12 duration-150 toggle-label block shift-toggler"
-                      ></label>
-                    </div>
-                  </div>
-                  <div class="w-28">
-                    <label class="text-xs">
-                      {{
-                        !el.is_justified ? "No justificado" : "Justificado"
-                      }}</label
-                    >
-                    <div class="mt-4 toggle colour">
-                      <input
-                        :id="`check-${el.id}-is-justified`"
-                        class="toggle-checkbox hidden"
-                        type="checkbox"
-                        v-model="el.is_justified"
-                        @click="
-                          openJustificationModal(
-                            el.id,
-                            !!el.is_justified,
-                            el.shift
+                  <VDropdown
+                    v-if="
+                      (extra_curricular_class_slots
+                        ? extra_curricular_class_slots
+                            .map((el) => el.subject)
+                            .concat('Turno')
+                        : shifts
+                      ).filter(
+                        (shift_el) =>
+                          shift_el === shift_data.shift ||
+                          !absent_students.some(
+                            (s) => s.shift === shift_el && s.id === el.id
                           )
-                        "
-                      />
-                      <label
-                        :for="`check-${el.id}-is-justified`"
-                        class="rounded-full h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
-                      ></label>
-                    </div>
-                  </div>
-                  <icon-button
-                    data-test="absent_student_delete_button"
-                    class="max-h-10 bg-red-light hover-effect md:ml-4"
-                    @click.native="remove_student_from_list(el.id, el.shift)"
+                      ).length !== 1
+                    "
+                    :options="
+                      (extra_curricular_class_slots
+                        ? extra_curricular_class_slots
+                            .map((el) => el.subject)
+                            .concat('Turno')
+                        : shifts
+                      ).filter(
+                        (shift_el) =>
+                          shift_el === shift_data.shift ||
+                          !absent_students.some(
+                            (s) => s.shift === shift_el && s.id === el.id
+                          )
+                      )
+                    "
+                    :value="shift_data.shift"
+                    @change.native="
+                      changeShift(el.shifts[i].real_index, $event.target.value)
+                    "
+                    class="text-xs w-32"
                   >
-                    <img src="~/assets/images/trash.svg" alt="Eliminar" />
-                  </icon-button>
-                </div>
-                <div
-                  v-if="students_that_appear_twice.includes(el.id)"
-                  class="flex min-w-full h-24 mt-2 items-center justify-between"
-                >
-                  <!-- other shift -->
-                  <div class="w-20">
-                    <label class="text-xs">
-                      {{ el.shift === "Turno" ? "Contraturno" : "Turno" }}
-                    </label>
-                    <div class="mt-4 toggle colour">
-                      <!-- won't be necessary to change, since both possibilities are chosen at this point -->
-                      <input
-                        :id="`check-${el.id}-other-shift`"
-                        class="toggle-checkbox hidden"
-                        type="checkbox"
-                        :checked="el.shift !== 'Turno'"
-                        disabled
-                      />
-                      <label
-                        :for="`check-${el.id}-other-shift`"
-                        class="rounded-full h-6 transition-color ease-out w-12 duration-150 toggle-label block shift-toggler"
-                      ></label>
-                    </div>
-                  </div>
-                  <div class="w-28">
+                    {{ shift_data.shift }}</VDropdown
+                  >
+                  <label v-else class="text-xs pl-2.5 w-32">
+                    {{ shift_data.shift }}
+                  </label>
+                  <div class="w-32 ml-auto">
                     <label class="text-xs">
                       {{
-                        // viceversa, since this is the other shift
-                        absent_students.find(
-                          (s) => s.id === el.id && s.shift !== el.shift
-                        ).is_justified
-                          ? "Justificado"
-                          : "No justificado"
+                        !shift_data.is_justified
+                          ? "No Justificado"
+                          : "Justificado"
                       }}</label
                     >
                     <div class="mt-4 toggle colour">
                       <input
-                        :id="`check-${el.id}-is-justified-other-shift`"
+                        :id="`check-${shift_data.shift}-${el.id}-is-justified`"
                         class="toggle-checkbox hidden"
                         type="checkbox"
-                        v-model="
-                          absent_students.find(
-                            (s) => s.id === el.id && s.shift !== el.shift
-                          ).is_justified
-                        "
+                        v-model="shift_data.is_justified"
                         @click="
                           openJustificationModal(
                             el.id,
-                            absent_students.find(
-                              (s) => s.id === el.id && s.shift !== el.shift
-                            ).is_justified,
-                            el.shift === 'Turno' ? 'Contraturno' : 'Turno'
+                            !!shift_data.is_justified,
+                            shift_data.shift
                           )
                         "
                       />
                       <label
-                        :for="`check-${el.id}-is-justified-other-shift`"
-                        class="justification-toggler rounded-full h-6 transition-color ease-out w-12 duration-150 toggle-label block"
+                        :for="`check-${shift_data.shift}-${el.id}-is-justified`"
+                        class="rounded-full h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
                       ></label>
                     </div>
                   </div>
@@ -209,14 +158,18 @@
               </div>
             </transition-group>
           </transition>
-          <add-button
-            data-test="add_absent_student"
-            :disabled="!have_absent_students_changed"
-            @click.native="save_data()"
-            class="w-full sm:w-32"
+          <div
+            class="-ml-8 md:!m-0 w-screen md:!w-auto md:!static sticky bottom-0 border-t-2 border-blue-500 bg-gray-100 md:!bg-white-full md:!border-0 px-8 py-4 mt-6"
           >
-            Guardar
-          </add-button>
+            <add-button
+              data-test="add_absent_student"
+              :disabled="!have_absent_students_changed"
+              @click.native="save_data()"
+              class="w-full sm:w-32"
+            >
+              Guardar
+            </add-button>
+          </div>
         </div>
       </div>
     </div>
@@ -313,7 +266,8 @@
 
 <script>
 import removeTimeFromDate from "@/utils/removeTimeFromDate.js";
-import getNearestWorkday from "@/utils/getNearestWorkday.js";
+import getNearestPastWorkday from "@/utils/getNearestPastWorkday.js";
+import filterMap from "@/utils/filterMap.js";
 import "@/assets/css/toggle.css";
 
 const structuredClonePolyfilled =
@@ -333,7 +287,7 @@ export default {
     });
     const get_absent_students = $axios.$get("/api/absent-students", {
       params: {
-        date: removeTimeFromDate(getNearestWorkday()),
+        date: removeTimeFromDate(getNearestPastWorkday()),
         classes_ids: JSON.stringify(
           store.state.authentication.user_data.classes_ids
         ),
@@ -347,7 +301,6 @@ export default {
         get_absent_students,
         get_classes,
       ]);
-      console.log(absent_students);
       absent_students = absent_students.map((el) => ({
         ...el,
         // replace null with false, or true with true
@@ -395,7 +348,7 @@ export default {
   },
   data() {
     return {
-      date: getNearestWorkday(),
+      date: getNearestPastWorkday(),
       loading: false,
       show_notification: false,
       is_mobile: true,
@@ -405,29 +358,65 @@ export default {
       absence_reason: null,
       possible_absence_reasons: [
         "Certificado Médico",
-        "Evento Escolar",
+        "Evento Curricular",
         "Emergencia Familiar",
         "Paro de Transporte",
+        "Representación Deportiva",
         "Otra",
       ],
       new_justification: null,
       current_shift_of_abs_student_to_delete: null,
+      // curricular shift is always taken by the preceptor,
+      // though in extra-curricular activities each teacher takes it
+      shifts: [
+        "Turno",
+        "Informática",
+        "Plástica",
+        "Música",
+        "Inglés",
+        "Teatro",
+      ],
+      extra_curricular_class_slots: null,
     };
   },
   computed: {
-    defaultInShift() {
-      const isMorning = this.date.getHours() < 12 ? true : false;
-      const isClassAdvanced = this.class_id
+    isClassAdvanced() {
+      return this.class_id
         ? ["4to", "5to", "6to"].includes(
             this.classes
               .find((el) => el.id === this.class_id)
               .class.split(" ")[0]
           )
-        : //  arbitrary value
-          false;
-      return (isClassAdvanced && isMorning) || (!isClassAdvanced && !isMorning)
+        : false;
+    },
+    defaultInShift() {
+      if (!this.extra_curricular_class_slots[0]) {
+        return (this.isClassAdvanced && isMorning) ||
+          (!this.isClassAdvanced && !isMorning)
+          ? "Turno"
+          : // arbitrary choice
+            this.shifts[1];
+      }
+      const isMorning = this.date.getHours() < 12 ? true : false;
+      const date = new Date();
+      const nearest_item_in_extra_curricular_shift =
+        this.extra_curricular_class_slots.reduce((acc, el) => {
+          const [hours, minutes] = el.start_time.split(":");
+          const subject_time = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            hours,
+            minutes
+          );
+          const diff = Math.abs(date.getTime() - subject_time.getTime());
+          if (diff < acc.diff) return { diff, item: el };
+          return acc;
+        }, []);
+      return (this.isClassAdvanced && isMorning) ||
+        (!this.isClassAdvanced && !isMorning)
         ? "Turno"
-        : "Contraturno";
+        : nearest_item_in_extra_curricular_shift.item;
     },
     showPage() {
       return (
@@ -446,20 +435,20 @@ export default {
           )
           ? this.students
           : this.students.filter(
-              (student) =>
-                // one student can be 2 times max in the same day
-                this.absent_students.filter((el) => el.id === student.id)
-                  .length !== 2 && this.class_id === student.class_id
+              // this should be done server-side
+              (student) => this.class_id === student.class_id
             )
         : [];
     },
     have_absent_students_changed() {
       const original_absent_students = this.original_absent_students;
       const absent_students = this.absent_students;
-      return original_absent_students
-        ? JSON.stringify([...original_absent_students].sort()) !==
+      return (
+        (original_absent_students
+          ? JSON.stringify([...original_absent_students].sort()) !==
             JSON.stringify([...absent_students].sort())
-        : null;
+          : null) && !this.show_sidebar
+      );
     },
     students_that_appear_twice() {
       const hash = {};
@@ -469,42 +458,94 @@ export default {
       return Object.keys(hash).filter((el) => hash[el] > 1);
     },
     absent_students_without_duplicates() {
-      const absentStudents = this.absent_students;
-      return absentStudents.filter(
-        (student, index) =>
-          absentStudents.findIndex((s) => s.id == student.id) == index
-      );
+      return this.absent_students.reduce((acc, el, idx) => {
+        //  merge students with same id
+        // and make shift prop an array of the shifts and wether they are justified or not
+        const index = acc.findIndex((el2) => el2.id === el.id);
+        if (index === -1) {
+          const { shift, ...props } = el;
+          acc.push({
+            ...props,
+            shifts: [
+              {
+                shift: el.shift,
+                is_justified: el.is_justified,
+                real_index: idx,
+              },
+            ],
+          });
+        } else {
+          acc[index].shifts.push({
+            shift: el.shift,
+            is_justified: el.is_justified,
+            real_index: idx,
+          });
+        }
+        return acc;
+      }, []);
     },
   },
   watch: {
-    date(new_val) {
-      this.update_absent_students(new_val);
+    async date(new_val) {
+      await Promise.all([
+        this.update_timetable(),
+        this.update_absent_students_and_class(new_val),
+      ]);
     },
-    class_id() {
-      this.update_absent_students(this.date, true);
+    async class_id() {
+      await Promise.all([
+        this.update_timetable(),
+        this.update_absent_students_and_class(this.date, true),
+      ]);
     },
   },
   mounted() {
     this.is_mobile = window.innerWidth < 768;
   },
   methods: {
+    changeShift(index, val) {
+      this.absent_students[index].shift = val;
+      this.absent_students[index].was_shift_modified = true;
+    },
+    async update_timetable() {
+      if (!this.class_id) return;
+      const all_slots = await this.$axios.$get("/api/slots", {
+        params: {
+          className: this.classes.find((el) => el.id === this.class_id)?.class,
+        },
+      });
+      const current_day_index = this.date.getDay() - 1;
+      const extra_curricular_shifts = this.shifts.slice(1);
+      this.extra_curricular_class_slots =
+        filterMap(
+          all_slots[current_day_index].assignments,
+          (el) => extra_curricular_shifts.includes(el.subject),
+          (el) => ({
+            subject: el.subject,
+            start_time: el.start_time.slice(0, -3),
+          })
+        ) || [];
+    },
     closeSidebar() {
       this.show_sidebar = false;
       // case of justification
       const current_absent_student = this.absent_students.find(
-        (el) => el.id === this.current_abs_student
+        (el) =>
+          el.id === this.current_abs_student &&
+          el.shift === this.current_shift_of_abs_student_to_delete
       );
       if (current_absent_student) {
+        document
+          .querySelector(
+            `input#check-${current_absent_student.shift}-${current_absent_student.id}-is-justified`
+          )
+          .click();
         current_absent_student.is_justified = false;
         this.current_abs_student = null;
       }
       this.new_justification = null;
       this.absence_reason = null;
-    },
-    async changeShift(el) {
-      if (el.shift === "Turno") el.shift = "Contraturno";
-      else el.shift = "Turno";
-      await this.save_data();
+      this.current_shift_of_abs_student_to_delete = null;
     },
     async updateJustificationReason() {
       const current_absent_student = this.absent_students.find(
@@ -539,16 +580,25 @@ export default {
       if (!data) {
         return;
       }
-      const studentIfIsAlreadyPresent = this.absent_students.find(
+      const repeated_student = this.absent_students_without_duplicates.find(
         (el) => el.id === data.value
+      );
+      window.scrollTo({
+        top: 300,
+        behavior: "smooth",
+      });
+      console.log(
+        repeated_student?.shifts.some((el) => el.shift === this.defaultInShift)
       );
       const [last_name, first_name] = data.label.split(", ");
       this.absent_students.unshift({
         id: data.value,
-        shift: studentIfIsAlreadyPresent?.shift
-          ? studentIfIsAlreadyPresent?.shift === "Turno"
-            ? "Contraturno"
-            : "Turno"
+        shift: repeated_student?.shifts.some(
+          (el) => el.shift === this.defaultInShift
+        )
+          ? this.shifts.find(
+              (el) => !repeated_student.shifts.some((el2) => el2.shift === el)
+            )
           : this.defaultInShift,
         first_name,
         last_name,
@@ -566,7 +616,6 @@ export default {
         (el) => el.id === abs_student && el.shift === shift
       );
       current_absent_student.is_justified = false;
-      await this.save_data();
     },
     remove_student_from_list(abs_student, shift) {
       // si ya estaba antes, es porque se cambió
@@ -579,15 +628,16 @@ export default {
       // si no se guardó todavía
       this.absent_students.splice(this.absent_students.indexOf(abs_student), 1);
     },
-    async update_absent_students(date, class_changed = false) {
-      this.loading = true;
+    async update_absent_students_and_class(date, class_changed = false) {
       const formatted_date = removeTimeFromDate(date);
       let absent_students_in_formatted_date = await this.$axios.$get(
         "/api/absent-students",
         {
           params: {
             date: formatted_date,
-            classes_ids: JSON.stringify([this.class_id]),
+            classes_ids: this.class_id
+              ? JSON.stringify([this.class_id])
+              : JSON.stringify(this.classes.map((el) => el.id)),
           },
         }
       );
@@ -595,7 +645,10 @@ export default {
         (el) => ({
           ...el,
           // replace null with false, or true with true
-          is_justified: !!el.is_justified,
+          is_justified:
+            el.is_justified === "true" || el.is_justified === "false"
+              ? JSON.parse(el.is_justified)
+              : el.is_justified,
         })
       );
       this.absent_students = absent_students_in_formatted_date;
@@ -620,29 +673,8 @@ export default {
     },
     async save_data() {
       try {
-        const absent_students_with_was_shift_modified_prop =
-          this.absent_students.map((el) => {
-            //  add was_shift_modified_prop
-            // comparing to original absent student shift
-            // if it's different, it means that the shift was changed
-            const clone = structuredClonePolyfilled(el);
-            const original_absents_student =
-              this.original_absent_students.filter(
-                (abs_student) => abs_student.id === clone.id
-              );
-            if (original_absents_student) {
-              clone.was_shift_modified =
-                original_absents_student.length !== 1
-                  ? false
-                  : original_absents_student[0].shift !== clone.shift;
-            }
-            delete clone.first_name;
-            delete clone.last_name;
-            return clone;
-          });
-
         const absent_students_without_absolute_duplicates =
-          absent_students_with_was_shift_modified_prop.filter(
+          this.absent_students.filter(
             (el, index) =>
               !(
                 index ===

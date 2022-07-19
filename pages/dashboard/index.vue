@@ -11,7 +11,7 @@
         ))
     "
     :class="[
-      $store.state.authentication.user_data.groups &&
+      $store.state.authentication.user_data &&
       !$store.state.authentication.user_data.groups.includes(
         'community_manager'
       )
@@ -22,7 +22,7 @@
   >
     <settings-dropdown
       v-if="
-        $store.state.authentication.user_data.groups &&
+        $store.state.authentication.user_data &&
         !$store.state.authentication.user_data.groups.includes('student')
       "
       class="my-6"
@@ -30,7 +30,7 @@
     />
     <div
       v-if="
-        $store.state.authentication.user_data.groups &&
+        $store.state.authentication.user_data &&
         !$store.state.authentication.user_data.groups.includes(
           'community_manager'
         )
@@ -59,7 +59,7 @@
     </div>
     <div
       v-if="
-        $store.state.authentication.user_data.groups &&
+        $store.state.authentication.user_data &&
         ($store.state.authentication.user_data.groups.includes(
           'management_team'
         ) ||
@@ -102,7 +102,7 @@
   </main>
   <main
     v-else-if="
-      $store.state.authentication.user_data.groups &&
+      $store.state.authentication.user_data &&
       $store.state.authentication.user_data.groups.includes('teacher')
     "
     class="flex flex-col flex-wrap h-full w-full items-end sm:px-12"
@@ -146,7 +146,7 @@
     </transition>
   </main>
   <main
-    v-else-if="$store.state.authentication.user_data.groups"
+    v-else-if="$store.state.authentication.user_data"
     class="flex h-96 w-full items-center justify-center"
   >
     <coming-soon-card>Proximamente...</coming-soon-card>
@@ -155,8 +155,7 @@
 
 <script>
 export default {
-  async asyncData({ $axios, store, $reportNetworkError }) {
-    // refactor this when migrating to nuxt 3 (use composables)
+  async asyncData({ $axios, store, redirect, $reportNetworkError }) {
     const get_news = async () =>
       store.state.authentication.user_data.groups.includes("management_team") ||
       store.state.authentication.user_data.groups.includes("community_manager")
@@ -196,8 +195,14 @@ export default {
         get_teacher_slots(),
         get_events(),
       ]);
-      const [news, absent_teachers, classes, teacher_slots, events] =
-        result.map((res) => res.value);
+      const [
+        news = [],
+        absent_teachers = [],
+        classes = [],
+        teacher_slots = [],
+        events = [],
+      ] = result.map((res) => res.value);
+      console.log(news, absent_teachers, classes, teacher_slots, events);
       return { teacher_slots, news, absent_teachers, classes, events };
     } catch (error) {
       $reportNetworkError(error);

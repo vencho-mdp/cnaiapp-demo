@@ -13,7 +13,7 @@ exports.up = function (knex) {
       .references("id")
       .inTable("user")
       .onDelete("CASCADE");
-    table.date("date").notNullable();
+    table.timestamp("date").notNullable();
     // null -> is not justified
     // string -> is justified and that string is its reason
     table.string("is_justified");

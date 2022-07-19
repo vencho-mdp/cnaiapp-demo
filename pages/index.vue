@@ -3,7 +3,7 @@
     <div class="flex flex-col mb-auto h-1/6 justify-around items-center">
       <v-title>Horarios</v-title>
       <div
-        class="flex flex-col h-16 w-full px-4 justify-around items-center sm:w-96"
+        class="flex flex-col h-16 w-full px-12 justify-around items-center sm:w-96"
       >
         <label for="class-selector" class="font-semibold self-start"
           >Curso</label
@@ -56,6 +56,10 @@
 import VDropdown from "../components/VDropdown.vue";
 
 export default {
+  // disable in mvp release
+  mounted() {
+    alert("Esta página NO contiene datos reales, está en desarollo.");
+  },
   components: {
     VDropdown,
   },

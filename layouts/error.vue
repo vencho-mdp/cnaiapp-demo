@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-full min-w-full items-center justify-center">
     <div
-      class="rounded-md flex flex-col h-64 shadow mb-32 py-4 px-8 justify-between items-center"
+      class="rounded-md flex flex-col h-64 border border-gray-300 mb-32 py-4 px-8 justify-between items-center"
     >
       <v-title class="m-2">
         {{
@@ -24,7 +24,7 @@ export default {
   mixins: [head],
   props: ["error"],
   mounted() {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production" && error.statusCode !== 404) {
       this.$mail.send({
         subject: "REPORTE DE ERROR: CNAI APP",
         html: `

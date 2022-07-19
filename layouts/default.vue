@@ -12,7 +12,7 @@
       <feedback-card
         v-if="$store.state.show_toast"
         data-test="feedback_card"
-        class="mr-20 mb-12 right-0 bottom-0 w-96 z-50 fixed !shadow-lg"
+        class="md:mr-20 mb-12 right-8 bottom-0 w-56 md:w-96 z-50 fixed !shadow-lg"
         :title="news_content"
         :is-success="$store.state.show_toast === 'success'"
       />
@@ -24,6 +24,7 @@
 import head from "../mixins/head.js";
 
 export default {
+  name: "default",
   mixins: [head],
   computed: {
     news_content() {

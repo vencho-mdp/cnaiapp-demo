@@ -14,7 +14,7 @@ const get_absent_students = async (date, classes_ids) => {
     .join("group", "group.id", "user_group.group_id")
     .whereIn("class_id", classes_ids)
     .andWhere("name", "student")
-    .andWhere("date", date)
+    .andWhere(db.raw("date ::date"), date)
     // if it has not been reported
     // it means it is valid
     .andWhere("reported_by", null)
@@ -37,20 +37,20 @@ class students_DAO {
       .join("group", "group.id", "user_group.group_id")
       .whereIn("class_id", classes_ids)
       .andWhere("name", "student")
-      // each student can be 2 times max in each day
-      // shift and extra curricular shift
-      // so if it already appears two times, exclude it
-      .having(db.raw("COUNT(student_id) < 2"))
+      .having(db.raw("COUNT(student_id) < 5"))
       .groupBy("user.id", "class_id", "first_name", "last_name");
     return data;
   }
 
   async add_students_that_were_absent(list, date, user_id) {
-    const formatted_date = new Date(date).toISOString().split("T")[0];
+    const formatted_date = new Date(date).toISOString();
     const deleted_students = list.filter((el) => el.deleted_because);
     const added_students = list.filter((el) => !el.deleted_because);
+    // TODO:
+    // in case shift was one from the extra curricular activities
+    // validate user has permissions using auth header
     try {
-      const a = await Promise.allSettled(
+      await Promise.all(
         [
           added_students.map(
             ({ id, is_justified, shift, was_shift_modified }) => {
@@ -91,7 +91,8 @@ class students_DAO {
                   shift,
                 })
                 .onConflict(["student_id", "date", "shift"])
-                .merge(["is_justified"]);
+                .merge(["is_justified"])
+                .returning("*");
             }
           ),
           deleted_students.map(({ id, deleted_because, shift }) =>
