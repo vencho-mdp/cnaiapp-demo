@@ -1,6 +1,9 @@
 export default (ctx, inject) => {
   inject("reportNetworkError", async (error) => {
-    if (process.env.NODE_ENV === "development") return;
+    if (process.env.NODE_ENV === "development") {
+      console.error(error);
+      return;
+    }
     const data = {
       description: error,
       route: ctx.route.path,

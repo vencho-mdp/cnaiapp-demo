@@ -202,7 +202,6 @@ export default {
         teacher_slots = [],
         events = [],
       ] = result.map((res) => res.value);
-      console.log(news, absent_teachers, classes, teacher_slots, events);
       return { teacher_slots, news, absent_teachers, classes, events };
     } catch (error) {
       $reportNetworkError(error);

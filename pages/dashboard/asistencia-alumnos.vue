@@ -28,7 +28,6 @@
                 ? classes.map((c) => ({
                     label: c.class,
                     value: c.id,
-                    class_id: c.class_id,
                   }))
                 : []
             "
@@ -43,9 +42,10 @@
           <v-autosuggest
             style="max-width: 300px"
             :options="
-              valid_students.map(({ student_name, id }) => ({
+              valid_students.map(({ student_name, id, class_id }) => ({
                 label: student_name,
                 value: id,
+                class_id,
               }))
             "
             class="mb-8"
@@ -81,32 +81,30 @@
                 >
                   <VDropdown
                     v-if="
-                      (extra_curricular_class_slots
-                        ? extra_curricular_class_slots
-                            .map((el) => el.subject)
-                            .concat('Turno')
-                        : shifts
-                      ).filter(
-                        (shift_el) =>
-                          shift_el === shift_data.shift ||
-                          !absent_students.some(
-                            (s) => s.shift === shift_el && s.id === el.id
-                          )
-                      ).length !== 1
+                      extra_curricular_classes_slots[el.class_id] &&
+                      extra_curricular_classes_slots[el.class_id]
+                        .map((el) => el.subject)
+                        .concat('Turno')
+                        .filter(
+                          (shift_el) =>
+                            shift_el &&
+                            (shift_el === shift_data.shift ||
+                              !absent_students.some(
+                                (s) => s.shift === shift_el && s.id === el.id
+                              ))
+                        ).length !== 1
                     "
                     :options="
-                      (extra_curricular_class_slots
-                        ? extra_curricular_class_slots
-                            .map((el) => el.subject)
-                            .concat('Turno')
-                        : shifts
-                      ).filter(
-                        (shift_el) =>
-                          shift_el === shift_data.shift ||
-                          !absent_students.some(
-                            (s) => s.shift === shift_el && s.id === el.id
-                          )
-                      )
+                      extra_curricular_classes_slots[el.class_id]
+                        .map((el) => el.subject)
+                        .concat('Turno')
+                        .filter(
+                          (shift_el) =>
+                            shift_el === shift_data.shift ||
+                            !absent_students.some(
+                              (s) => s.shift === shift_el && s.id === el.id
+                            )
+                        )
                     "
                     :value="shift_data.shift"
                     @change.native="
@@ -159,7 +157,7 @@
             </transition-group>
           </transition>
           <div
-            class="-ml-8 md:!m-0 w-screen md:!w-auto md:!static sticky bottom-0 border-t-2 border-blue-500 bg-gray-100 md:!bg-white-full md:!border-0 px-8 py-4 mt-6"
+            class="-ml-8 md:!m-0 w-screen md:!w-auto md:!static sticky bottom-0 border-t-2 border-blue-500 bg-gray-100 md:!bg-white-full md:!border-0 px-8 py-4 mt-2"
           >
             <add-button
               data-test="add_absent_student"
@@ -269,11 +267,35 @@ import removeTimeFromDate from "@/utils/removeTimeFromDate.js";
 import getNearestPastWorkday from "@/utils/getNearestPastWorkday.js";
 import filterMap from "@/utils/filterMap.js";
 import "@/assets/css/toggle.css";
+import { setTimeout } from "timers";
 
 const structuredClonePolyfilled =
   typeof structuredClone === "function"
     ? structuredClone
     : (obj) => JSON.parse(JSON.stringify(obj));
+
+const transformSlots = (slots) => {
+  const day_index_in_arr = new Date().getDay() - 1;
+  const current_day_index =
+    day_index_in_arr > 4 || day_index_in_arr < 0 ? 4 : day_index_in_arr;
+  const extra_curricular_shifts = [
+    "Informática",
+    "Plástica",
+    "Música",
+    "Inglés",
+    "Teatro",
+  ];
+  return (
+    filterMap(
+      slots[current_day_index].assignments,
+      (el) => extra_curricular_shifts.includes(el.subject),
+      (el) => ({
+        subject: el.subject,
+        start_time: el.start_time.slice(0, -3),
+      })
+    ) || []
+  );
+};
 
 export default {
   middleware: "authentication",
@@ -294,12 +316,20 @@ export default {
       },
     });
     const get_classes = $axios.$get("/api/classes");
+    const get_slots = $axios.$get("/api/slots", {
+      params: {
+        classesIds: JSON.stringify(
+          store.state.authentication.user_data.classes_ids
+        ),
+      },
+    });
     try {
       // eslint-disable-next-line prefer-const
-      let [students, absent_students, classes] = await Promise.all([
+      let [students, absent_students, classes, slots] = await Promise.all([
         get_students,
         get_absent_students,
         get_classes,
+        get_slots,
       ]);
       absent_students = absent_students.map((el) => ({
         ...el,
@@ -309,18 +339,6 @@ export default {
             ? JSON.parse(el.is_justified)
             : el.is_justified,
       }));
-      // Poner primero a las clases del preceptor
-      const preceptors_classes = classes.filter((el) =>
-        store.state.authentication.user_data.classes_ids.includes(el.id)
-      );
-      classes = classes.filter(
-        (c) => !preceptors_classes.find((el) => el.id === c.id)
-      );
-      preceptors_classes.forEach((el) => {
-        if (!classes.includes(el)) {
-          classes.unshift(el);
-        }
-      });
       const class_id =
         // management team
         classes.length >= 25
@@ -330,6 +348,9 @@ export default {
               (c) =>
                 c?.id === store.state.authentication.user_data.classes_ids[0]
             )?.id;
+      Object.keys(slots).forEach((key) => {
+        slots[key] = transformSlots(slots[key]);
+      });
       return {
         students: students.map(({ student_name, ...el }) => ({
           ...el,
@@ -341,6 +362,7 @@ export default {
         absent_students,
         classes,
         class_id,
+        extra_curricular_classes_slots: slots,
       };
     } catch (error) {
       $reportNetworkError(error);
@@ -376,7 +398,7 @@ export default {
         "Inglés",
         "Teatro",
       ],
-      extra_curricular_class_slots: null,
+      class_id_without_rendering_in_dom: null,
     };
   },
   computed: {
@@ -390,33 +412,32 @@ export default {
         : false;
     },
     defaultInShift() {
-      if (!this.extra_curricular_class_slots[0]) {
-        return (this.isClassAdvanced && isMorning) ||
-          (!this.isClassAdvanced && !isMorning)
-          ? "Turno"
-          : // arbitrary choice
-            this.shifts[1];
-      }
       const isMorning = this.date.getHours() < 12 ? true : false;
       const date = new Date();
       const nearest_item_in_extra_curricular_shift =
-        this.extra_curricular_class_slots.reduce((acc, el) => {
-          const [hours, minutes] = el.start_time.split(":");
-          const subject_time = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            hours,
-            minutes
-          );
-          const diff = Math.abs(date.getTime() - subject_time.getTime());
-          if (diff < acc.diff) return { diff, item: el };
-          return acc;
-        }, []);
+        this.extra_curricular_classes_slots[
+          this.class_id_without_rendering_in_dom || this.class_id
+        ].reduce(
+          (acc, el) => {
+            const [hours, minutes] = el.start_time.split(":");
+            const subject_time = new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              hours,
+              minutes
+            );
+            const diff = Math.abs(date.getTime() - subject_time.getTime());
+            if (diff < acc.diff) return { diff, item: el };
+            return acc;
+          },
+          { diff: Infinity, item: null }
+        ).item;
+      this.class_id_without_rendering_in_dom = null;
       return (this.isClassAdvanced && isMorning) ||
         (!this.isClassAdvanced && !isMorning)
         ? "Turno"
-        : nearest_item_in_extra_curricular_shift.item;
+        : nearest_item_in_extra_curricular_shift.subject;
     },
     showPage() {
       return (
@@ -429,16 +450,18 @@ export default {
       );
     },
     valid_students() {
-      return this.students
-        ? this.$store.state.authentication.user_data.groups.includes(
-            "management_team"
-          )
-          ? this.students
-          : this.students.filter(
-              // this should be done server-side
-              (student) => this.class_id === student.class_id
-            )
-        : [];
+      return this.students.filter((el) => {
+        const extra_curricular_activities_quantity =
+          this.extra_curricular_classes_slots[el.class_id];
+        const amount_of_times_student_appears = this.absent_students.filter(
+          (el2) => el2.id === el.id
+        );
+        return (
+          amount_of_times_student_appears.length <=
+            extra_curricular_activities_quantity.length &&
+          (this.class_id ? this.class_id === el.class_id : true)
+        );
+      });
     },
     have_absent_students_changed() {
       const original_absent_students = this.original_absent_students;
@@ -487,16 +510,10 @@ export default {
   },
   watch: {
     async date(new_val) {
-      await Promise.all([
-        this.update_timetable(),
-        this.update_absent_students_and_class(new_val),
-      ]);
+      await this.update_absent_students_and_class(new_val);
     },
     async class_id() {
-      await Promise.all([
-        this.update_timetable(),
-        this.update_absent_students_and_class(this.date, true),
-      ]);
+      await this.update_absent_students_and_class(this.date, true);
     },
   },
   mounted() {
@@ -506,25 +523,6 @@ export default {
     changeShift(index, val) {
       this.absent_students[index].shift = val;
       this.absent_students[index].was_shift_modified = true;
-    },
-    async update_timetable() {
-      if (!this.class_id) return;
-      const all_slots = await this.$axios.$get("/api/slots", {
-        params: {
-          className: this.classes.find((el) => el.id === this.class_id)?.class,
-        },
-      });
-      const current_day_index = this.date.getDay() - 1;
-      const extra_curricular_shifts = this.shifts.slice(1);
-      this.extra_curricular_class_slots =
-        filterMap(
-          all_slots[current_day_index].assignments,
-          (el) => extra_curricular_shifts.includes(el.subject),
-          (el) => ({
-            subject: el.subject,
-            start_time: el.start_time.slice(0, -3),
-          })
-        ) || [];
     },
     closeSidebar() {
       this.show_sidebar = false;
@@ -576,7 +574,7 @@ export default {
       this.absence_reason = null;
       this.save_data();
     },
-    addAbsentStudent(data) {
+    async addAbsentStudent(data) {
       if (!data) {
         return;
       }
@@ -587,10 +585,10 @@ export default {
         top: 300,
         behavior: "smooth",
       });
-      console.log(
-        repeated_student?.shifts.some((el) => el.shift === this.defaultInShift)
-      );
       const [last_name, first_name] = data.label.split(", ");
+      if (!this.class_id) {
+        this.class_id_without_rendering_in_dom = data.class_id;
+      }
       this.absent_students.unshift({
         id: data.value,
         shift: repeated_student?.shifts.some(

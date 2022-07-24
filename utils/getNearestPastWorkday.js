@@ -6,8 +6,11 @@ export default () => {
   if (day !== 0 && day !== 6) {
     return date;
   }
+
   const nearestPastFriday = new Date(
-    date.getTime() - (day + 2) * 24 * 60 * 60 * 1000
+    date.getTime() -
+      // if day = 0 => 2
+      (day || 2) * 24 * 60 * 60 * 1000
   );
   return nearestPastFriday;
 };

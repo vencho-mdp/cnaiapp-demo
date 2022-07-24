@@ -1,4 +1,5 @@
 const db = require("../db/db");
+const are_arrays_equal = require("../utils/are_arrays_equal");
 
 function countNumberOfSameValues(array, prop, value) {
   return array.filter((item) => item[prop] === value).length;
@@ -7,7 +8,14 @@ function countNumberOfSameValues(array, prop, value) {
 const get_absent_students = async (date, classes_ids) => {
   date = new Date(date).toISOString().split("T")[0];
   const data = await db("student_absence")
-    .select("user.id AS id", "first_name", "last_name", "is_justified", "shift")
+    .select(
+      "user.id AS id",
+      "first_name",
+      "last_name",
+      "is_justified",
+      "shift",
+      "class_id"
+    )
     .join("user_class", "student_id", "user_class.user_id")
     .join("user_group", "student_id", "user_group.user_id")
     .join("user", "student_id", "user.id")
@@ -23,7 +31,24 @@ const get_absent_students = async (date, classes_ids) => {
 };
 
 class students_DAO {
-  async get_students(classes_ids) {
+  async get_students(classes_ids, u_id) {
+    const user_classes_and_role = await db("user_class")
+      .andWhere("user_class.user_id", u_id)
+      .join("user_group", "user_class.user_id", "user_group.user_id")
+      .join("group", "group.id", "user_group.group_id")
+      .select(
+        db.raw("ARRAY_AGG(class_id) AS classes_ids"),
+        "name AS group_name"
+      )
+      .groupBy("user_class.user_id", "name");
+
+    if (
+      (user_classes_and_role[0].group_name === "preceptor" ||
+        user_classes_and_role[0].group_name === "teacher") &&
+      !are_arrays_equal(classes_ids, user_classes_and_role[0].classes_ids)
+    ) {
+      throw new Error("Invalid classes list");
+    }
     const data = await db("user")
       .select(
         "user.id AS id",

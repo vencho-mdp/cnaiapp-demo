@@ -6,9 +6,9 @@ const {
 } = require("../dao/students");
 
 class students_service {
-  async get_students(classes_ids) {
+  async get_students(classes_ids, u_id) {
     try {
-      return await get_students(classes_ids);
+      return await get_students(classes_ids, u_id);
     } catch (error) {
       console.log(error);
       throw {

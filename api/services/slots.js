@@ -1,11 +1,12 @@
-const { get_slots, add_slots, update_slots } = require("../dao/slots");
+const { get_slots, update_slots } = require("../dao/slots");
 
 class slot_service {
-  async get_slots(class_name) {
+  async get_slots(class_name, classesIds) {
     try {
       // [null null] es para que no tire error por iterar
-      const params = class_name ? class_name.split(" ") : [null, null];
-      return await get_slots(...params);
+      const classNames = class_name ? class_name.split(" ") : [null, null];
+      const classesIdsParam = classesIds ? JSON.parse(classesIds) : null;
+      return await get_slots(...classNames, classesIdsParam);
     } catch (error) {
       console.log(error);
       throw {

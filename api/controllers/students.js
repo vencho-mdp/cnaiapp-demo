@@ -9,7 +9,15 @@ const jwt = require("jsonwebtoken");
 class students_controller {
   async get_students(req, res) {
     try {
-      const students = await get_students(JSON.parse(req.query.classes_ids));
+      const user_id = jwt.verify(
+        req.headers.authorization.split(" ")[1],
+        process.env.ACCESS_TOKEN_SECRET
+      ).id;
+      const students = await get_students(
+        JSON.parse(req.query.classes_ids),
+        user_id
+      );
+
       res.status(201).json(students);
     } catch (error) {
       console.error(error);

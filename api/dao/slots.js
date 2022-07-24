@@ -18,7 +18,83 @@ const insert_teachers_to_intermediary_table = async (slots) => {
   );
 };
 class slot_DAO {
-  async get_slots(grade, grade_number) {
+  async get_slots(grade, grade_number, classes_ids) {
+    const organized_slots = (slots) =>
+      slots.reduce(
+        (acc, { weekday, ...rest }) => {
+          const index_of_weekday_object = acc.findIndex(
+            (el) => el.weekday === weekday
+          );
+          acc[index_of_weekday_object].assignments.push(rest);
+          return acc;
+        },
+        [
+          { weekday: "Lunes", assignments: [] },
+          { weekday: "Martes", assignments: [] },
+          { weekday: "Miércoles", assignments: [] },
+          { weekday: "Jueves", assignments: [] },
+          { weekday: "Viernes", assignments: [] },
+        ]
+      );
+    if (classes_ids && classes_ids.length > 0) {
+      // same logic but for multiple slots
+      // form of  { id: [slots] }
+      const slots_of_classes_in_classes_ids = await db("slot")
+        .select(
+          "slot.weekday",
+          "slot.start_time",
+          "slot.weekday",
+          "slot.end_time",
+          "slot.id",
+          "subject.id AS subject_id",
+          "class_id",
+          db.raw("ARRAY_AGG(first_name || ' ' || last_name) AS teachers_names"),
+          db.raw("subject.name AS subject"),
+          db.raw("ARRAY_AGG(slot_teacher.teacher_id) AS teachers_ids"),
+          db.raw("teacher_absence.start_date AS absence_start_date"),
+          db.raw("teacher_absence.end_date AS absence_end_date")
+        )
+        .whereIn("class_id", classes_ids)
+        .andWhere("slot.hide", "false")
+        .join("slot_teacher", "slot_teacher.slot_id", "=", "slot.id")
+        .join("user", "slot_teacher.teacher_id", "=", "user.id")
+        .join("subject", "slot.subject_id", "=", "subject.id")
+        .leftJoin("teacher_absence", function () {
+          this.on("teacher_absence.hide", "=", db.raw("false"));
+          this.andOnVal("teacher_absence.teacher_id", "=", db.raw('"user".id'));
+          this.andOnVal(
+            db.raw(
+              "extract(week from start_date) = extract(week from current_date)"
+            )
+          );
+          this.andOnVal(
+            db.raw(
+              "extract(year from start_date) = extract(year from current_date)"
+            )
+          );
+        })
+        .groupBy(
+          "absence_start_date",
+          "absence_end_date",
+          "slot.weekday",
+          "slot.start_time",
+          "slot.weekday",
+          "slot.end_time",
+          "subject.id",
+          "subject.name",
+          "slot.id"
+        )
+        .orderBy("slot.start_time");
+      const organized_slots_by_class = classes_ids.reduce((acc, class_id) => {
+        acc[class_id] = organized_slots(
+          slots_of_classes_in_classes_ids.filter(
+            ({ class_id: class_id_in_slots }) => class_id_in_slots === class_id
+          )
+        );
+        return acc;
+      }, {});
+      return organized_slots_by_class;
+    }
     let [class_id] = await db("class")
       .where({ grade, grade_number })
       .select("id");
@@ -71,23 +147,8 @@ class slot_DAO {
         "slot.id"
       )
       .orderBy("slot.start_time");
-    const organized_slots = slots.reduce(
-      (acc, { weekday, ...rest }) => {
-        const index_of_weekday_object = acc.findIndex(
-          (el) => el.weekday === weekday
-        );
-        acc[index_of_weekday_object].assignments.push(rest);
-        return acc;
-      },
-      [
-        { weekday: "Lunes", assignments: [] },
-        { weekday: "Martes", assignments: [] },
-        { weekday: "Miércoles", assignments: [] },
-        { weekday: "Jueves", assignments: [] },
-        { weekday: "Viernes", assignments: [] },
-      ]
-    );
-    return organized_slots;
+
+    return organized_slots(slots);
   }
 
   async update_slots(slots) {
