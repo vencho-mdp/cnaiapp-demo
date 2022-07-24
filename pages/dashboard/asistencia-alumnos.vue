@@ -446,7 +446,8 @@ export default {
         ) ||
         this.$store.state.authentication.user_data?.groups.includes(
           "management_team"
-        )
+        ) ||
+        this.$store.state.authentication.user_data?.groups.includes("teacher")
       );
     },
     valid_students() {
