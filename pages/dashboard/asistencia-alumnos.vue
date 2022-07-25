@@ -87,12 +87,11 @@
                         .concat('Turno')
                         .filter(
                           (shift_el) =>
-                            shift_el &&
-                            (shift_el === shift_data.shift ||
-                              !absent_students.some(
-                                (s) => s.shift === shift_el && s.id === el.id
-                              ))
-                        ).length !== 1
+                            shift_el !== shift_data.shift &&
+                            !absent_students.some(
+                              (s) => s.shift === shift_el && s.id === el.id
+                            )
+                        ).length > 0
                     "
                     :options="
                       extra_curricular_classes_slots[el.class_id]
@@ -411,8 +410,7 @@ export default {
           )
         : false;
     },
-    defaultInShift() {
-      const isMorning = this.date.getHours() < 12 ? true : false;
+    nearest_item_in_extra_curricular_shift() {
       const date = new Date();
       const nearest_item_in_extra_curricular_shift =
         this.extra_curricular_classes_slots[
@@ -434,10 +432,7 @@ export default {
           { diff: Infinity, item: null }
         ).item;
       this.class_id_without_rendering_in_dom = null;
-      return (this.isClassAdvanced && isMorning) ||
-        (!this.isClassAdvanced && !isMorning)
-        ? "Turno"
-        : nearest_item_in_extra_curricular_shift.subject;
+      return nearest_item_in_extra_curricular_shift.subject;
     },
     showPage() {
       return (
@@ -579,28 +574,33 @@ export default {
       if (!data) {
         return;
       }
-      const repeated_student = this.absent_students_without_duplicates.find(
-        (el) => el.id === data.value
-      );
+      const isMorning = this.date.getHours() < 12 ? true : false;
       window.scrollTo({
         top: 300,
         behavior: "smooth",
       });
+      const repeated_students = this.absent_students.filter(
+        (el) => el.id === data.value
+      );
       const [last_name, first_name] = data.label.split(", ");
       if (!this.class_id) {
         this.class_id_without_rendering_in_dom = data.class_id;
       }
+      const idealShiftPrediction =
+        (isMorning && this.isClassAdvanced) ||
+        (!isMorning && !this.isClassAdvanced)
+          ? "Turno"
+          : this.nearest_item_in_extra_curricular_shift;
       this.absent_students.unshift({
         id: data.value,
-        shift: repeated_student?.shifts.some(
-          (el) => el.shift === this.defaultInShift
-        )
-          ? this.shifts.find(
-              (el) => !repeated_student.shifts.some((el2) => el2.shift === el)
-            )
-          : this.defaultInShift,
+        shift: repeated_students.some((el) => el.shift === idealShiftPrediction)
+          ? this.extra_curricular_classes_slots[data.class_id].find(
+              (el) => !repeated_students.map((el) => el.shift).includes(el)
+            ).subject
+          : idealShiftPrediction,
         first_name,
         last_name,
+        class_id: data.class_id,
         is_justified: false,
       });
     },

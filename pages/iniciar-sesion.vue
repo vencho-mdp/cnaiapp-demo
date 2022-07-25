@@ -86,7 +86,6 @@ export default {
         });
         this.$router.push("/dashboard");
       } catch (err) {
-        console.log(err);
         this.inputs = this.inputs.map(({ value, ...rest }) => {
           this.$refs[rest.label][0].$el.value = "";
           return { ...rest, value: "" };
