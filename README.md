@@ -2,7 +2,7 @@
 
 ## Desarrollo
 
-Para el startup de la aplicación **en desarrollo**, es necesario usar los siguientes comandos teniendo Node y NPM instalados (_probado en Powershell_):
+Para el startup de la aplicación **en desarrollo**, es necesario usar los siguientes comandos teniendo Node y NPM
 
 ```bash
 # install dependencies
@@ -12,8 +12,7 @@ $ npm run install
 $ npm run dev
 ```
 
-También es necesario tener Postgresql en tu equipo y crear un archivo `.env`
-de la siguiente manera:
+También es necesario tener Postgresql y crear un archivo `.env`
 
 ```dosini
 BASE_URL=http://localhost:3000
@@ -40,7 +39,7 @@ DATABASE_URL=postgres://benic:null@localhost:5432/Ceni_application
 [Express](https://expressjs.com/)  
 [Postgresql](https://www.postgresql.org/)
 
-## Estructura de Directorio  
+## Dir Structure
 | Carpeta  |  Información |
 |---|---|
 | Assets | https://nuxtjs.org/docs/directory-structure/assets |
@@ -51,4 +50,4 @@ DATABASE_URL=postgres://benic:null@localhost:5432/Ceni_application
 | Plugins | https://nuxtjs.org/docs/directory-structure/plugins |
 | Static | https://nuxtjs.org/docs/directory-structure/static |
 | Store | https://nuxtjs.org/docs/directory-structure/store |
-| API | Contiene código que se ejecutará únicamente **desde el servidor**. Las capas son: Route Handler -> Controller -> Service -> DAO.  DB -> Conexión a la base de datos  DB / Migrations -> Migraciones. Para ejecutarlas: ```npx knex migrate:latest --knexfile=api/db/knexfile.js``` DB / Seeds -> Data inicial para la aplicación. Para ejecutarlas: ```npx knex seed:run --knexfile=api/db/knexfile.js``` |
+| API | Contiene código que se ejecutará únicamente desde el servidor. Las capas son: Route Handler -> Controller -> Service -> DAO. Para ejecutar migraciones (desde el root): ```npx knex migrate:latest --knexfile=api/db/knexfile.js```. Para ejecutar las seeds (data inicial para la aplicación)  ```npx knex seed:run --knexfile=api/db/knexfile.js``` |
