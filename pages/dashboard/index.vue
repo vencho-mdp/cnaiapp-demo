@@ -115,7 +115,7 @@
     <div class="flex mb-auto w-96 self-start justify-between items-center">
       <div
         v-if="teacher_slots.length > 0"
-        class="border-primary-lightblue rounded-lg flex flex-col min-w-full border-2 shadow-md my-8 p-4 items-start justify-between"
+        class="border-primary-lightblue ml-4 rounded-lg flex flex-col min-w-full border-2 shadow-md my-8 p-4 items-start justify-between"
       >
         <v-title class="mb-1"> Horarios </v-title>
         <lazy-slots-of-class-accordion

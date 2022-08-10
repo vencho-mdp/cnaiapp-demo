@@ -1,29 +1,29 @@
-const { get_slots, update_slots } = require("../services/slots");
+const { get_slots, update_slots } = require('../services/slots')
 
 class slot_controller {
-  async get_slots(req, res) {
+  async get_slots (req, res) {
     try {
-      const slot = await get_slots(req.query.className, req.query.classesIds);
-      res.status(201).json(slot);
+      const slot = await get_slots(req.query.className, req.query.classesIds)
+      res.status(201).json(slot)
     } catch (error) {
-      console.error(error);
+      console.error(error)
       return res.status(error.status).send({
-        error,
-      });
+        error
+      })
     }
   }
 
-  async update_slots(req, res) {
+  async update_slots (req, res) {
     try {
-      await update_slots(req.body);
-      res.status(204).json();
+      await update_slots(req.body)
+      res.status(204).json()
     } catch (error) {
-      console.error(error);
+      console.error(error)
       return res.status(error.status).send({
-        error,
-      });
+        error
+      })
     }
   }
 }
 
-module.exports = new slot_controller();
+module.exports = new slot_controller()

@@ -1,7 +1,7 @@
 <template>
   <main
-    v-if="showPage"
-    class="flex flex-col min-h-full pl-8 pt-8 justify-center sm:px-24"
+    v-if="renderPage"
+    class="flex flex-col min-h-full pl-6 pt-8 justify-center sm:px-24"
   >
     <v-title> Asistencia </v-title>
     <div class="flex flex-wrap mb-auto mt-12 w-full items-start">
@@ -57,7 +57,7 @@
               mode="out-in"
               tag="div"
               name="list"
-              class="flex md:!w-auto flex-wrap flex-grow pr-6 w-full mb-8"
+              class="flex md:!w-auto flex-wrap flex-grow pr-2 w-full mb-8"
             >
               <div
                 v-for="(el, idx) of absent_students_without_duplicates"
@@ -75,18 +75,23 @@
                   </span>
                 </div>
                 <div
-                  class="flex w-full h-24 my-4 items-center justify-between"
+                  class="w-full h-24 my-4"
                   v-for="(shift_data, i) in el.shifts"
                   :key="`${shift_data.shift}-${el.id}`"
                 >
-                  <VDropdown
+                <div 
+                                  class="flex items-center justify-between"
+                v-if="$store.state.authentication.user_data.subjects ? $store.state.authentication.user_data.subjects.includes(shift_data.shift) : true">
+<VDropdown
                     v-if="
                       extra_curricular_classes_slots[el.class_id] &&
                       extra_curricular_classes_slots[el.class_id]
                         .map((el) => el.subject)
-                        .concat('Turno')
+                        // teacher
+                        .concat($store.state.authentication.user_data.groups.includes('teacher') ? null : 'Turno')
                         .filter(
                           (shift_el) =>
+                          shift_el &&
                             shift_el !== shift_data.shift &&
                             !absent_students.some(
                               (s) => s.shift === shift_el && s.id === el.id
@@ -96,10 +101,12 @@
                     :options="
                       extra_curricular_classes_slots[el.class_id]
                         .map((el) => el.subject)
-                        .concat('Turno')
+                        // teacher
+                        .concat($store.state.authentication.user_data.groups.includes('teacher') ? null : 'Turno')
                         .filter(
                           (shift_el) =>
-                            shift_el === shift_data.shift ||
+                          shift_el &&
+                            shift_el !== shift_data.shift &&
                             !absent_students.some(
                               (s) => s.shift === shift_el && s.id === el.id
                             )
@@ -151,6 +158,7 @@
                   >
                     <img src="~/assets/images/trash.svg" alt="Eliminar" />
                   </icon-button>
+                </div>
                 </div>
               </div>
             </transition-group>
@@ -273,17 +281,10 @@ const structuredClonePolyfilled =
     ? structuredClone
     : (obj) => JSON.parse(JSON.stringify(obj));
 
-const transformSlots = (slots) => {
+const transformSlots = (slots, extra_curricular_shifts) => {
   const day_index_in_arr = new Date().getDay() - 1;
   const current_day_index =
     day_index_in_arr > 4 || day_index_in_arr < 0 ? 4 : day_index_in_arr;
-  const extra_curricular_shifts = [
-    "Informática",
-    "Plástica",
-    "Música",
-    "Inglés",
-    "Teatro",
-  ];
   return (
     filterMap(
       slots[current_day_index].assignments,
@@ -347,9 +348,16 @@ export default {
               (c) =>
                 c?.id === store.state.authentication.user_data.classes_ids[0]
             )?.id;
-      Object.keys(slots).forEach((key) => {
-        slots[key] = transformSlots(slots[key]);
+            const not_modified_slots =structuredClonePolyfilled(slots)
+      Object.keys(structuredClonePolyfilled(slots)).forEach((key) => {
+        slots[key] = transformSlots(slots[key], store.state.EXTRA_CURRICULAR_SUBJECTS);
       });
+      const isTeacher = store.state.authentication.user_data.groups.includes(
+        "teacher"
+      );
+        const getTeacherSlots = isTeacher ? () => $axios.$get(
+            `api/teachers/${store.state.authentication.user_data.id}`
+          ) : () => Promise.resolve([]);
       return {
         students: students.map(({ student_name, ...el }) => ({
           ...el,
@@ -359,9 +367,11 @@ export default {
         })),
         original_absent_students: structuredClonePolyfilled(absent_students),
         absent_students,
-        classes,
+        classes: isTeacher ? classes.filter(el => store.state.authentication.user_data.classes_ids.includes(el.id)) : classes,
         class_id,
+        slots: not_modified_slots,
         extra_curricular_classes_slots: slots,
+        teacher_slots: await getTeacherSlots()
       };
     } catch (error) {
       $reportNetworkError(error);
@@ -434,7 +444,8 @@ export default {
       this.class_id_without_rendering_in_dom = null;
       return nearest_item_in_extra_curricular_shift.subject;
     },
-    showPage() {
+    renderPage() {
+      const EXTRA_CURRICULAR_SUBJECTS = this.$store.state.EXTRA_CURRICULAR_SUBJECTS;
       return (
         this.$store.state.authentication.user_data?.groups.includes(
           "preceptor"
@@ -442,19 +453,25 @@ export default {
         this.$store.state.authentication.user_data?.groups.includes(
           "management_team"
         ) ||
-        this.$store.state.authentication.user_data?.groups.includes("teacher")
+        (this.$store.state.authentication.user_data?.groups.includes("teacher")
+    && this.$store.state.authentication.user_data?.subjects?.some?.(s => EXTRA_CURRICULAR_SUBJECTS.includes(s))
+    )
       );
     },
     valid_students() {
       return this.students.filter((el) => {
-        const extra_curricular_activities_quantity =
-          this.extra_curricular_classes_slots[el.class_id];
+        const hasSubjects = this.$store.state.authentication.user_data.subjects
+        const EXTRA_CURRICULAR_SUBJECTS_quantity =
+          this.extra_curricular_classes_slots[el.class_id].filter(
+            (el) => hasSubjects ? this.$store.state.authentication.user_data.subjects.includes(el.subject) : true
+          ).length
         const amount_of_times_student_appears = this.absent_students.filter(
           (el2) => el2.id === el.id
-        );
+        ).length
         return (
-          amount_of_times_student_appears.length <=
-            extra_curricular_activities_quantity.length &&
+         !hasSubjects ? (amount_of_times_student_appears <=
+            EXTRA_CURRICULAR_SUBJECTS_quantity) : (amount_of_times_student_appears <
+            EXTRA_CURRICULAR_SUBJECTS_quantity)  &&
           (this.class_id ? this.class_id === el.class_id : true)
         );
       });
@@ -507,6 +524,19 @@ export default {
   watch: {
     async date(new_val) {
       await this.update_absent_students_and_class(new_val);
+        const day_index_in_arr = new_val.getDay() - 1;
+  const current_day_index =
+    day_index_in_arr > 4 || day_index_in_arr < 0 ? 4 : day_index_in_arr;
+  Object.keys(this.extra_curricular_classes_slots).forEach((k) => {
+    this.extra_curricular_classes_slots[k] = filterMap(
+      this.slots[k][current_day_index].assignments,
+      (el) => this.$store.state.EXTRA_CURRICULAR_SUBJECTS.includes(el.subject),
+      (el) => ({
+        subject: el.subject,
+        start_time: el.start_time.slice(0, -3),
+      })
+    ) 
+    })
     },
     async class_id() {
       await this.update_absent_students_and_class(this.date, true);

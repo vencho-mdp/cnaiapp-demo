@@ -42,7 +42,8 @@ export default {
         {
           img: 'take-attendance',
           route: 'asistencia-alumnos',
-          should_render: (this.$store.state.authentication.user_data?.groups.includes('preceptor') && this.$store.state.authentication.user_data.classes_ids.length > 0) || this.$store.state.authentication.user_data?.groups.includes('management_team')
+          should_render: (this.$store.state.authentication.user_data?.groups.includes('preceptor') && this.$store.state.authentication.user_data.classes_ids.length > 0) || this.$store.state.authentication.user_data?.groups.includes('management_team') 
+          || this.$store.state.authentication.user_data?.subjects?.some(subject => this.$store.state.EXTRA_CURRICULAR_SUBJECTS.includes(subject))
         },
         {
           img: 'auditory',

@@ -56,10 +56,6 @@
 import VDropdown from "../components/VDropdown.vue";
 
 export default {
-  // disable in mvp release
-  mounted() {
-    alert("Esta página NO contiene datos reales, está en desarollo.");
-  },
   components: {
     VDropdown,
   },

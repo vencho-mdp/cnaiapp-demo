@@ -4,24 +4,24 @@
  */
 
 exports.up = function (knex) {
-  return knex.schema.createTable("student_absence", (table) => {
-    table.primary(["student_id", "date", "shift"]);
-    table.uuid("added_by").references("id").inTable("user").notNullable();
+  return knex.schema.createTable('student_absence', (table) => {
+    table.primary(['student_id', 'date', 'shift'])
+    table.uuid('added_by').references('id').inTable('user').notNullable()
     table
-      .uuid("student_id")
+      .uuid('student_id')
       .notNullable()
-      .references("id")
-      .inTable("user")
-      .onDelete("CASCADE");
-    table.timestamp("date").notNullable();
+      .references('id')
+      .inTable('user')
+      .onDelete('CASCADE')
+    table.timestamp('date').notNullable()
     // null -> is not justified
     // string -> is justified and that string is its reason
-    table.string("is_justified");
-    table.string("reason_of_deletion").defaultTo(null);
-    table.string("shift").notNullable();
-    table.uuid("reported_by").references("id").inTable("user").defaultTo(null);
-  });
-};
+    table.string('is_justified')
+    table.string('reason_of_deletion').defaultTo(null)
+    table.string('shift').notNullable()
+    table.uuid('reported_by').references('id').inTable('user').defaultTo(null)
+  })
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -29,5 +29,5 @@ exports.up = function (knex) {
  */
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists("student_absence");
-};
+  return knex.schema.dropTableIfExists('student_absence')
+}
