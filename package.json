@@ -11,7 +11,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "analyze": "nuxt build --analyze",
-    "deploy": "npm ci && npm audit fix && npm run build && pm2 kill && pm2 start",
+    "deploy": "npm ci && npm audit fix && npm run build && pm2 kill all && pm2 start",
     "server": "node ./api/index.js",
     "lint": "eslint **/*.js --fix && eslint **/*.vue --fix",
     "test:unit": "jest ./test/unit --silent=false --collect-coverage",
