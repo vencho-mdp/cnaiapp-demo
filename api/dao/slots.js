@@ -110,7 +110,7 @@ class slot_DAO {
         'slot.end_time',
         'slot.id',
         'subject.id AS subject_id',
-        db.raw("ARRAY_AGG(first_name || ' ' || last_name) AS teachers_names"),
+        db.raw("ARRAY_AGG(CONCAT(first_name, ' ', last_name)) AS teachers_names"),
         db.raw('subject.name AS subject'),
         db.raw('ARRAY_AGG(slot_teacher.teacher_id) AS teachers_ids'),
         db.raw('teacher_absence.start_date AS absence_start_date'),

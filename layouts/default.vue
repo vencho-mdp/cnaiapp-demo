@@ -12,7 +12,7 @@
       <feedback-card
         v-if="$store.state.show_toast"
         data-test="feedback_card"
-        class="md:mr-20 mb-12 right-8 bottom-0 w-56 md:w-96 z-50 fixed !shadow-lg"
+        class="md:mr-20 mb-12 right-8 bottom-0 z-50 fixed !shadow-lg"
         :title="news_content"
         :is-success="$store.state.show_toast === 'success'"
       />

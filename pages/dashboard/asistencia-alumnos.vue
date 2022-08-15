@@ -106,9 +106,8 @@
                         .filter(
                           (shift_el) =>
                           shift_el &&
-                            shift_el !== shift_data.shift &&
                             !absent_students.some(
-                              (s) => s.shift === shift_el && s.id === el.id
+                              (s) => s.shift === shift_el && s.id !== el.id
                             )
                         )
                     "

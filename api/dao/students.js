@@ -1,7 +1,7 @@
 const db = require('../db/db')
 
 const isSubArray = (master, sub) => {
-  return sub.every((i => v => i = master.indexOf(v, i) + 1)(0));
+  return sub.every((i => v => i = master.indexOf(v, i) + 1)(0))
 }
 function countNumberOfSameValues (array, prop, value) {
   return array.filter(item => item[prop] === value).length
@@ -10,40 +10,40 @@ function countNumberOfSameValues (array, prop, value) {
 const get_absent_students = async (date, classes_ids, u_id) => {
   date = new Date(date).toISOString().split('T')[0]
   const user = await db('user_group')
-  .select(db.raw('ARRAY_AGG("group".name) AS groups'), db.raw('ARRAY_AGG("subject".name) AS subjects'))
-  .leftJoin('group', function () {
-    this.onIn('id', db.raw('"user_group".group_id'))
-  })
-  .leftJoin("subject_teacher", "subject_teacher.teacher_id", "user_group.user_id")
-  .leftJoin("subject", "subject.id", "subject_teacher.subject_id")
-  .where({ user_id: u_id })
-  .groupBy("user_id")
-  .first()
-
-  if(user.groups.includes('teacher')) {
-    return await  db('student_absence')
-    .select(
-      'user.id AS id',
-      'first_name',
-      'last_name',
-      'is_justified',
-      'shift',
-      'class_id'
-    )
-    .join('user_class', 'student_id', 'user_class.user_id')
-    .join('user_group', 'student_id', 'user_group.user_id')
-    .join('user', 'student_id', 'user.id')
-    .join('group', 'group.id', 'user_group.group_id')
-    .whereIn('class_id', classes_ids)
-    .andWhere('name', 'student')
-    .andWhere( function() {
-      this.whereIn("shift", user.subjects)
+    .select(db.raw('ARRAY_AGG("group".name) AS groups'), db.raw('ARRAY_AGG("subject".name) AS subjects'))
+    .leftJoin('group', function () {
+      this.onIn('id', db.raw('"user_group".group_id'))
     })
-    .andWhere(db.raw('date ::date'), date)
+    .leftJoin('subject_teacher', 'subject_teacher.teacher_id', 'user_group.user_id')
+    .leftJoin('subject', 'subject.id', 'subject_teacher.subject_id')
+    .where({ user_id: u_id })
+    .groupBy('user_id')
+    .first()
+
+  if (user.groups.includes('teacher')) {
+    return await db('student_absence')
+      .select(
+        'user.id AS id',
+        'first_name',
+        'last_name',
+        'is_justified',
+        'shift',
+        'class_id'
+      )
+      .join('user_class', 'student_id', 'user_class.user_id')
+      .join('user_group', 'student_id', 'user_group.user_id')
+      .join('user', 'student_id', 'user.id')
+      .join('group', 'group.id', 'user_group.group_id')
+      .whereIn('class_id', classes_ids)
+      .andWhere('name', 'student')
+      .andWhere(function () {
+        this.whereIn('shift', user.subjects)
+      })
+      .andWhere(db.raw('date ::date'), date)
     // if it has not been reported
     // it means it is valid
-    .andWhere('reported_by', null)
-    .orderBy('last_name', 'asc')
+      .andWhere('reported_by', null)
+      .orderBy('last_name', 'asc')
   }
   const data = await db('student_absence')
     .select(
@@ -83,7 +83,7 @@ class students_DAO {
     if (
       (user_classes_and_role[0].group_name === 'preceptor' ||
         user_classes_and_role[0].group_name === 'teacher') &&
-      !isSubArray( user_classes_and_role[0].classes_ids, classes_ids)
+      !isSubArray(user_classes_and_role[0].classes_ids, classes_ids)
     ) {
       throw new Error('Invalid classes list')
     }
@@ -178,7 +178,7 @@ class students_DAO {
   }
 
   async get_absent_students (date, classes_ids, u_id) {
-    return await get_absent_students(date, classes_ids,u_id)
+    return await get_absent_students(date, classes_ids, u_id)
   }
 
   async get_suspicious_cases () {
