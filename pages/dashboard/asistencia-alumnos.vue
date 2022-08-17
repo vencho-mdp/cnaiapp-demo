@@ -442,7 +442,7 @@ export default {
           { diff: Infinity, item: null }
         ).item;
       this.class_id_without_rendering_in_dom = null;
-      return nearest_item_in_extra_curricular_shift.subject;
+      return nearest_item_in_extra_curricular_shift?.subject;
     },
     renderPage() {
       const EXTRA_CURRICULAR_SUBJECTS = this.$store.state.EXTRA_CURRICULAR_SUBJECTS;
@@ -621,16 +621,10 @@ const [last_name, first_name] = data.label.split(", ");
         (isMorning && this.isClassAdvanced) ||
         (!isMorning && !this.isClassAdvanced)
           ? "Turno"
-          : this.nearest_item_in_extra_curricular_shift
-        console.log([...this.extra_curricular_classes_slots[data.class_id].map(el => el.subject), "Turno"].find(el =>
-              // first that has not been selected
-              !this.absent_students.find(el2 => el2.shift === el && el2.id === data.value)
-            )
-            , [...this.extra_curricular_classes_slots[data.class_id].map(el => el.subject), "Turno"]
-            )
+          : this.nearest_item_in_extra_curricular_shift;
       this.absent_students.unshift({
         id: data.value,
-        shift: repeated_students.some((el) => el.shift === idealShiftPrediction) 
+        shift: !idealShiftPrediction || repeated_students.some((el) => el.shift === idealShiftPrediction) 
           ?   [...this.extra_curricular_classes_slots[data.class_id].map(el => el.subject), "Turno"].find(el =>
               // first that has not been selected
               !this.absent_students.find(el2 => el2.shift === el && el2.id === data.value)
@@ -666,7 +660,6 @@ const [last_name, first_name] = data.label.split(", ");
       this.absent_students.splice(this.absent_students.indexOf(abs_student), 1);
     },
     async update_absent_students_and_class(date, class_changed = false) {
-      console.log(date)
       const formatted_date = removeTimeFromDate(date);
       let absent_students_in_formatted_date = await this.$axios.$get(
         "/api/absent-students",
