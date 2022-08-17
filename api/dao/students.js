@@ -167,7 +167,7 @@ class students_DAO {
     const suspicious_preceptors_because_are_reporting_a_lot_func = async () =>
       await db('student_absence')
         .select(
-          db.raw("CONCAT(first_name, ' ', last_name) AS preceptor"),
+          db.raw("CONCAT(last_name, ' ', first_name) AS preceptor"),
           db.raw('count(*) as nro_of_reports'),
           db.raw('ARRAY_AGG(date ORDER BY date DESC) AS dates'),
           // affected classes names

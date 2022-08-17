@@ -6,7 +6,7 @@
       </h5>
       <h5 class="text-xs" :class="black_or_gray">
         {{
-          assignment.teachers && assignment.teachers.map((el) => el.label).join(" - ")
+          assignment.teachers && assignment.teachers.map((el) => el && el.label).join(" - ")
         }}
       </h5>
       <h6 class="text-xs" :class="black_or_gray">

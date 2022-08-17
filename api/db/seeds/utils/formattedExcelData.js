@@ -123,7 +123,7 @@ const funct = async () => {
                   slots[i - 1].slots[k - 2].assignments[indexSubjectIfExists].end_time = end_time
                   return
                 }
-                if(!teachers[idx]) {
+                if(!teachers[idx] || teachers[idx].length === 0) {
                   return
                 }
                 slots[i - 1].slots[k - 2].assignments.push({

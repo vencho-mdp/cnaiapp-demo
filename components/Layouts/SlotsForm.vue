@@ -116,8 +116,8 @@ export default {
         : gradesNumbersFiltered;
 
       return {
-        grades: grades.filter((el) => !gradesThatHaveAllDivisions.includes(el)),
-        gradesNumbers: gradesNumbersFiltered,
+        grades: [... new Set(grades.filter((el) => !gradesThatHaveAllDivisions.includes(el)).concat(this?.formData?.raw_label.split(" ")[0]))],
+        gradesNumbers: [... new Set(gradesNumbersFiltered.concat(this?.formData?.raw_label.split(" ")[1]))],
       };
     },
   },
@@ -142,12 +142,18 @@ export default {
             subject,
             id,
             subject_id,
+            teachers_names
           } = assignment;
           res.assignments.push({
             weekday: weekday.weekday,
             end_time: end_time.slice(0, -3),
             start_time: start_time.slice(0, -3),
-            teachers: teachers_ids.map((el) =>
+            // ternary for teacher "Natalia Escudero", weird case there
+            // TODO: fix this (maybe check seeds)
+            teachers: teachers_ids.length === 1 && teachers_names.length === 1 ? [{
+              label: teachers_names[0],
+              value: teachers_ids[0],
+            }] :  teachers_ids.map((el) =>
               this.teachers.find((teacher) => teacher.value === el)
             ),
             // delete & edit
