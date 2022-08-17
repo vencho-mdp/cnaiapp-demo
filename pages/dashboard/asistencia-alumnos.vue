@@ -613,7 +613,7 @@ export default {
       const repeated_students = this.absent_students.filter(
         (el) => el.id === data.value
       );
-      const [last_name, first_name] = data.label.split(", ");
+const [last_name, first_name] = data.label.split(", ");
       if (!this.class_id) {
         this.class_id_without_rendering_in_dom = data.class_id;
       }
@@ -621,13 +621,20 @@ export default {
         (isMorning && this.isClassAdvanced) ||
         (!isMorning && !this.isClassAdvanced)
           ? "Turno"
-          : this.nearest_item_in_extra_curricular_shift;
+          : this.nearest_item_in_extra_curricular_shift
+        console.log([...this.extra_curricular_classes_slots[data.class_id].map(el => el.subject), "Turno"].find(el =>
+              // first that has not been selected
+              !this.absent_students.find(el2 => el2.shift === el && el2.id === data.value)
+            )
+            , [...this.extra_curricular_classes_slots[data.class_id].map(el => el.subject), "Turno"]
+            )
       this.absent_students.unshift({
         id: data.value,
-        shift: repeated_students.some((el) => el.shift === idealShiftPrediction)
-          ? this.extra_curricular_classes_slots[data.class_id].find(
-              (el) => !repeated_students.map((el) => el.shift).includes(el)
-            ).subject
+        shift: repeated_students.some((el) => el.shift === idealShiftPrediction) 
+          ?   [...this.extra_curricular_classes_slots[data.class_id].map(el => el.subject), "Turno"].find(el =>
+              // first that has not been selected
+              !this.absent_students.find(el2 => el2.shift === el && el2.id === data.value)
+            )
           : idealShiftPrediction,
         first_name,
         last_name,
