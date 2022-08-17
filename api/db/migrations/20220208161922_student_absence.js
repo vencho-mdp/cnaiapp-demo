@@ -5,7 +5,6 @@
 
 exports.up = function (knex) {
   return knex.schema.createTable('student_absence', (table) => {
-    table.primary(['student_id', 'date', 'shift'])
     table.uuid('added_by').references('id').inTable('user').notNullable()
     table
       .uuid('student_id')
@@ -20,6 +19,7 @@ exports.up = function (knex) {
     table.string('reason_of_deletion').defaultTo(null)
     table.string('shift').notNullable()
     table.uuid('reported_by').references('id').inTable('user').defaultTo(null)
+    table.primary(['student_id', 'date', 'shift'])
   })
 }
 

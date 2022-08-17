@@ -89,7 +89,12 @@ export default {
 
   pwa: {
     workbox: {
-      offlineStrategy: 'NetworkOnly'
+      offlineStrategy: 'NetworkOnly',
+      offline: false
+    },
+    manifest: {
+      name: 'Colegio Nacional Doctor Arturo Illia',
+      lang: 'es',
     }
   },
 

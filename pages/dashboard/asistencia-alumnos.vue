@@ -13,6 +13,7 @@
             :max-date="new Date()"
             class="calendar"
             locale="es"
+              is-required
             :disabled-dates="{ weekdays: [1, 7] }"
           />
         </client-only>
@@ -105,10 +106,10 @@
                         .concat($store.state.authentication.user_data.groups.includes('teacher') ? null : 'Turno')
                         .filter(
                           (shift_el) =>
-                          shift_el &&
+                         shift_el === shift_data.shift || (shift_el &&
                             !absent_students.some(
-                              (s) => s.shift === shift_el && s.id !== el.id
-                            )
+                              (s) => s.shift === shift_el && s.id === el.id
+                            ))
                         )
                     "
                     :value="shift_data.shift"
@@ -469,7 +470,7 @@ export default {
         ).length
         return (
          !hasSubjects ? (amount_of_times_student_appears <=
-            EXTRA_CURRICULAR_SUBJECTS_quantity) : (amount_of_times_student_appears <
+            EXTRA_CURRICULAR_SUBJECTS_quantity) : (amount_of_times_student_appears <=
             EXTRA_CURRICULAR_SUBJECTS_quantity)  &&
           (this.class_id ? this.class_id === el.class_id : true)
         );
@@ -521,7 +522,7 @@ export default {
     },
   },
   watch: {
-    async date(new_val) {
+    async date(new_val, old_val) {
       await this.update_absent_students_and_class(new_val);
         const day_index_in_arr = new_val.getDay() - 1;
   const current_day_index =
@@ -546,6 +547,7 @@ export default {
   },
   methods: {
     changeShift(index, val) {
+      this.absent_students[index].previous_shift = this.absent_students[index].shift;
       this.absent_students[index].shift = val;
       this.absent_students[index].was_shift_modified = true;
     },
@@ -657,6 +659,7 @@ export default {
       this.absent_students.splice(this.absent_students.indexOf(abs_student), 1);
     },
     async update_absent_students_and_class(date, class_changed = false) {
+      console.log(date)
       const formatted_date = removeTimeFromDate(date);
       let absent_students_in_formatted_date = await this.$axios.$get(
         "/api/absent-students",

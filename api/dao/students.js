@@ -3,9 +3,6 @@ const db = require('../db/db')
 const isSubArray = (master, sub) => {
   return sub.every((i => v => i = master.indexOf(v, i) + 1)(0))
 }
-function countNumberOfSameValues (array, prop, value) {
-  return array.filter(item => item[prop] === value).length
-}
 
 const get_absent_students = async (date, classes_ids, u_id) => {
   date = new Date(date).toISOString().split('T')[0]
@@ -116,34 +113,18 @@ class students_DAO {
       await Promise.all(
         [
           added_students.map(
-            ({ id, is_justified, shift, was_shift_modified }) => {
-              const appearsTwice =
-                countNumberOfSameValues(added_students, 'id', id) > 1
-              // if there is more than one added student with the same id
-              // it means one more shift has been added
-              if (appearsTwice) {
-                return db('student_absence')
-                  .insert({
-                    student_id: id,
-                    date: formatted_date,
-                    added_by: user_id,
-                    is_justified,
-                    shift
-                  })
-                  .onConflict(['student_id', 'date', 'shift'])
-                  .merge(['is_justified'])
-              }
+           async ({ id, is_justified,previous_shift, shift, was_shift_modified }) => {
               if (was_shift_modified) {
                 return db('student_absence')
                   .update({
-                    is_justified,
+                    is_justified: is_justified,
                     shift
                   })
                   .where({
                     student_id: id,
-                    date: formatted_date
+                    date: formatted_date,
+                    shift: previous_shift
                   })
-                  .returning('*')
               }
               return db('student_absence')
                 .insert({
