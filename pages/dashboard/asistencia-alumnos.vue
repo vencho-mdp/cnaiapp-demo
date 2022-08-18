@@ -62,6 +62,13 @@
           >
             <template v-slot="{suggestion}">
               <span class="cursor-pointer font-bold">{{ suggestion.item.label }}</span>
+              <transition name="fade">
+                <PillButton 
+                v-if="absent_students.some(el => el.shift === (((date.getHours() < 12 ? true : false) && isClassAdvanced) ||
+        (!(date.getHours() < 12 ? true : false) && !isClassAdvanced)
+          ? 'Turno'
+          : nearest_item_in_extra_curricular_shift) && el.id === suggestion.item.value)" :disabled="true" class="mr-auto">Agregado</PillButton>
+              </transition>
           </template>
           </vue-autosuggest> 
           <transition name="fade">
