@@ -40,18 +40,30 @@
       >
         <div class="flex flex-col min-w-full gap-2 justify-between items-start">
           <v-label class="mb-2 !text-sm"> Alumnos ausentes </v-label>
-          <v-autosuggest
+          <vue-autosuggest
             style="max-width: 300px"
-            :options="
-              valid_students.map(({ student_name, id, class_id }) => ({
-                label: student_name,
-                value: id,
-                class_id,
-              }))
+            :input-props="{
+                  id: 'autosuggest-input',
+              }"
+            :suggestions="
+             suggestions
             "
+            id="autosuggest"
             class="mb-8"
-            @select="addAbsentStudent"
-          />
+            @click="hasAutocompleteBeenTouch = true"
+            @selected="item => addAbsentStudent(item.item)"
+            :sectionConfigs= "{
+              default: {
+                limit: this.class_id ? Infinity : 12,
+              }
+            }"
+            :should-render-suggestions="() => this.hasAutocompleteBeenTouch || this.have_absent_students_changed"
+            :get-suggestion-value="(item) => item.label"
+          >
+            <template v-slot="{suggestion}">
+              <span class="cursor-pointer font-bold">{{ suggestion.item.label }}</span>
+          </template>
+          </vue-autosuggest> 
           <transition name="fade">
             <transition-group
               v-if="!loading"
@@ -275,6 +287,7 @@ import getNearestPastWorkday from "@/utils/getNearestPastWorkday.js";
 import filterMap from "@/utils/filterMap.js";
 import "@/assets/css/toggle.css";
 import { setTimeout } from "timers";
+import { VueAutosuggest } from 'vue-autosuggest';
 
 const structuredClonePolyfilled =
   typeof structuredClone === "function"
@@ -298,6 +311,9 @@ const transformSlots = (slots, extra_curricular_shifts) => {
 };
 
 export default {
+  components: {
+    VueAutosuggest,
+  },
   middleware: "authentication",
   async asyncData({ $axios, store, $reportNetworkError }) {
     const get_students = $axios.$get("/api/students", {
@@ -408,9 +424,20 @@ export default {
         "Teatro",
       ],
       class_id_without_rendering_in_dom: null,
+      hasAutocompleteBeenTouch: false,
     };
   },
   computed: {
+    suggestions(){
+      const valid_students = this.valid_students
+      return [{
+                data:  valid_students.map(({ student_name, id, class_id }) => ({
+                  label: student_name,
+                  value: id,
+                  class_id,
+               }))
+              }]
+    },
     isClassAdvanced() {
       return this.class_id
         ? ["4to", "5to", "6to"].includes(
@@ -732,6 +759,7 @@ const [last_name, first_name] = data.label.split(", ");
         this.show_notification = "error";
         this.$reportNetworkError(error);
       }
+            this.hasAutocompleteBeenTouch = false
       setTimeout(() => {
         this.show_notification = !this.show_notification;
       }, 2000);
@@ -744,4 +772,19 @@ const [last_name, first_name] = data.label.split(", ");
 .calendar :deep(.vc-title) {
   text-transform: capitalize;
 }
+  #autosuggest :deep(#autosuggest-input) {
+    @apply relative !px-0.5 !py-0.5 !min-w-full !min-h-full focus-visible:!outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue;
+  }
+  #autosuggest :deep(.suggestions) {
+    @apply !border-none shadow rounded-md min-w-full mt-2 bg-white-full;
+  }
+  #autosuggest :deep(.autosuggest-autosuggest__results) {
+    @apply border-none absolute z-30;
+  }
+   #autosuggest :deep(.hover) {
+    @apply !bg-gray-light;
+  }
+  #autosuggest :deep(.autosuggest__results-item) {
+    @apply !my-1 !p-3 text-black;
+  }
 </style>

@@ -63,6 +63,10 @@ export default {
           name: "Eventos",
           url: "/eventos",
         },
+        {
+          name: "Dashboard",
+          url: "/dashboard",
+        }
       ],
     };
   },

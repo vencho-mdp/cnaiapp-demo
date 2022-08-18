@@ -9,7 +9,7 @@ test.beforeEach(async ({ page, baseURL }) => {
 test('add absent student', async ({ page, baseURL }) => {
   const list = (await page.$$('[data-test="absent_student"]')).length
 
-  await page.type('.vue-simple-suggest >> input', 'a')
+  await page.type('.vue-autosuggest >> input', 'a')
   await page.waitForTimeout(1000)
   await page.locator('.suggestions li').first().click()
 
