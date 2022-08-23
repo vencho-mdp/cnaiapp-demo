@@ -1,30 +1,36 @@
 const {
   change_email,
-  change_password
-} = require('../services/user')
+  change_password,
+  get_all_users,
+} = require("../services/user");
 
 class User_controller {
-  async change_email (req, res) {
+  async change_email(req, res) {
     try {
-      await change_email(req.body)
-      res.status(200).json({ message: 'Changed successfully' })
+      await change_email(req.body);
+      res.status(200).json({ message: "Changed successfully" });
     } catch (error) {
-      return res.status(400).send(
-        error
-      )
+      return res.status(400).send(error);
     }
   }
 
-  async change_password (req, res) {
+  async change_password(req, res) {
     try {
-      await change_password(req.body)
-      res.status(200).json({ message: 'Changed successfully' })
+      await change_password(req.body);
+      res.status(200).json({ message: "Changed successfully" });
     } catch (error) {
-      return res.status(400).send(
-        error
-      )
+      return res.status(400).send(error);
+    }
+  }
+
+  async get_all_users(req, res) {
+    try {
+      const users = await get_all_users();
+      res.status(200).json(users);
+    } catch (error) {
+      return res.status(500).send(error);
     }
   }
 }
 
-module.exports = new User_controller()
+module.exports = new User_controller();
