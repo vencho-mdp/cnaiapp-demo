@@ -33,7 +33,7 @@ class user_dao {
 
   async get_all_users() {
     try {
-      return await db("user")
+      const data = await db("user")
         .select(
           "user.id",
           "first_name",
@@ -45,17 +45,36 @@ class user_dao {
             "ARRAY_AGG(DISTINCT CONCAT(class.grade, ' ', class.grade_number)) as classes"
           )
         )
+        .where("user.hide", false)
         .join("user_group", "user_group.user_id", "user.id")
-        .join("group", "group_id", "user_group.group_id")
-        .join("user_class", "user_class.user_id", "user.id")
-        .join("class", "class_id", "class.id")
-        .join("subject_teacher", "subject_teacher.teacher_id", "user.id")
-        .join("subject", "subject_id", "subject.id")
+        .join("group", "group.id", "user_group.group_id")
+        .leftJoin("user_class", "user_class.user_id", "user.id")
+        .leftJoin("class", "class_id", "class.id")
+        .leftJoin("subject_teacher", "subject_teacher.teacher_id", "user.id")
+        .leftJoin("subject", "subject_id", "subject.id")
         .groupBy("user.id")
         .orderBy("last_name");
+      return data;
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async delete_user(user_id) {
+    return await Promise.all([
+      db("user").where("id", user_id).update({
+        hide: true,
+      }),
+      db("user_group").where("user_id", user_id).update({
+        hide: true,
+      }),
+      db("user_class").where("user_id", user_id).update({
+        hide: true,
+      }),
+      db("subject_teacher").where("teacher_id", user_id).update({
+        hide: true,
+      }),
+    ]);
   }
 }
 

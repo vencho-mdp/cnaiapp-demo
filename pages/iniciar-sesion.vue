@@ -84,7 +84,7 @@ export default {
           email_address: this.inputs[0].value,
           password: this.inputs[1].value,
         });
-        this.$router.push("/dashboard");
+        this.$router.push("/panel");
       } catch (err) {
         this.inputs = this.inputs.map(({ value, ...rest }) => {
           this.$refs[rest.label][0].$el.value = "";

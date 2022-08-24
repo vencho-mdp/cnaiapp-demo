@@ -5,7 +5,7 @@
       class="bg-primary-darkblue flex w-full px-8 gap-16 items-center overflow-y-auto justify-around md:flex-col md:px-0 py-3 md:pt-10 md:pb-96 md:w-16 md:!justify-start"
     >
       <span v-for="link in filtered_links" :key="link.name">
-        <nuxt-link :to="`/dashboard/${link.route}`">
+        <nuxt-link :to="`/panel/${link.route}`">
           <img
             class="hover-effect"
             :src="getImgUrl(link.img)"

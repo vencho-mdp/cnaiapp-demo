@@ -64,9 +64,9 @@ export default {
           url: "/eventos",
         },
         {
-          name: "Dashboard",
-          url: "/dashboard",
-        }
+          name: "panel",
+          url: "/panel",
+        },
       ],
     };
   },

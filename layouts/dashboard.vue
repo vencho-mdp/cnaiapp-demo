@@ -18,6 +18,6 @@
 import head from "../mixins/head.js";
 export default {
   mixins: [head],
-  name: "dashboard",
+  name: "panel",
 };
 </script>

@@ -1,4 +1,9 @@
-const { change_email, change_password, get_all_users } = require("../dao/user");
+const {
+  change_email,
+  change_password,
+  get_all_users,
+  delete_user,
+} = require("../dao/user");
 
 class User_service {
   async change_email(body) {
@@ -28,6 +33,19 @@ class User_service {
   async get_all_users() {
     try {
       return await get_all_users();
+    } catch (error) {
+      throw {
+        status: 500,
+        code: "INTERNAL_ERROR",
+        msg: "Internal server error.",
+      };
+    }
+  }
+
+  async delete_user(user_id) {
+    try {
+      if (!user_id) return;
+      return await delete_user(user_id);
     } catch (error) {
       throw {
         status: 500,
