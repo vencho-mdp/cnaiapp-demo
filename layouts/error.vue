@@ -23,6 +23,7 @@ import head from "../mixins/head.js";
 export default {
   mixins: [head],
   props: ["error"],
+  middleware: "authentication",
   mounted() {
     if (process.env.NODE_ENV === "production" && error.statusCode !== 404) {
       this.$mail.send({

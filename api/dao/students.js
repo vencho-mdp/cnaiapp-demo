@@ -239,6 +239,18 @@ class students_DAO {
         suspicious_preceptors_because_are_being_reported_a_lot,
     };
   }
+
+  async get_late_students(date, classes_ids) {
+    date = new Date(date).toISOString().split("T")[0];
+    return await db("student_absence")
+      .select(db.raw("CONCAT(last_name, ' ', first_name) AS student_name"))
+      .join("user", "student_id", "user.id")
+      .join("user_class", "student_id", "user_class.user_id")
+      .andWhere(db.raw("date ::date"), date)
+      .whereIn("class_id", classes_ids)
+      .where({ reason_of_deletion: "Llegó tarde" })
+      .orderBy("last_name");
+  }
 }
 
 module.exports = new students_DAO();

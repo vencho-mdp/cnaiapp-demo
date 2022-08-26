@@ -61,21 +61,38 @@ class user_dao {
   }
 
   async delete_user(user_id) {
-    return await Promise.all([
-      db("user").where("id", user_id).update({
-        hide: true,
-      }),
-      db("user_group").where("user_id", user_id).update({
-        hide: true,
-      }),
-      db("user_class").where("user_id", user_id).update({
-        hide: true,
-      }),
-      db("subject_teacher").where("teacher_id", user_id).update({
-        hide: true,
-      }),
-    ]);
+    try {
+      return await db.transaction(async (trx) => {
+        await db("user")
+          .where("id", user_id)
+          .update({
+            hide: true,
+          })
+          .transacting(trx);
+
+        await db("slot_teacher")
+          .where("teacher_id", user_id)
+          .update({
+            hide: true,
+          })
+          .transacting(trx);
+        await db("slot")
+          .whereIn(
+            "slot.id",
+            db("slot_teacher").where("teacher_id", user_id).select("slot_id")
+          )
+          .transacting(trx)
+          .update("hide", true);
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error();
+    }
   }
+
+  async add_user(data) {}
+
+  async edit_user({ user_id, data }) {}
 }
 
 module.exports = new user_dao();

@@ -21,19 +21,20 @@ export default {
   props: {
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     value: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
   computed: {
-    optionsWithDefaultState () {
-      return [...(this.value ? [] : ['']), ...this.options]
-    }
-  }
-}
+    optionsWithDefaultState() {
+      const addEmpty = !!this.value;
+      return addEmpty ? [...this.options].concat("") : [...this.options];
+    },
+  },
+};
 </script>
 
 <style></style>

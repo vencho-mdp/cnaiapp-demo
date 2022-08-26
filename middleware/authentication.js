@@ -1,4 +1,11 @@
 export default function ({ store, redirect, route }) {
+  if (route.path.startsWith("/dashboard")) {
+    if (!store.getters["authentication/isAuthenticated"]) {
+      return redirect("/iniciar-sesion");
+    }
+    const page = route.path.split("/")[2];
+    return redirect(`/panel/${page || ""}`);
+  }
   // If the user is not authenticated
   if (!store.getters["authentication/isAuthenticated"]) {
     return redirect("/iniciar-sesion");

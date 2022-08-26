@@ -64,7 +64,7 @@ export default {
           url: "/eventos",
         },
         {
-          name: "panel",
+          name: "Panel",
           url: "/panel",
         },
       ],

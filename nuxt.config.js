@@ -45,6 +45,7 @@ export default {
     "~/plugins/axios",
     { src: "~/plugins/pwa-update.js", mode: "client" },
     { src: "~/plugins/error-reporting.js" },
+    { src: "~/plugins/directives.js" },
   ],
 
   buildModules: ["@nuxtjs/tailwindcss", "@nuxtjs/pwa", "@nuxtjs/google-fonts"],
@@ -73,13 +74,13 @@ export default {
 
   sitemap: {
     gzip: true,
-    exclude: ["/panel", "/panel/**"],
+    exclude: ["/dashboard", "/dashboard/**"],
     i18n: false,
   },
 
   robots: {
     UserAgent: "*",
-    Disallow: "/panel",
+    Disallow: "/dashboard",
     Sitemap: process.env.BASE_URL + "/sitemap.xml",
   },
 

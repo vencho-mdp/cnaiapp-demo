@@ -17,7 +17,7 @@ router.get(
   get_all_users
 );
 router.delete(
-  "/user",
+  "/users",
   (req, res, next) => auth(req, res, next, ["management_team"]),
   delete_user
 );

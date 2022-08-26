@@ -44,7 +44,7 @@ class User_service {
 
   async delete_user(user_id) {
     try {
-      if (!user_id) return;
+      if (!user_id) throw new Error();
       return await delete_user(user_id);
     } catch (error) {
       throw {

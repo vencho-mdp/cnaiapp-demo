@@ -46,10 +46,12 @@
               id: 'autosuggest-input',
             }"
             :suggestions="suggestions"
+            v-click-outside="turnHasAutocompleteBeenTouchFalse"
             id="autosuggest"
             class="mb-8"
-            @click="hasAutocompleteBeenTouch = true"
-            @selected="(item) => addAbsentStudent(item.item)"
+            v-model="absentStudentQuery"
+            @focus="hasAutocompleteBeenTouch = true"
+            @selected="(item) => item && addAbsentStudent(item.item)"
             :sectionConfigs="{
               default: {
                 limit: this.class_id ? Infinity : 12,
@@ -96,6 +98,24 @@
               name="list"
               class="flex md:!w-auto flex-wrap flex-grow pr-2 w-full mb-8"
             >
+              <div
+                class="border border-gray-200 text-sm p-4 z-0 rounded-md mb-8"
+                :key="'late-students'"
+                v-if="late_students.length > 0"
+              >
+                <span class="font-bold text-xs">
+                  Alumnos que llegaron tarde:</span
+                >
+                <ul>
+                  <li
+                    v-for="student in late_students"
+                    :key="student.student_name"
+                    class="text-xs my-1 text-black"
+                  >
+                    {{ student.student_name }}
+                  </li>
+                </ul>
+              </div>
               <div
                 v-for="(el, idx) of absent_students_without_duplicates"
                 :key="`${el.id}-${idx}`"
@@ -273,7 +293,7 @@
                 class="mr-6 !h-12 !w-full"
                 @click.native="addAbsentStudentThatWasDeleted(true)"
               >
-                Llegó Tarde
+                Llegó tarde
               </outlined-primary-button>
               <outlined-primary-button
                 class="!h-12 !w-full"
@@ -386,14 +406,24 @@ export default {
         ),
       },
     });
+    const get_late_students = $axios.$get("api/late-students", {
+      params: {
+        date: removeTimeFromDate(getNearestPastWorkday()),
+        classes_ids: JSON.stringify(
+          store.state.authentication.user_data.classes_ids
+        ),
+      },
+    });
     try {
       // eslint-disable-next-line prefer-const
-      let [students, absent_students, classes, slots] = await Promise.all([
-        get_students,
-        get_absent_students,
-        get_classes,
-        get_slots,
-      ]);
+      let [students, absent_students, classes, slots, late_students] =
+        await Promise.all([
+          get_students,
+          get_absent_students,
+          get_classes,
+          get_slots,
+          get_late_students,
+        ]);
       absent_students = absent_students.map((el) => ({
         ...el,
         // replace null with false, or true with true
@@ -444,6 +474,7 @@ export default {
         slots: not_modified_slots,
         extra_curricular_classes_slots: slots,
         teacher_slots: await getTeacherSlots(),
+        late_students,
       };
     } catch (error) {
       $reportNetworkError(error);
@@ -481,20 +512,25 @@ export default {
       ],
       class_id_without_rendering_in_dom: null,
       hasAutocompleteBeenTouch: false,
+      absentStudentQuery: "",
     };
   },
   computed: {
     suggestions() {
-      const valid_students = this.valid_students;
-      return [
-        {
-          data: valid_students.map(({ student_name, id, class_id }) => ({
-            label: student_name,
-            value: id,
-            class_id,
-          })),
-        },
-      ];
+      const result = filterMap(
+        this.valid_students,
+        (el) =>
+          el.student_name
+            .replace(/[\u0300-\u036f]/g, "")
+            ?.toLowerCase()
+            .includes(this.absentStudentQuery?.toLowerCase()),
+        ({ student_name, id, class_id }) => ({
+          label: student_name,
+          value: id,
+          class_id,
+        })
+      );
+      return [{ data: result }];
     },
     isClassAdvanced() {
       return this.class_id
@@ -640,6 +676,9 @@ export default {
     this.is_mobile = window.innerWidth < 768;
   },
   methods: {
+    turnHasAutocompleteBeenTouchFalse() {
+      this.hasAutocompleteBeenTouch = false;
+    },
     changeShift(index, val) {
       this.absent_students[index].previous_shift =
         this.absent_students[index].shift;
@@ -681,7 +720,7 @@ export default {
       this.show_sidebar = false;
     },
     addAbsentStudentThatWasDeleted(wasLate) {
-      const reason = wasLate ? "Llegó Tarde" : "Error al pasar el listado";
+      const reason = wasLate ? "Llegó tarde" : "Error al pasar el listado";
       const student_index = this.absent_students.findIndex(
         (el) => el.id === this.current_abs_student
       );
@@ -691,6 +730,12 @@ export default {
         shift: this.absent_students[student_index].shift,
       });
       this.absent_students.splice(student_index, 1);
+      if (reason === "Llegó tarde") {
+        const s = this.students.find(
+          (el) => el.id === this.current_abs_student
+        );
+        this.late_students.push(s);
+      }
       this.show_sidebar = false;
       this.new_justification = null;
       this.absence_reason = null;
@@ -701,10 +746,6 @@ export default {
         return;
       }
       const isMorning = this.date.getHours() < 12 ? true : false;
-      window.scrollTo({
-        top: 300,
-        behavior: "smooth",
-      });
       const repeated_students = this.absent_students.filter(
         (el) => el.id === data.value
       );
@@ -777,6 +818,14 @@ export default {
           },
         }
       );
+      this.late_students = await this.$axios.$get("/api/late-students", {
+        params: {
+          date: formatted_date,
+          classes_ids: this.class_id
+            ? JSON.stringify([this.class_id])
+            : JSON.stringify(this.classes.map((el) => el.id)),
+        },
+      });
       absent_students_in_formatted_date = absent_students_in_formatted_date.map(
         (el) => ({
           ...el,
@@ -806,6 +855,10 @@ export default {
         }));
       }
       this.loading = false;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     },
     async save_data() {
       try {
