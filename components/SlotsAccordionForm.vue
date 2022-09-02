@@ -19,7 +19,7 @@
         <template #tag="{ option, remove }">
           <transition v-if="option.label" name="fade" mode="out-in">
             <span
-              class="bg-primary-lightblue font-bold flex justify-around items-center pl-2 w-min rounded-sm text-white"
+              class="bg-primary-lightblue font-bold flex justify-around items-center pl-2 w-min rounded-sm text-black"
             >
               {{ option.label.split(",")[0] }}
               <icon-button

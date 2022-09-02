@@ -37,6 +37,11 @@ router.get(
   get_suspicious_cases
 );
 
-router.get("/late-students", auth, get_late_students);
+router.get(
+  "/late-students",
+  (req, res, next) =>
+    auth(req, res, next, ["management_team", "preceptor", "teacher"]),
+  get_late_students
+);
 
 module.exports = router;

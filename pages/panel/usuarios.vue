@@ -1,13 +1,13 @@
 <template>
-  <main class="p-10">
+  <main class="p-12">
     <span class="flex items-center justify-between w-40 mb-8">
       <v-subtitle> Usuarios </v-subtitle>
-      <!-- <icon-button
+      <icon-button
         class="bg-primary-blue shadow-md duration-500 hover:scale-105"
         @click.native="addUser()"
       >
         <img src="~/assets/images/plus.svg" class="h-4 w-4" alt="Eliminar" />
-      </icon-button> -->
+      </icon-button>
     </span>
     <h3 class="text-sm font-bold mr-auto mt-6 w-5/6 mb-2">Filtros</h3>
     <span
@@ -67,6 +67,8 @@
             :is-editing-or-adding-user="isEditingOrAddingUser"
             @closeSidebar="closeSidebar"
             @handleClickForDeletion="deleteUser({ id: isDeletingUser }, false)"
+            :subjects="subjects"
+            :classes="classes"
           />
         </template>
       </lazy-v-sidebar>
@@ -97,11 +99,11 @@ export default {
   data() {
     return {
       tableActions: [
-        // {
-        //   label: "Editar",
-        //   icon: "pencil",
-        //   handlerName: "editUser",
-        // },
+        {
+          label: "Editar",
+          icon: "pencil",
+          handlerName: "editUser",
+        },
         {
           label: "Eliminar",
           icon: "trash",
@@ -124,7 +126,15 @@ export default {
   },
   async asyncData({ $axios, $reportNetworkError }) {
     try {
-      const users = await $axios.$get("/api/users");
+      let [users, subjects, classes] = await Promise.all([
+        $axios.$get("/api/users"),
+        $axios.$get("/api/subjects"),
+        $axios.$get("/api/classes"),
+      ]);
+      subjects = subjects.map((subject) => ({
+        name: subject.name,
+        id: subject.id,
+      }));
       const tableHeaders = [
         {
           label: "Nombre",
@@ -150,6 +160,8 @@ export default {
       return {
         users,
         tableHeaders,
+        subjects,
+        classes,
       };
     } catch (error) {
       $reportNetworkError(error);
@@ -202,7 +214,7 @@ export default {
       this.isDeletingUser = user.id;
     },
     editUser(el) {
-      this.sidebarTitle = "Editar usuario";
+      this.sidebarTitle = "Usuario";
       this.isEditingOrAddingUser = el;
     },
     addUser() {

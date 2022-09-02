@@ -90,7 +90,9 @@ class user_dao {
     }
   }
 
-  async add_user(data) {}
+  async add_user(data) {
+    console.log(data);
+  }
 
   async edit_user({ user_id, data }) {}
 }

@@ -3,6 +3,8 @@ const {
   change_password,
   get_all_users,
   delete_user,
+  add_user,
+  edit_user,
 } = require("../dao/user");
 
 class User_service {
@@ -51,6 +53,30 @@ class User_service {
         status: 500,
         code: "INTERNAL_ERROR",
         msg: "Internal server error.",
+      };
+    }
+  }
+
+  async add_user(body) {
+    try {
+      return await add_user(body);
+    } catch (error) {
+      throw {
+        status: 500,
+        code: "INTERNAL_ERROR",
+        msg: "Internal server error. Could not add user.",
+      };
+    }
+  }
+
+  async edit_user(body) {
+    try {
+      return await edit_user(body);
+    } catch (error) {
+      throw {
+        status: 500,
+        code: "INTERNAL_ERROR",
+        msg: "Internal server error. Could not edit user.",
       };
     }
   }
