@@ -1,29 +1,32 @@
 <template>
   <main
     v-if="renderPage"
-    class="flex flex-col min-h-full pl-6 pt-8 justify-center sm:px-24"
+    class="flex flex-col min-h-full pl-4 pt-8 justify-center sm:px-24 overflow-x-hidden"
   >
     <v-title> Asistencia </v-title>
     <div class="flex flex-wrap mb-auto mt-12 w-full items-start">
-      <div class="flex flex-col min-h-full justify-start items-start">
+      <div
+        class="flex flex-col min-h-full w-full md:w-2/3 justify-start items-start pr-2"
+      >
         <v-label class="mb-4 !text-sm"> Fecha </v-label>
         <client-only>
           <v-date-picker
+            :is-expanded="is_mobile"
             v-model="date"
             :max-date="new Date()"
             class="calendar"
+            :popover="{ visibility: null }"
             locale="es"
             is-required
             :disabled-dates="{ weekdays: [1, 7] }"
           />
         </client-only>
-        <div class="flex flex-col mt-8 items-start">
+        <div class="flex flex-col mt-8 items-start w-2/3 md:w-auto">
           <v-label class="mb-2 !text-sm"> Clase </v-label>
           <v-dropdown
             v-model="class_id"
             data-test="class_dropdown"
-            style="max-width: 300px"
-            class="bg-white-full"
+            class="bg-white-full !w-full md:max-w-xs"
             :options="
               classes
                 ? classes.map((c) => ({
@@ -36,19 +39,18 @@
         </div>
       </div>
       <div
-        class="flex flex-col min-w-full mt-8 gap-12 justify-between items-start"
+        class="flex flex-col min-w-full mt-8 gap-12 justify-between items-start w-full md:w-auto"
       >
         <div class="flex flex-col min-w-full gap-2 justify-between items-start">
           <v-label class="mb-2 !text-sm"> Alumnos ausentes </v-label>
           <vue-autosuggest
-            style="max-width: 300px"
             :input-props="{
               id: 'autosuggest-input',
             }"
             :suggestions="suggestions"
             v-click-outside="turnHasAutocompleteBeenTouchFalse"
             id="autosuggest"
-            class="mb-8"
+            class="mb-8 w-2/3 md:max-w-xs"
             v-model="absentStudentQuery"
             @focus="hasAutocompleteBeenTouch = true"
             @selected="(item) => item && addAbsentStudent(item.item)"
@@ -57,11 +59,7 @@
                 limit: this.class_id ? Infinity : 12,
               },
             }"
-            :should-render-suggestions="
-              () =>
-                this.hasAutocompleteBeenTouch ||
-                this.have_absent_students_changed
-            "
+            :should-render-suggestions="() => this.hasAutocompleteBeenTouch"
             :get-suggestion-value="(item) => item.label"
           >
             <template v-slot="{ suggestion }">
@@ -69,7 +67,7 @@
                 suggestion.item.label
               }}</span>
               <transition name="fade">
-                <PillButton
+                <span
                   v-if="
                     absent_students.some(
                       (el) =>
@@ -79,13 +77,24 @@
                           (!(date.getHours() < 12 ? true : false) &&
                             !isClassAdvanced)
                             ? 'Turno'
-                            : nearest_item_in_extra_curricular_shift) &&
-                        el.id === suggestion.item.value
+                            : nearest_item_in_extra_curricular_shift ||
+                              'Turno') && el.id === suggestion.item.value
                     )
                   "
                   :disabled="true"
-                  class="mr-auto"
-                  >Agregado</PillButton
+                  class="m-2 text-white shadow font-semibold p-1 rounded bg-primary-darkblue"
+                  >Agregado ({{
+                    absent_students.filter(
+                      (el) => el.id === suggestion.item.value
+                    ).length
+                  }}
+                  ve{{
+                    absent_students.filter(
+                      (el) => el.id === suggestion.item.value
+                    ).length === 1
+                      ? "z"
+                      : "eces"
+                  }})</span
                 >
               </transition>
             </template>
@@ -96,24 +105,69 @@
               mode="out-in"
               tag="div"
               name="list"
-              class="flex md:!w-auto flex-wrap flex-grow pr-2 w-full mb-8"
+              class="flex md:!w-auto flex-wrap pr-2 w-full items-start"
+              :class="{ 'gap-12': !is_mobile }"
             >
               <div
-                class="border border-gray-200 text-sm p-4 z-0 rounded-md mb-8"
+                class="border border-gray-200 text-tiny p-4 z-0 rounded-md mb-8"
                 :key="'late-students'"
                 v-if="late_students.length > 0"
               >
-                <span class="font-bold text-xs">
+                <span class="font-bold text-sm">
                   Alumnos que llegaron tarde:</span
                 >
                 <ul>
-                  <li
-                    v-for="student in late_students"
-                    :key="student.student_name"
-                    class="text-xs my-1 text-black"
-                  >
-                    {{ student.student_name }}
-                  </li>
+                  <transition-group name="list">
+                    <li
+                      v-for="student in late_students"
+                      :ref="`${student.student_name}-${student.shift}`"
+                      :id="`${student.student_name}-${student.shift}`"
+                      :key="student.student_name + student.shift"
+                      class="text-sm my-2 p-1.5 rounded text-black flex"
+                      :class="{
+                        '!text-white bg-primary-darkblue':
+                          selectedStudentsThatArriveLateToRemove.some(
+                            (el) =>
+                              el.student_name === student.student_name &&
+                              el.shift === student.shift
+                          ),
+                      }"
+                    >
+                      {{ student.student_name }} ({{ student.shift }})
+                      <transition
+                        :name="`slide-${
+                          itemsToShowTrashButton[
+                            `${student.student_name}-${student.shift}`
+                          ]
+                            ? 'left'
+                            : 'right'
+                        }`"
+                        mode="out-in"
+                      >
+                        <icon-button
+                          v-if="
+                            !is_mobile ||
+                            itemsToShowTrashButton[
+                              `${student.student_name}-${student.shift}`
+                            ]
+                          "
+                          data-test="absent_student_delete_button"
+                          class="bg-red-light hover-effect md:ml-4"
+                          :class="[
+                            is_mobile
+                              ? 'ml-2 my-8 !rounded-md h-full w-2/3'
+                              : 'max-h-10',
+                          ]"
+                          @click.native="
+                            removeLateStudent(student.id, student.shift)
+                          "
+                        >
+                          <img src="~/assets/images/trash.svg" alt="Eliminar" />
+                        </icon-button>
+                        <p v-else></p>
+                      </transition>
+                    </li>
+                  </transition-group>
                 </ul>
               </div>
               <div
@@ -122,7 +176,7 @@
                 data-test="absent_student"
                 :class="{ 'mb-12': idx + 1 !== absent_students.length }"
                 style="width: -moz-available; width: -webkit-fill-available"
-                class="flex-shrink-0 bg-white-full rounded-md flex flex-col max-w-md border border-gray-200 text-sm p-4 z-0 justify-around items-start"
+                class="flex-shrink-0 bg-white-full rounded-md flex flex-col max-w-sm border border-gray-200 text-sm p-4 z-0 justify-around items-start"
               >
                 <div
                   class="border-primary-darkblue w-full border-b flex pb-4 justify-between"
@@ -135,9 +189,11 @@
                   class="w-full h-24 my-4"
                   v-for="(shift_data, i) in el.shifts"
                   :key="`${shift_data.shift}-${el.id}`"
+                  :ref="`abs_student-${idx}-${i}`"
+                  :id="`abs_student-${idx}-${i}`"
                 >
                   <div
-                    class="flex items-center justify-between"
+                    class="flex items-center justify-between h-20"
                     v-if="
                       $store.state.authentication.user_data.subjects
                         ? $store.state.authentication.user_data.subjects.includes(
@@ -202,54 +258,87 @@
                     <label v-else class="text-xs pl-2.5 w-32">
                       {{ shift_data.shift }}
                     </label>
-                    <div class="w-32 ml-auto">
-                      <label class="text-xs">
-                        {{
-                          !shift_data.is_justified
-                            ? "No Justificado"
-                            : "Justificado"
-                        }}</label
-                      >
-                      <div class="mt-4 toggle colour">
-                        <input
-                          :id="`check-${shift_data.shift}-${el.id}-is-justified`"
-                          class="toggle-checkbox hidden"
-                          type="checkbox"
-                          v-model="shift_data.is_justified"
-                          @click="
-                            openJustificationModal(
-                              el.id,
-                              !!shift_data.is_justified,
-                              shift_data.shift
-                            )
-                          "
-                        />
-                        <label
-                          :for="`check-${shift_data.shift}-${el.id}-is-justified`"
-                          class="rounded-full h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
-                        ></label>
-                      </div>
-                    </div>
-                    <icon-button
-                      data-test="absent_student_delete_button"
-                      class="max-h-10 bg-red-light hover-effect md:ml-4"
-                      @click.native="remove_student_from_list(el.id, el.shift)"
+                    <transition
+                      :name="`slide-${
+                        itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                          ? 'left'
+                          : 'right'
+                      }`"
+                      mode="out-in"
                     >
-                      <img src="~/assets/images/trash.svg" alt="Eliminar" />
-                    </icon-button>
+                      <div
+                        v-if="
+                          !itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                        "
+                        class="w-32 ml-auto p-2"
+                      >
+                        <label
+                          class="text-xs text-right font-bold"
+                          :class="[
+                            !shift_data.is_justified
+                              ? 'text-yellow-600'
+                              : 'text-green-600 ml-6',
+                          ]"
+                        >
+                          {{
+                            !shift_data.is_justified
+                              ? "No Justificado"
+                              : "Justificado"
+                          }}</label
+                        >
+                        <div class="mt-4 toggle colour">
+                          <input
+                            :id="`check-${shift_data.shift}-${el.id}-is-justified`"
+                            class="toggle-checkbox hidden"
+                            type="checkbox"
+                            v-model="shift_data.is_justified"
+                            @click="
+                              openJustificationModal(
+                                el.id,
+                                !!shift_data.is_justified,
+                                shift_data.shift
+                              )
+                            "
+                          />
+                          <label
+                            :for="`check-${shift_data.shift}-${el.id}-is-justified`"
+                            class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
+                          ></label>
+                        </div>
+                      </div>
+                      <icon-button
+                        v-if="
+                          !is_mobile ||
+                          itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                        "
+                        data-test="absent_student_delete_button"
+                        class="bg-red-light hover-effect md:ml-4"
+                        :class="[
+                          is_mobile
+                            ? 'ml-24 my-8 !rounded-md h-full w-full'
+                            : 'max-h-10',
+                        ]"
+                        @click.native="
+                          remove_student_from_list(el.id, el.shift)
+                        "
+                      >
+                        <img src="~/assets/images/trash.svg" alt="Eliminar" />
+                      </icon-button>
+                    </transition>
                   </div>
                 </div>
               </div>
             </transition-group>
           </transition>
           <div
-            class="-ml-8 md:!m-0 w-screen md:!w-auto md:!static sticky bottom-0 border-t-2 border-blue-500 bg-gray-100 md:!bg-white-full md:!border-0 px-8 py-4 mt-2"
+            class="md:!m-0 w-screen md:!w-auto md:!static sticky bottom-0 -mx-6 mt-4 md:!bg-white-full md:!border-0"
           >
             <add-button
               data-test="add_absent_student"
               :disabled="!have_absent_students_changed"
               @click.native="save_data()"
-              class="w-full sm:w-32"
+              class="w-full sm:w-32 !rounded-none md:!rounded-md h-14 md:h-auto"
+              :class="[absent_students.length === 0 ? 'mt-32' : 'mt-2']"
             >
               Guardar
             </add-button>
@@ -287,7 +376,7 @@
           <template #content>
             <div
               v-if="show_sidebar === 'reason_of_deletion'"
-              class="flex max-w-full mt-4 px-8 items-center justify-between"
+              class="flex max-w-full mt-4 px-1 items-center justify-between"
             >
               <outlined-primary-button
                 class="mr-6 !h-12 !w-full"
@@ -355,27 +444,13 @@ import filterMap from "@/utils/filterMap.js";
 import "@/assets/css/toggle.css";
 import { setTimeout } from "timers";
 import { VueAutosuggest } from "vue-autosuggest";
+import { addHorizontalSwipeHandler } from "@/utils/addHorizontalSwipeHandler.js";
+import { transformSlots } from "../../utils/transformSlots";
 
 const structuredClonePolyfilled =
   typeof structuredClone === "function"
     ? structuredClone
     : (obj) => JSON.parse(JSON.stringify(obj));
-
-const transformSlots = (slots, extra_curricular_shifts) => {
-  const day_index_in_arr = new Date().getDay() - 1;
-  const current_day_index =
-    day_index_in_arr > 4 || day_index_in_arr < 0 ? 4 : day_index_in_arr;
-  return (
-    filterMap(
-      slots[current_day_index].assignments,
-      (el) => extra_curricular_shifts.includes(el.subject),
-      (el) => ({
-        subject: el.subject,
-        start_time: el.start_time.slice(0, -3),
-      })
-    ) || []
-  );
-};
 
 export default {
   components: {
@@ -513,6 +588,10 @@ export default {
       class_id_without_rendering_in_dom: null,
       hasAutocompleteBeenTouch: false,
       absentStudentQuery: "",
+      removeSwipeHandlers: [],
+      itemsToShowTrashButton: {},
+      selectedStudentsThatArriveLateToRemove: [],
+      alreadyAddedListeners: [],
     };
   },
   computed: {
@@ -546,7 +625,7 @@ export default {
       const nearest_item_in_extra_curricular_shift =
         this.extra_curricular_classes_slots[
           this.class_id_without_rendering_in_dom || this.class_id
-        ].reduce(
+        ]?.reduce?.(
           (acc, el) => {
             const [hours, minutes] = el.start_time.split(":");
             const subject_time = new Date(
@@ -584,6 +663,13 @@ export default {
       );
     },
     valid_students() {
+      const isMorning = new Date().getHours() < 12 ? true : false;
+      const idealShiftPrediction =
+        (isMorning && this.isClassAdvanced) ||
+        (!isMorning && !this.isClassAdvanced)
+          ? "Turno"
+          : this.nearest_item_in_extra_curricular_shift || "Turno";
+      const absent_students = this.absent_students;
       return this.students.filter((el) => {
         const hasSubjects = this.$store.state.authentication.user_data.subjects;
         const EXTRA_CURRICULAR_SUBJECTS_quantity =
@@ -594,15 +680,21 @@ export default {
                 )
               : true
           ).length;
-        const amount_of_times_student_appears = this.absent_students.filter(
+        const student_appearances_in_absence_list = absent_students.filter(
           (el2) => el2.id === el.id
-        ).length;
-        return !hasSubjects
-          ? amount_of_times_student_appears <=
+        );
+        const amount_of_times_student_appears =
+          student_appearances_in_absence_list.length;
+        return (
+          this.absent_students.find((el2) => el2.id === el.id)?.shift ===
+            idealShiftPrediction ||
+          (!hasSubjects
+            ? amount_of_times_student_appears <=
               EXTRA_CURRICULAR_SUBJECTS_quantity
-          : amount_of_times_student_appears <=
-              EXTRA_CURRICULAR_SUBJECTS_quantity &&
-              (this.class_id ? this.class_id === el.class_id : true);
+            : amount_of_times_student_appears <=
+                EXTRA_CURRICULAR_SUBJECTS_quantity &&
+              (this.class_id ? this.class_id === el.class_id : true))
+        );
       });
     },
     have_absent_students_changed() {
@@ -670,12 +762,62 @@ export default {
     },
     async class_id() {
       await this.update_absent_students_and_class(this.date, true);
+      this.alreadyAddedListeners = [];
+      this.setupListeners();
     },
+    absent_students() {
+      this.alreadyAddedListeners = [];
+      this.setupListeners();
+    },
+  },
+  beforeDestroy() {
+    this.removeSwipeHandlers.forEach((el) => el());
   },
   mounted() {
     this.is_mobile = window.innerWidth < 768;
+    if (!process.server) {
+      this.setupListeners();
+    }
   },
   methods: {
+    setupListeners() {
+      Object.values(this.$refs)
+        .flat()
+        .forEach((el, i) => {
+          if (this.alreadyAddedListeners.includes(el.id)) return;
+          this.removeSwipeHandlers.push(
+            addHorizontalSwipeHandler(
+              el,
+              ({ toLeft, toRight }) => {
+                if (toLeft) {
+                  this.$set(this.itemsToShowTrashButton, el.id, true);
+                } else if (toRight) {
+                  this.$set(this.itemsToShowTrashButton, el.id, false);
+                }
+              },
+              {
+                maxSwipeTime: 300,
+                minHorizontalSwipeDistance: 60,
+                maxVerticalSwipeDistance: 80,
+              }
+            )
+          );
+          this.alreadyAddedListeners.push(el.id);
+        });
+    },
+    async removeLateStudent(id, shift) {
+      this.late_students = this.late_students.filter((el) => el.id !== id);
+      const { student_name } = this.students.find((el) => el.id === id);
+      const [first_name, last_name] = student_name.split(", ");
+      this.absent_students.push({
+        id,
+        shift,
+        first_name,
+        last_name,
+        accidentally_deleted: true,
+      });
+      await this.save_data();
+    },
     turnHasAutocompleteBeenTouchFalse() {
       this.hasAutocompleteBeenTouch = false;
     },
@@ -730,11 +872,17 @@ export default {
         shift: this.absent_students[student_index].shift,
       });
       this.absent_students.splice(student_index, 1);
+      this.itemsToShowTrashButton = Object.fromEntries(
+        Object.keys(this.itemsToShowTrashButton).map((el) => [el, false])
+      );
       if (reason === "Llegó tarde") {
-        const s = this.students.find(
-          (el) => el.id === this.current_abs_student
-        );
-        this.late_students.push(s);
+        this.late_students.unshift({
+          student_name: this.students.find(
+            (el) => el.id === this.current_abs_student
+          ).student_name,
+          shift: this.absent_students[student_index].shift,
+          id: this.current_abs_student,
+        });
       }
       this.show_sidebar = false;
       this.new_justification = null;
@@ -745,7 +893,7 @@ export default {
       if (!data) {
         return;
       }
-      const isMorning = this.date.getHours() < 12 ? true : false;
+      const isMorning = new Date().getHours() < 12 ? true : false;
       const repeated_students = this.absent_students.filter(
         (el) => el.id === data.value
       );
@@ -758,7 +906,7 @@ export default {
         (!isMorning && !this.isClassAdvanced)
           ? "Turno"
           : this.nearest_item_in_extra_curricular_shift;
-      this.absent_students.unshift({
+      const dataToPush = {
         id: data.value,
         shift:
           !idealShiftPrediction ||
@@ -780,7 +928,20 @@ export default {
         last_name,
         class_id: data.class_id,
         is_justified: false,
-      });
+      };
+      // if data to push has no duplicates
+      // push it
+      if (
+        dataToPush.shift &&
+        !this.absent_students.some(
+          (el) => el.id === dataToPush.id && el.shift === dataToPush.shift
+        )
+      ) {
+        this.absent_students.push(dataToPush);
+        this.itemsToShowTrashButton = Object.fromEntries(
+          Object.keys(this.itemsToShowTrashButton).map((el) => [el, false])
+        );
+      }
     },
     async openJustificationModal(abs_student, prev_state, shift) {
       if (!prev_state) {
@@ -896,10 +1057,14 @@ export default {
       }, 2000);
     },
   },
+  fetchOnServer: false,
 };
 </script>
 
 <style scoped>
+body {
+  max-width: 100vw;
+}
 .calendar :deep(.vc-title) {
   text-transform: capitalize;
 }
@@ -910,12 +1075,12 @@ export default {
   @apply !border-none shadow rounded-md min-w-full mt-2 bg-white-full;
 }
 #autosuggest :deep(.autosuggest-autosuggest__results) {
-  @apply border-none absolute z-30;
+  @apply border-none absolute z-30 w-full md:w-auto;
 }
 #autosuggest :deep(.hover) {
   @apply !bg-gray-light;
 }
 #autosuggest :deep(.autosuggest__results-item) {
-  @apply !my-1 !p-3 text-black;
+  @apply !my-1 !p-3 text-black w-full md:w-auto;
 }
 </style>

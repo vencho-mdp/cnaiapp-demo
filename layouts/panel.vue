@@ -18,6 +18,7 @@
 import head from "../mixins/head.js";
 export default {
   mixins: [head],
+  middleware: "authentication",
   name: "panel",
 };
 </script>

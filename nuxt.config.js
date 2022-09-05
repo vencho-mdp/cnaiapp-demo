@@ -1,4 +1,6 @@
 export default {
+  fallback: true,
+
   server: {
     port: process.env.PORT || 3000,
   },

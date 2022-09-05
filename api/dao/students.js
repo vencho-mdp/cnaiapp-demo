@@ -131,7 +131,20 @@ class students_DAO {
               previous_shift,
               shift,
               was_shift_modified,
+              accidentally_deleted,
             }) => {
+              if (accidentally_deleted) {
+                return db("student_absence")
+                  .update({
+                    reason_of_deletion: null,
+                    reported_by: null,
+                  })
+                  .where({
+                    student_id: id,
+                    date: formatted_date,
+                    shift: shift,
+                  });
+              }
               if (was_shift_modified) {
                 return db("student_absence")
                   .update({
@@ -243,7 +256,11 @@ class students_DAO {
   async get_late_students(date, classes_ids) {
     date = new Date(date).toISOString().split("T")[0];
     return await db("student_absence")
-      .select(db.raw("CONCAT(last_name, ', ', first_name) AS student_name"))
+      .select(
+        db.raw("CONCAT(last_name, ', ', first_name) AS student_name"),
+        "user.id",
+        "shift"
+      )
       .join("user", "student_id", "user.id")
       .join("user_class", "student_id", "user_class.user_id")
       .andWhere(db.raw("date ::date"), date)

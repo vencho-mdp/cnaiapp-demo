@@ -1,6 +1,6 @@
 <template>
   <button
-    class="rounded-md shadow bg-primary-blue text-white text-xs py-1 px-2 font-bold"
+    class="rounded-md shadow bg-primary-blue text-white text-xs px-2 py-1 font-semibold"
     :class="{ 'hover-effect': shouldTransition }"
   >
     <slot />

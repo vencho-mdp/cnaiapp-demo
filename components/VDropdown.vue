@@ -1,7 +1,7 @@
 <template>
   <select
     :value="value"
-    class="py-1.5 px-2 outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue"
+    class="p-1 outline-none border-primary-lightblue h-8 border-2 rounded-xl transition duration-500 focus:border-primary-blue"
     @change="$emit('input', $event.target.value)"
   >
     <option
