@@ -769,6 +769,10 @@ export default {
       this.alreadyAddedListeners = [];
       this.setupListeners();
     },
+    late_students() {
+      this.alreadyAddedListeners = [];
+      this.setupListeners();
+    },
   },
   beforeDestroy() {
     this.removeSwipeHandlers.forEach((el) => el());
