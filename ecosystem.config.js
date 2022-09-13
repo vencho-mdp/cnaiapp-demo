@@ -16,7 +16,6 @@ module.exports = {
       path: "/var/www/html/cnaiapp",
       repo: "git@github.com:vencho-mdp/cnaiapp.git",
       ref: "origin/develop",
-      "pre-deploy": " rm -r /var/www/html/cnaiapp",
       "post-deploy":
         "npm ci;pm2 startOrRestart ecosystem.config.js --env production",
     },
