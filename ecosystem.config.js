@@ -14,6 +14,7 @@ module.exports = {
       user: "remoto",
       host: "200.0.183.27",
       path: "/var/www/html/cnaiapp",
+      key: "./id_rsa.pub",
       repo: "git@github.com:vencho-mdp/cnaiapp.git",
       ref: "origin/develop",
       "post-deploy":
