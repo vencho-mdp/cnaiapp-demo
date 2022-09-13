@@ -785,29 +785,31 @@ export default {
   },
   methods: {
     setupListeners() {
-      Object.values(this.$refs)
-        .flat()
-        .forEach((el, i) => {
-          if (this.alreadyAddedListeners.includes(el.id)) return;
-          this.removeSwipeHandlers.push(
-            addHorizontalSwipeHandler(
-              el,
-              ({ toLeft, toRight }) => {
-                if (toLeft) {
-                  this.$set(this.itemsToShowTrashButton, el.id, true);
-                } else if (toRight) {
-                  this.$set(this.itemsToShowTrashButton, el.id, false);
+      this.$nextTick(() => {
+        Object.values(this.$refs)
+          .flat()
+          .forEach((el, i) => {
+            if (this.alreadyAddedListeners.includes(el.id)) return;
+            this.removeSwipeHandlers.push(
+              addHorizontalSwipeHandler(
+                el,
+                ({ toLeft, toRight }) => {
+                  if (toLeft) {
+                    this.$set(this.itemsToShowTrashButton, el.id, true);
+                  } else if (toRight) {
+                    this.$set(this.itemsToShowTrashButton, el.id, false);
+                  }
+                },
+                {
+                  maxSwipeTime: 300,
+                  minHorizontalSwipeDistance: 60,
+                  maxVerticalSwipeDistance: 80,
                 }
-              },
-              {
-                maxSwipeTime: 300,
-                minHorizontalSwipeDistance: 60,
-                maxVerticalSwipeDistance: 80,
-              }
-            )
-          );
-          this.alreadyAddedListeners.push(el.id);
-        });
+              )
+            );
+            this.alreadyAddedListeners.push(el.id);
+          });
+      });
     },
     async removeLateStudent(id, shift) {
       this.late_students = this.late_students.filter((el) => el.id !== id);

@@ -30,6 +30,7 @@ export const mutations = {
     state.user_data = null;
   },
   SET_TRIED(state, payload) {
+    alert(2);
     state.tried = payload;
   },
 };
