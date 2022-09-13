@@ -10,17 +10,24 @@ export default function ({ store, app, app: { $axios }, redirect }) {
   });
 
   $axios.onError(async (error) => {
-    // console.log(true);
     const statusCode = error.response ? error.response.status : -1;
     if (statusCode === 401 || statusCode === 422) {
       // get the refresh token from the state if it exists
       const refreshToken = store.state.authentication.refresh_token;
       if (refreshToken) {
+        if (store.state.authentication.tried) {
+          store.commit("authentication/SET_TRIED", true);
+          // catch any error while refreshing the token
+          await store.dispatch("authentication/logout");
+          return Promise.resolve(redirect("/iniciar-sesion"));
+        }
         try {
           // attempt to refresh access token using refresh token
           await store.dispatch("authentication/refresh");
+          store.commit("authentication/SET_TRIED", false);
           return $axios(error.config);
         } catch (e) {
+          store.commit("authentication/SET_TRIED", true);
           // catch any error while refreshing the token
           await store.dispatch("authentication/logout");
           return Promise.resolve(redirect("/iniciar-sesion"));
