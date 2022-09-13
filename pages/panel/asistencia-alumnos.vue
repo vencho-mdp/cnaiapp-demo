@@ -251,7 +251,7 @@
                           $event.target.value
                         )
                       "
-                      class="text-xs w-32"
+                      class="text-xs !w-32"
                     >
                       {{ shift_data.shift }}</VDropdown
                     >

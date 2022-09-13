@@ -5,7 +5,10 @@ export default (ctx, inject) => {
       return;
     }
     const data = {
-      description: error,
+      description:
+        JSON.stringify(error, Object.getOwnPropertyNames(error)) +
+        "\n" +
+        error.stack,
       route: ctx.route.path,
     };
     await Promise.all([
