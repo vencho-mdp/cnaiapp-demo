@@ -546,14 +546,6 @@ export default {
         ),
       },
     });
-    const get_absent_students = $axios.$get("/api/absent-students", {
-      params: {
-        date: removeTimeFromDate(getNearestPastWorkday()),
-        classes_ids: JSON.stringify(
-          store.state.authentication.user_data.classes_ids
-        ),
-      },
-    });
     const get_classes = $axios.$get("/api/classes");
     const get_slots = $axios.$get("/api/slots", {
       params: {
@@ -572,23 +564,14 @@ export default {
     });
     try {
       // eslint-disable-next-line prefer-const
-      let [students, absent_students, classes, slots, late_students] =
-        await Promise.all([
-          get_students,
-          get_absent_students,
-          get_classes,
-          get_slots,
-          get_late_students,
-        ]);
-      absent_students = absent_students.map((el) => ({
-        ...el,
-        // replace null with false, or true with true
-        is_justified:
-          el.is_justified === "true" || el.is_justified === "false"
-            ? JSON.parse(el.is_justified)
-            : el.is_justified,
-      }));
-      const class_id =
+      let [students, classes, slots, late_students] = await Promise.all([
+        get_students,
+        get_classes,
+        get_slots,
+        get_late_students,
+      ]);
+
+      let class_id =
         // management team
         classes.length >= 25
           ? ""
@@ -597,6 +580,24 @@ export default {
               (c) =>
                 c?.id === store.state.authentication.user_data.classes_ids[0]
             )?.id;
+      let absent_students = await $axios.$get("/api/absent-students", {
+        params: {
+          date: removeTimeFromDate(getNearestPastWorkday()),
+          classes_ids: JSON.stringify(
+            class_id
+              ? [class_id]
+              : store.state.authentication.user_data.classes_ids
+          ),
+        },
+      });
+      absent_students = absent_students.map((el) => ({
+        ...el,
+        // replace null with false, or true with true
+        is_justified:
+          el.is_justified === "true" || el.is_justified === "false"
+            ? JSON.parse(el.is_justified)
+            : el.is_justified,
+      }));
       const not_modified_slots = structuredClonePolyfilled(slots);
       Object.keys(structuredClonePolyfilled(slots)).forEach((key) => {
         slots[key] = transformSlots(
