@@ -10,17 +10,19 @@
         sidebarClasses
       "
     >
-      <button class="flex items-center justify-end">
+      <button
+        @click="$emit('closeSidebar')"
+        class="flex items-center justify-end"
+      >
         <img
           class="cursor-pointer h-6 m-4 w-6"
           src="~/assets/images/close-icon.svg"
           alt="Cerrar"
-          @click="$emit('closeSidebar')"
         />
       </button>
       <h1
         class="text-base font-bold text-center text-white p-0.5"
-        :class="applyTextMargin ? 'mt-8' : null"
+        :class="applyTextMargin ? 'mt-8' : '-mt-6'"
       >
         {{ title }}
       </h1>

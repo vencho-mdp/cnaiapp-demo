@@ -1,6 +1,7 @@
 <template>
   <main
     v-if="renderPage"
+    :class="{ 'p-4': !is_mobile }"
     class="flex flex-col min-h-full pl-4 pt-8 justify-center sm:px-24 overflow-x-hidden"
   >
     <v-title> Asistencia </v-title>
@@ -205,45 +206,55 @@
                     <VDropdown
                       v-if="
                         extra_curricular_classes_slots[el.class_id] &&
-                        extra_curricular_classes_slots[el.class_id]
-                          .map((el) => el.subject)
-                          // teacher
-                          .concat(
-                            $store.state.authentication.user_data.groups.includes(
-                              'teacher'
-                            )
-                              ? null
-                              : 'Turno'
-                          )
-                          .filter(
-                            (shift_el) =>
-                              shift_el &&
-                              shift_el !== shift_data.shift &&
-                              !absent_students.some(
-                                (s) => s.shift === shift_el && s.id === el.id
+                        [
+                          ...new Set(
+                            extra_curricular_classes_slots[el.class_id]
+                              .map((el) => el.subject)
+                              // teacher
+                              .concat(
+                                $store.state.authentication.user_data.groups.includes(
+                                  'teacher'
+                                )
+                                  ? null
+                                  : 'Turno'
                               )
-                          ).length > 0
+                              .filter(
+                                (shift_el) =>
+                                  shift_el === shift_data.shift ||
+                                  (shift_el &&
+                                    !absent_students.some(
+                                      (s) =>
+                                        s.shift === shift_el && s.id === el.id
+                                    ))
+                              )
+                              .concat(shift_data.shift)
+                          ),
+                        ].length > 1
                       "
-                      :options="
-                        extra_curricular_classes_slots[el.class_id]
-                          .map((el) => el.subject)
-                          // teacher
-                          .concat(
-                            $store.state.authentication.user_data.groups.includes(
-                              'teacher'
+                      :options="[
+                        ...new Set(
+                          extra_curricular_classes_slots[el.class_id]
+                            .map((el) => el.subject)
+                            // teacher
+                            .concat(
+                              $store.state.authentication.user_data.groups.includes(
+                                'teacher'
+                              )
+                                ? null
+                                : 'Turno'
                             )
-                              ? null
-                              : 'Turno'
-                          )
-                          .filter(
-                            (shift_el) =>
-                              shift_el === shift_data.shift ||
-                              (shift_el &&
-                                !absent_students.some(
-                                  (s) => s.shift === shift_el && s.id === el.id
-                                ))
-                          )
-                      "
+                            .filter(
+                              (shift_el) =>
+                                shift_el === shift_data.shift ||
+                                (shift_el &&
+                                  !absent_students.some(
+                                    (s) =>
+                                      s.shift === shift_el && s.id === el.id
+                                  ))
+                            )
+                            .concat(shift_data.shift)
+                        ),
+                      ]"
                       :value="shift_data.shift"
                       @change.native="
                         changeShift(
@@ -258,73 +269,136 @@
                     <label v-else class="text-xs pl-2.5 w-32">
                       {{ shift_data.shift }}
                     </label>
-                    <transition
-                      :name="`slide-${
-                        itemsToShowTrashButton[`abs_student-${idx}-${i}`]
-                          ? 'left'
-                          : 'right'
-                      }`"
-                      mode="out-in"
-                    >
-                      <div
-                        v-if="
-                          !itemsToShowTrashButton[`abs_student-${idx}-${i}`]
-                        "
-                        class="w-32 ml-auto p-2"
-                      >
-                        <label
-                          class="text-xs text-right font-bold"
-                          :class="[
-                            !shift_data.is_justified
-                              ? 'text-yellow-600'
-                              : 'text-green-600 ml-6',
-                          ]"
+                    <ClientOnly>
+                      <template v-if="!is_mobile">
+                        <div
+                          v-if="
+                            !itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                          "
+                          class="w-32 ml-auto p-2"
                         >
-                          {{
-                            !shift_data.is_justified
-                              ? "No Justificado"
-                              : "Justificado"
-                          }}</label
-                        >
-                        <div class="mt-4 toggle colour">
-                          <input
-                            :id="`check-${shift_data.shift}-${el.id}-is-justified`"
-                            class="toggle-checkbox hidden"
-                            type="checkbox"
-                            v-model="shift_data.is_justified"
-                            @click="
-                              openJustificationModal(
-                                el.id,
-                                !!shift_data.is_justified,
-                                shift_data.shift
-                              )
-                            "
-                          />
                           <label
-                            :for="`check-${shift_data.shift}-${el.id}-is-justified`"
-                            class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
-                          ></label>
+                            class="text-xs text-right font-bold"
+                            :class="[
+                              !shift_data.is_justified
+                                ? 'text-yellow-600'
+                                : 'text-green-600 ml-6',
+                            ]"
+                          >
+                            {{
+                              !shift_data.is_justified
+                                ? "No Justificado"
+                                : "Justificado"
+                            }}</label
+                          >
+                          <div class="mt-4 toggle colour">
+                            <input
+                              :id="`check-${shift_data.shift}-${el.id}-is-justified`"
+                              class="toggle-checkbox hidden"
+                              type="checkbox"
+                              v-model="shift_data.is_justified"
+                              @click="
+                                openJustificationModal(
+                                  el.id,
+                                  !!shift_data.is_justified,
+                                  shift_data.shift
+                                )
+                              "
+                            />
+                            <label
+                              :for="`check-${shift_data.shift}-${el.id}-is-justified`"
+                              class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
+                            ></label>
+                          </div>
                         </div>
-                      </div>
-                      <icon-button
-                        v-if="
-                          !is_mobile ||
+                        <icon-button
+                          v-if="
+                            !is_mobile ||
+                            itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                          "
+                          data-test="absent_student_delete_button"
+                          class="bg-red-light hover-effect md:ml-4"
+                          :class="[
+                            is_mobile
+                              ? 'ml-24 my-8 !rounded-md h-full w-full'
+                              : 'max-h-10',
+                          ]"
+                          @click.native="
+                            remove_student_from_list(el.id, el.shift)
+                          "
+                        >
+                          <img src="~/assets/images/trash.svg" alt="Eliminar" />
+                        </icon-button>
+                      </template>
+                      <transition
+                        :name="`slide-${
                           itemsToShowTrashButton[`abs_student-${idx}-${i}`]
-                        "
-                        data-test="absent_student_delete_button"
-                        class="bg-red-light hover-effect md:ml-4"
-                        :class="[
-                          is_mobile
-                            ? 'ml-24 my-8 !rounded-md h-full w-full'
-                            : 'max-h-10',
-                        ]"
-                        @click.native="
-                          remove_student_from_list(el.id, el.shift)
-                        "
+                            ? 'left'
+                            : 'right'
+                        }`"
+                        mode="out-in"
+                        v-else
                       >
-                        <img src="~/assets/images/trash.svg" alt="Eliminar" />
-                      </icon-button>
-                    </transition>
+                        <div
+                          v-if="
+                            !itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                          "
+                          class="w-32 ml-auto p-2"
+                        >
+                          <label
+                            class="text-xs text-right font-bold"
+                            :class="[
+                              !shift_data.is_justified
+                                ? 'text-yellow-600'
+                                : 'text-green-600 ml-6',
+                            ]"
+                          >
+                            {{
+                              !shift_data.is_justified
+                                ? "No Justificado"
+                                : "Justificado"
+                            }}</label
+                          >
+                          <div class="mt-4 toggle colour">
+                            <input
+                              :id="`check-${shift_data.shift}-${el.id}-is-justified`"
+                              class="toggle-checkbox hidden"
+                              type="checkbox"
+                              v-model="shift_data.is_justified"
+                              @click="
+                                openJustificationModal(
+                                  el.id,
+                                  !!shift_data.is_justified,
+                                  shift_data.shift
+                                )
+                              "
+                            />
+                            <label
+                              :for="`check-${shift_data.shift}-${el.id}-is-justified`"
+                              class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
+                            ></label>
+                          </div>
+                        </div>
+                        <icon-button
+                          v-if="
+                            !is_mobile ||
+                            itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                          "
+                          data-test="absent_student_delete_button"
+                          class="bg-red-light hover-effect md:ml-4"
+                          :class="[
+                            is_mobile
+                              ? 'ml-24 my-8 !rounded-md h-full w-full'
+                              : 'max-h-10',
+                          ]"
+                          @click.native="
+                            remove_student_from_list(el.id, el.shift)
+                          "
+                        >
+                          <img src="~/assets/images/trash.svg" alt="Eliminar" />
+                        </icon-button>
+                      </transition>
+                    </ClientOnly>
                   </div>
                 </div>
               </div>
@@ -360,7 +434,7 @@
       <client-only>
         <lazy-v-sidebar
           v-if="show_sidebar"
-          :apply-text-margin="false"
+          :apply-text-margin="!is_mobile"
           :title="
             show_sidebar === 'reason_of_deletion'
               ? 'Motivo de corrección'
@@ -374,61 +448,66 @@
           @closeSidebar="closeSidebar"
         >
           <template #content>
-            <div
-              v-if="show_sidebar === 'reason_of_deletion'"
-              class="flex max-w-full mt-4 px-1 items-center justify-between"
-            >
-              <outlined-primary-button
-                class="mr-6 !h-12 !w-full"
-                @click.native="addAbsentStudentThatWasDeleted(true)"
-              >
-                Llegó tarde
-              </outlined-primary-button>
-              <outlined-primary-button
-                class="!h-12 !w-full"
-                @click.native="addAbsentStudentThatWasDeleted(false)"
-              >
-                Error en listado
-              </outlined-primary-button>
-            </div>
-            <div
-              class="flex max-w-full px-2 pt-2 gap-2"
-              :class="[
-                absence_reason === 'Otra'
-                  ? 'justify-between items-end'
-                  : 'justify-center items-start',
-              ]"
-              v-else-if="show_sidebar === 'justification'"
-            >
-              <v-dropdown
-                :options="possible_absence_reasons"
-                v-model="absence_reason"
-                class="max-w-min h-9"
-              ></v-dropdown>
+            <div class="h-full flex justify-between items-center flex-col">
               <div
-                class="flex flex-col items-start justify-between"
-                v-if="absence_reason === 'Otra'"
+                v-if="show_sidebar === 'reason_of_deletion'"
+                class="flex w-full h-full mt-4 items-center justify-between"
               >
-                <v-label class="mb-1 !text-white">Motivo</v-label>
-                <v-text-input
-                  class="!w-full"
-                  @input="new_justification = $event.target.value"
-                  :value="new_justification"
-                ></v-text-input>
+                <outlined-primary-button
+                  class="mr-6 !h-12 !w-full"
+                  @click.native="addAbsentStudentThatWasDeleted(true)"
+                >
+                  Llegó tarde
+                </outlined-primary-button>
+                <outlined-primary-button
+                  class="!h-12 !w-full"
+                  @click.native="addAbsentStudentThatWasDeleted(false)"
+                >
+                  Error en listado
+                </outlined-primary-button>
               </div>
-            </div>
-            <div class="min-w-full my-4 px-10 self-center">
-              <small-button
-                class="min-w-full !py-2"
-                @click.native="updateJustificationReason()"
-                v-if="show_sidebar === 'justification'"
-                :disabled="
+              <div
+                class="flex max-w-full px-2 pt-2 gap-2"
+                :class="[
                   absence_reason === 'Otra'
-                    ? !new_justification
-                    : !absence_reason
-                "
-                >Continuar</small-button
+                    ? 'justify-between items-end'
+                    : 'justify-center items-start',
+                ]"
+                v-else-if="show_sidebar === 'justification'"
               >
+                <v-dropdown
+                  :options="possible_absence_reasons"
+                  v-model="absence_reason"
+                  class="max-w-min h-9"
+                ></v-dropdown>
+                <div
+                  class="flex flex-col items-start justify-between"
+                  v-if="absence_reason === 'Otra'"
+                >
+                  <v-label class="mb-1 !text-white">Motivo</v-label>
+                  <v-text-input
+                    class="!w-full"
+                    @input="new_justification = $event.target.value"
+                    :value="new_justification"
+                  ></v-text-input>
+                </div>
+              </div>
+              <div
+                :class="{ 'p-4': is_mobile }"
+                class="min-w-full my-4 self-center"
+              >
+                <small-button
+                  class="min-w-full !py-3"
+                  @click.native="updateJustificationReason()"
+                  v-if="show_sidebar === 'justification'"
+                  :disabled="
+                    absence_reason === 'Otra'
+                      ? !new_justification
+                      : !absence_reason
+                  "
+                  >Continuar</small-button
+                >
+              </div>
             </div>
           </template>
         </lazy-v-sidebar>
@@ -446,6 +525,8 @@ import { setTimeout } from "timers";
 import { VueAutosuggest } from "vue-autosuggest";
 import { addHorizontalSwipeHandler } from "@/utils/addHorizontalSwipeHandler.js";
 import { transformSlots } from "../../utils/transformSlots";
+const pickRandomFromArray = (arr) =>
+  arr[Math.floor(Math.random() * arr.length)];
 
 const structuredClonePolyfilled =
   typeof structuredClone === "function"
@@ -642,7 +723,16 @@ export default {
           { diff: Infinity, item: null }
         ).item;
       this.class_id_without_rendering_in_dom = null;
-      return nearest_item_in_extra_curricular_shift?.subject;
+      return this.$store.state.authentication.user_data.groups.includes(
+        "preceptor"
+      ) ||
+        this.$store.state.authentication.user_data.groups.includes(
+          "management_team"
+        )
+        ? nearest_item_in_extra_curricular_shift?.subject
+        : pickRandomFromArray(
+            this.$store.state.authentication.user_data.subjects
+          );
     },
     renderPage() {
       const EXTRA_CURRICULAR_SUBJECTS =
@@ -672,28 +762,27 @@ export default {
       const absent_students = this.absent_students;
       return this.students.filter((el) => {
         const hasSubjects = this.$store.state.authentication.user_data.subjects;
-        const EXTRA_CURRICULAR_SUBJECTS_quantity =
-          this.extra_curricular_classes_slots[el.class_id].filter((el) =>
-            hasSubjects
-              ? this.$store.state.authentication.user_data.subjects.includes(
-                  el.subject
-                )
-              : true
-          ).length;
+        const extra_curricular_subjects_quantity = hasSubjects
+          ? this.extra_curricular_classes_slots[el.class_id].filter((el) =>
+              this.$store.state.authentication.user_data.subjects.includes(
+                el.subject
+              )
+            ).length
+          : this.extra_curricular_classes_slots[el.class_id].length;
         const student_appearances_in_absence_list = absent_students.filter(
           (el2) => el2.id === el.id
         );
         const amount_of_times_student_appears =
           student_appearances_in_absence_list.length;
         return (
-          this.absent_students.find((el2) => el2.id === el.id)?.shift ===
+          (this.absent_students.find((el2) => el2.id === el.id)?.shift ===
             idealShiftPrediction ||
-          (!hasSubjects
-            ? amount_of_times_student_appears <=
-              EXTRA_CURRICULAR_SUBJECTS_quantity
-            : amount_of_times_student_appears <=
-                EXTRA_CURRICULAR_SUBJECTS_quantity &&
-              (this.class_id ? this.class_id === el.class_id : true))
+            (!hasSubjects
+              ? amount_of_times_student_appears <=
+                extra_curricular_subjects_quantity
+              : amount_of_times_student_appears <=
+                extra_curricular_subjects_quantity)) &&
+          (this.class_id ? this.class_id === el.class_id : true)
         );
       });
     },

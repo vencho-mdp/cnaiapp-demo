@@ -45,6 +45,15 @@ class slot_DAO {
         ]
       );
     if (classes_ids && classes_ids.length > 0) {
+      const valid_grades = db("class")
+        .select("grade")
+        .whereIn("id", classes_ids);
+      classes_ids = (
+        await db("class")
+          .whereIn("grade", valid_grades)
+          .select(db.raw("ARRAY_AGG(class.id) AS classes_ids"))
+          .first()
+      ).classes_ids;
       // same logic but for multiple slots
       // form of  { id: [slots] }
       const slots_of_classes_in_classes_ids = await db("slot")

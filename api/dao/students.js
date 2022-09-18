@@ -1,12 +1,7 @@
 const db = require("../db/db");
 
-const isSubArray = (master, sub) => {
-  return sub.every(
-    (
-      (i) => (v) =>
-        (i = master.indexOf(v, i) + 1)
-    )(0)
-  );
+const isSubArray = (array, subarray) => {
+  return subarray.every((value) => array.includes(value));
 };
 
 const get_absent_students = async (date, classes_ids, u_id) => {
@@ -79,19 +74,25 @@ const get_absent_students = async (date, classes_ids, u_id) => {
 
 class students_DAO {
   async get_students(classes_ids, u_id) {
-    const user_classes_and_role = await db("user_class")
-      .andWhere("user_class.user_id", u_id)
-      .join("user_group", "user_class.user_id", "user_group.user_id")
+    const valid_grades = db("class")
+      .select("grade")
+      .whereIn(
+        "id",
+        db.raw("SELECT class_id FROM user_class WHERE user_id = ?", [u_id])
+      );
+    const user_classes_and_role = await db("class")
+      .whereIn("grade", valid_grades)
+      .join("user_group", "user_group.user_id", db.raw(`'${u_id}'`))
       .join("group", "group.id", "user_group.group_id")
       .select(
-        db.raw("ARRAY_AGG(class_id) AS classes_ids"),
-        "name AS group_name"
+        db.raw("ARRAY_AGG(class.id) AS classes_ids"),
+        db.raw("ARRAY_AGG(DISTINCT name) AS group_names")
       )
-      .groupBy("user_class.user_id", "name");
+      .first();
     if (
-      (user_classes_and_role[0].group_name === "preceptor" ||
-        user_classes_and_role[0].group_name === "teacher") &&
-      !isSubArray(user_classes_and_role[0].classes_ids, classes_ids)
+      (user_classes_and_role.group_names.includes("preceptor") ||
+        user_classes_and_role.group_names.includes("teacher")) &&
+      !isSubArray(user_classes_and_role.classes_ids, classes_ids)
     ) {
       throw new Error("Invalid classes list");
     }
@@ -106,7 +107,7 @@ class students_DAO {
       .join("user_group", "user.id", "user_group.user_id")
       .leftJoin("student_absence", "student_absence.student_id", "user.id")
       .join("group", "group.id", "user_group.group_id")
-      .whereIn("class_id", classes_ids)
+      .whereIn("class_id", user_classes_and_role.classes_ids)
       .andWhere("name", "student")
       .having(db.raw("COUNT(student_id) < 5"))
       .groupBy("user.id", "class_id", "first_name", "last_name")
