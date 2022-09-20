@@ -90,8 +90,7 @@ class students_DAO {
       )
       .first();
     if (
-      (user_classes_and_role.group_names.includes("preceptor") ||
-        user_classes_and_role.group_names.includes("teacher")) &&
+      !user_classes_and_role.group_names.includes("management_team") &&
       !isSubArray(user_classes_and_role.classes_ids, classes_ids)
     ) {
       throw new Error("Invalid classes list");
@@ -107,7 +106,11 @@ class students_DAO {
       .join("user_group", "user.id", "user_group.user_id")
       .leftJoin("student_absence", "student_absence.student_id", "user.id")
       .join("group", "group.id", "user_group.group_id")
-      .whereIn("class_id", user_classes_and_role.classes_ids)
+      .modify(function (queryBuilder) {
+        if (!user_classes_and_role.group_names.includes("management_team")) {
+          queryBuilder.whereIn("class_id", user_classes_and_role.classes_ids);
+        }
+      })
       .andWhere("name", "student")
       .having(db.raw("COUNT(student_id) < 5"))
       .groupBy("user.id", "class_id", "first_name", "last_name")
