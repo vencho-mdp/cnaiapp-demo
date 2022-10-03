@@ -5,7 +5,7 @@
     @change="$emit('input', $event.target.value)"
   >
     <option
-      v-for="(option, index) in optionsWithDefaultState"
+      v-for="(option, index) in !groups ? optionsWithDefaultState : []"
       :key="index"
       :value="option.value || option"
       :selected="(option.value || option) === value"
@@ -13,6 +13,23 @@
     >
       {{ option.label || option }}
     </option>
+    <optgroup
+      v-for="(group, index) in groups"
+      :key="index"
+      :label="group.label"
+    >
+      <option
+        v-for="(option, index) in options.filter((el) =>
+          group.filter(el.label || el)
+        )"
+        :key="index"
+        :value="option.value || option"
+        :selected="(option.value || option) === value"
+        :hidden="!option"
+      >
+        {{ option.label || option }}
+      </option>
+    </optgroup>
   </select>
 </template>
 
@@ -26,6 +43,10 @@ export default {
     value: {
       type: String,
       default: "",
+    },
+    groups: {
+      type: [Array, Object],
+      default: () => null,
     },
   },
   computed: {

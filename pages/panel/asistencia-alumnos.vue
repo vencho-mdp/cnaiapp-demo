@@ -4,209 +4,281 @@
     :class="{ 'p-4': !is_mobile }"
     class="flex flex-col min-h-full pl-4 pt-8 justify-center sm:px-24 overflow-x-hidden"
   >
-    <v-title> Asistencia </v-title>
-    <div class="flex flex-wrap mb-auto mt-12 w-full items-start">
-      <div
-        class="flex flex-col min-h-full w-full md:w-2/3 justify-start items-start pr-2"
-      >
-        <v-label class="mb-4 !text-sm"> Fecha </v-label>
-        <client-only>
-          <v-date-picker
-            :is-expanded="is_mobile"
-            v-model="date"
-            :max-date="new Date()"
-            class="calendar"
-            :popover="{ visibility: null }"
-            locale="es"
-            is-required
-            :disabled-dates="{ weekdays: [1, 7] }"
-          />
-        </client-only>
-        <div class="flex flex-col mt-8 items-start w-2/3 md:w-auto">
-          <v-label class="mb-2 !text-sm"> Clase </v-label>
-          <v-dropdown
-            v-model="class_id"
-            data-test="class_dropdown"
-            class="bg-white-full !w-full md:max-w-xs"
-            :options="
-              classes
-                ? classes.map((c) => ({
-                    label: c.class,
-                    value: c.id,
-                  }))
-                : []
-            "
-          />
-        </div>
+    <span class="flex items-end">
+      <v-title>
+        {{ visualize ? "Ver" : "Tomar" }} Asistencia{{ visualize ? "s" : "" }}
+      </v-title>
+      <div class="ml-8 mb-1 toggle colour">
+        <input
+          class="toggle-checkbox hidden"
+          type="checkbox"
+          v-model="visualize"
+          @click="visualize = !visualize"
+          id="mode-switcher"
+        />
+        <label
+          for="mode-switcher"
+          class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
+        ></label>
       </div>
-      <div
-        class="flex flex-col min-w-full mt-8 gap-12 justify-between items-start w-full md:w-auto"
-      >
-        <div class="flex flex-col min-w-full gap-2 justify-between items-start">
-          <v-label class="mb-2 !text-sm"> Alumnos ausentes </v-label>
-          <vue-autosuggest
-            :input-props="{
-              id: 'autosuggest-input',
-            }"
-            :suggestions="suggestions"
-            v-click-outside="turnHasAutocompleteBeenTouchFalse"
-            id="autosuggest"
-            class="mb-8 w-2/3 md:max-w-xs"
-            v-model="absentStudentQuery"
-            @focus="hasAutocompleteBeenTouch = true"
-            @selected="(item) => item && addAbsentStudent(item.item)"
-            :sectionConfigs="{
-              default: {
-                limit: this.class_id ? Infinity : 12,
-              },
-            }"
-            :should-render-suggestions="() => this.hasAutocompleteBeenTouch"
-            :get-suggestion-value="(item) => item.label"
+    </span>
+    <template v-if="!visualize">
+      <div class="flex flex-wrap mb-auto mt-12 w-full items-start">
+        <div
+          class="flex flex-col min-h-full w-full md:w-2/3 justify-start items-start pr-2"
+        >
+          <v-label class="mb-4 !text-sm"> Fecha </v-label>
+          <client-only>
+            <v-date-picker
+              :is-expanded="is_mobile"
+              v-model="date"
+              :max-date="new Date()"
+              class="calendar"
+              :popover="{ visibility: null }"
+              locale="es"
+              is-required
+              :disabled-dates="{ weekdays: [1, 7] }"
+            />
+          </client-only>
+          <div class="flex flex-col mt-8 items-start w-2/3 md:w-auto">
+            <v-label class="mb-2 !text-sm"> Clase </v-label>
+            <v-dropdown
+              v-model="class_id"
+              data-test="class_dropdown"
+              class="bg-white-full !w-full md:max-w-xs"
+              :options="
+                classes
+                  ? classes.map((c) => ({
+                      label: `${c.class} ${
+                        checked_classes.some((el) => el === c.id) ? '✅' : '❕'
+                      }`,
+                      value: c.id,
+                    }))
+                  : []
+              "
+              :groups="[
+                {
+                  label: 'Ciclo Básico',
+                  filter(opt) {
+                    return (
+                      opt.includes('3ro') ||
+                      opt.includes('2do') ||
+                      opt.includes('1ro')
+                    );
+                  },
+                },
+                {
+                  label: 'Ciclo Avanzado',
+                  filter(opt) {
+                    return (
+                      opt.includes('4to') ||
+                      opt.includes('5to') ||
+                      opt.includes('6to')
+                    );
+                  },
+                },
+              ]"
+            />
+          </div>
+        </div>
+        <div
+          class="flex flex-col min-w-full mt-8 gap-12 justify-between items-start w-full md:w-auto"
+        >
+          <div
+            class="flex flex-col min-w-full gap-2 justify-between items-start"
           >
-            <template v-slot="{ suggestion }">
-              <span class="cursor-pointer font-bold">{{
-                suggestion.item.label
-              }}</span>
-              <transition name="fade">
-                <span
-                  v-if="
-                    absent_students.some(
-                      (el) =>
-                        el.shift ===
-                          (((date.getHours() < 12 ? true : false) &&
-                            isClassAdvanced) ||
-                          (!(date.getHours() < 12 ? true : false) &&
-                            !isClassAdvanced)
-                            ? 'Turno'
-                            : nearest_item_in_extra_curricular_shift ||
-                              'Turno') && el.id === suggestion.item.value
-                    )
-                  "
-                  :disabled="true"
-                  class="m-2 text-white shadow font-semibold p-1 rounded bg-primary-darkblue"
-                  >Agregado ({{
-                    absent_students.filter(
-                      (el) => el.id === suggestion.item.value
-                    ).length
-                  }}
-                  ve{{
-                    absent_students.filter(
-                      (el) => el.id === suggestion.item.value
-                    ).length === 1
-                      ? "z"
-                      : "eces"
-                  }})</span
-                >
-              </transition>
-            </template>
-          </vue-autosuggest>
-          <transition name="fade">
-            <transition-group
-              v-if="!loading"
-              mode="out-in"
-              tag="div"
-              name="list"
-              class="flex md:!w-auto flex-wrap pr-2 w-full items-start"
-              :class="{ 'gap-12': !is_mobile }"
+            <v-label class="mb-2 !text-sm"> Alumnos ausentes </v-label>
+            <vue-autosuggest
+              :input-props="{
+                id: 'autosuggest-input',
+              }"
+              :suggestions="suggestions"
+              v-click-outside="turnHasAutocompleteBeenTouchFalse"
+              id="autosuggest"
+              class="mb-8 w-2/3 md:max-w-xs"
+              v-model="absentStudentQuery"
+              @focus="hasAutocompleteBeenTouch = true"
+              @selected="(item) => item && addAbsentStudent(item.item)"
+              :sectionConfigs="{
+                default: {
+                  limit: this.class_id ? Infinity : 12,
+                },
+              }"
+              :should-render-suggestions="() => this.hasAutocompleteBeenTouch"
+              :get-suggestion-value="(item) => item.label"
             >
-              <div
-                class="border border-gray-200 text-tiny p-4 z-0 rounded-md mb-8"
-                :key="'late-students'"
-                v-if="late_students.length > 0"
+              <template v-slot="{ suggestion }">
+                <span class="cursor-pointer font-bold">{{
+                  suggestion.item.label
+                }}</span>
+                <transition name="fade">
+                  <span
+                    v-if="
+                      absent_students.some(
+                        (el) =>
+                          el.shift ===
+                            (((date.getHours() < 12 ? true : false) &&
+                              isClassAdvanced) ||
+                            (!(date.getHours() < 12 ? true : false) &&
+                              !isClassAdvanced)
+                              ? 'Turno'
+                              : nearest_item_in_extra_curricular_shift ||
+                                'Turno') && el.id === suggestion.item.value
+                      )
+                    "
+                    :disabled="true"
+                    class="m-2 text-white shadow font-semibold p-1 rounded bg-primary-darkblue"
+                    >Agregado ({{
+                      absent_students.filter(
+                        (el) => el.id === suggestion.item.value
+                      ).length
+                    }}
+                    ve{{
+                      absent_students.filter(
+                        (el) => el.id === suggestion.item.value
+                      ).length === 1
+                        ? "z"
+                        : "eces"
+                    }})</span
+                  >
+                </transition>
+              </template>
+            </vue-autosuggest>
+            <transition name="fade">
+              <transition-group
+                v-if="!loading"
+                mode="out-in"
+                tag="div"
+                name="list"
+                class="flex md:!w-auto flex-wrap pr-2 w-full items-start"
+                :class="{ 'gap-12': !is_mobile }"
               >
-                <span class="font-bold text-sm">
-                  Alumnos que llegaron tarde:</span
+                <div
+                  class="border border-gray-200 text-tiny p-4 z-0 rounded-md mb-8"
+                  :key="'late-students'"
+                  v-if="late_students.length > 0"
                 >
-                <ul>
-                  <transition-group name="list">
-                    <li
-                      v-for="student in late_students"
-                      :ref="`${student.student_name}-${student.shift}`"
-                      :id="`${student.student_name}-${student.shift}`"
-                      :key="student.student_name + student.shift"
-                      class="text-sm my-2 p-1.5 rounded text-black flex"
-                      :class="{
-                        '!text-white bg-primary-darkblue':
-                          selectedStudentsThatArriveLateToRemove.some(
-                            (el) =>
-                              el.student_name === student.student_name &&
-                              el.shift === student.shift
-                          ),
-                      }"
-                    >
-                      {{ student.student_name }} ({{ student.shift }})
-                      <transition
-                        :name="`slide-${
-                          itemsToShowTrashButton[
-                            `${student.student_name}-${student.shift}`
-                          ]
-                            ? 'left'
-                            : 'right'
-                        }`"
-                        mode="out-in"
+                  <span class="font-bold text-sm">
+                    Alumnos que llegaron tarde:</span
+                  >
+                  <ul>
+                    <transition-group name="list">
+                      <li
+                        v-for="student in late_students"
+                        :ref="`${student.student_name}-${student.shift}`"
+                        :id="`${student.student_name}-${student.shift}`"
+                        :key="student.student_name + student.shift"
+                        class="text-sm my-2 p-1.5 rounded text-black flex"
+                        :class="{
+                          '!text-white bg-primary-darkblue':
+                            selectedStudentsThatArriveLateToRemove.some(
+                              (el) =>
+                                el.student_name === student.student_name &&
+                                el.shift === student.shift
+                            ),
+                        }"
                       >
-                        <icon-button
-                          v-if="
-                            !is_mobile ||
+                        {{ student.student_name }} ({{ student.shift }})
+                        <transition
+                          :name="`slide-${
                             itemsToShowTrashButton[
                               `${student.student_name}-${student.shift}`
                             ]
-                          "
-                          data-test="absent_student_delete_button"
-                          class="bg-red-light hover-effect md:ml-4"
-                          :class="[
-                            is_mobile
-                              ? 'ml-2 my-8 !rounded-md h-full w-2/3'
-                              : 'max-h-10',
-                          ]"
-                          @click.native="
-                            removeLateStudent(student.id, student.shift)
-                          "
+                              ? 'left'
+                              : 'right'
+                          }`"
+                          mode="out-in"
                         >
-                          <img src="~/assets/images/trash.svg" alt="Eliminar" />
-                        </icon-button>
-                        <p v-else></p>
-                      </transition>
-                    </li>
-                  </transition-group>
-                </ul>
-              </div>
-              <div
-                v-for="(el, idx) of absent_students_without_duplicates"
-                :key="`${el.id}-${idx}`"
-                data-test="absent_student"
-                :class="{ 'mb-12': idx + 1 !== absent_students.length }"
-                style="width: -moz-available; width: -webkit-fill-available"
-                class="flex-shrink-0 bg-white-full rounded-md flex flex-col max-w-sm border border-gray-200 text-sm p-4 z-0 justify-around items-start"
-              >
-                <div
-                  class="border-primary-darkblue w-full border-b flex pb-4 justify-between"
-                >
-                  <span class="font-bold mt-auto">
-                    {{ el.last_name }}, {{ el.first_name }}
-                  </span>
+                          <icon-button
+                            v-if="
+                              !is_mobile ||
+                              itemsToShowTrashButton[
+                                `${student.student_name}-${student.shift}`
+                              ]
+                            "
+                            data-test="absent_student_delete_button"
+                            class="bg-red-light hover-effect md:ml-4"
+                            :class="[
+                              is_mobile
+                                ? 'ml-2 my-8 !rounded-md h-full w-2/3'
+                                : 'max-h-10',
+                            ]"
+                            @click.native="
+                              removeLateStudent(student.id, student.shift)
+                            "
+                          >
+                            <img
+                              src="~/assets/images/trash.svg"
+                              alt="Eliminar"
+                            />
+                          </icon-button>
+                          <p v-else></p>
+                        </transition>
+                      </li>
+                    </transition-group>
+                  </ul>
                 </div>
                 <div
-                  class="w-full h-24 my-4"
-                  v-for="(shift_data, i) in el.shifts"
-                  :key="`${shift_data.shift}-${el.id}`"
-                  :ref="`abs_student-${idx}-${i}`"
-                  :id="`abs_student-${idx}-${i}`"
+                  v-for="(el, idx) of absent_students_without_duplicates"
+                  :key="`${el.id}-${idx}`"
+                  data-test="absent_student"
+                  :class="{ 'mb-12': idx + 1 !== absent_students.length }"
+                  style="width: -moz-available; width: -webkit-fill-available"
+                  class="flex-shrink-0 bg-white-full rounded-md flex flex-col max-w-sm border border-gray-200 text-sm p-4 z-0 justify-around items-start"
                 >
                   <div
-                    class="flex items-center justify-between h-20"
-                    v-if="
-                      $store.state.authentication.user_data.subjects
-                        ? $store.state.authentication.user_data.subjects.includes(
-                            shift_data.shift
-                          )
-                        : true
-                    "
+                    class="border-primary-darkblue w-full border-b flex pb-4 justify-between"
                   >
-                    <VDropdown
+                    <span class="font-bold mt-auto">
+                      {{ el.last_name }}, {{ el.first_name }}
+                    </span>
+                  </div>
+                  <div
+                    class="w-full h-24 my-4"
+                    v-for="(shift_data, i) in el.shifts"
+                    :key="`${shift_data.shift}-${el.id}`"
+                    :ref="`abs_student-${idx}-${i}`"
+                    :id="`abs_student-${idx}-${i}`"
+                  >
+                    <div
+                      class="flex items-center justify-between h-20"
                       v-if="
-                        extra_curricular_classes_slots[el.class_id] &&
-                        [
+                        $store.state.authentication.user_data.subjects
+                          ? $store.state.authentication.user_data.subjects.includes(
+                              shift_data.shift
+                            )
+                          : true
+                      "
+                    >
+                      <VDropdown
+                        v-if="
+                          extra_curricular_classes_slots[el.class_id] &&
+                          [
+                            ...new Set(
+                              extra_curricular_classes_slots[el.class_id]
+                                .map((el) => el.subject)
+                                // teacher
+                                .concat(
+                                  $store.state.authentication.user_data.groups.includes(
+                                    'teacher'
+                                  )
+                                    ? null
+                                    : 'Turno'
+                                )
+                                .filter(
+                                  (shift_el) =>
+                                    shift_el === shift_data.shift ||
+                                    (shift_el &&
+                                      !absent_students.some(
+                                        (s) =>
+                                          s.shift === shift_el && s.id === el.id
+                                      ))
+                                )
+                                .concat(shift_data.shift)
+                            ),
+                          ].length > 1
+                        "
+                        :options="[
                           ...new Set(
                             extra_curricular_classes_slots[el.class_id]
                               .map((el) => el.subject)
@@ -229,290 +301,290 @@
                               )
                               .concat(shift_data.shift)
                           ),
-                        ].length > 1
-                      "
-                      :options="[
-                        ...new Set(
-                          extra_curricular_classes_slots[el.class_id]
-                            .map((el) => el.subject)
-                            // teacher
-                            .concat(
-                              $store.state.authentication.user_data.groups.includes(
-                                'teacher'
-                              )
-                                ? null
-                                : 'Turno'
-                            )
-                            .filter(
-                              (shift_el) =>
-                                shift_el === shift_data.shift ||
-                                (shift_el &&
-                                  !absent_students.some(
-                                    (s) =>
-                                      s.shift === shift_el && s.id === el.id
-                                  ))
-                            )
-                            .concat(shift_data.shift)
-                        ),
-                      ]"
-                      :value="shift_data.shift"
-                      @change.native="
-                        changeShift(
-                          el.shifts[i].real_index,
-                          $event.target.value
-                        )
-                      "
-                      class="text-xs !w-32"
-                    >
-                      {{ shift_data.shift }}</VDropdown
-                    >
-                    <label v-else class="text-xs pl-2.5 w-32">
-                      {{ shift_data.shift }}
-                    </label>
-                    <ClientOnly>
-                      <template v-if="!is_mobile">
-                        <div
-                          v-if="
-                            !itemsToShowTrashButton[`abs_student-${idx}-${i}`]
-                          "
-                          class="w-32 ml-auto p-2"
-                        >
-                          <label
-                            class="text-xs text-right font-bold"
-                            :class="[
-                              !shift_data.is_justified
-                                ? 'text-yellow-600'
-                                : 'text-green-600 ml-6',
-                            ]"
-                          >
-                            {{
-                              !shift_data.is_justified
-                                ? "No Justificado"
-                                : "Justificado"
-                            }}</label
-                          >
-                          <div class="mt-4 toggle colour">
-                            <input
-                              :id="`check-${shift_data.shift}-${el.id}-is-justified`"
-                              class="toggle-checkbox hidden"
-                              type="checkbox"
-                              v-model="shift_data.is_justified"
-                              @click="
-                                openJustificationModal(
-                                  el.id,
-                                  !!shift_data.is_justified,
-                                  shift_data.shift
-                                )
-                              "
-                            />
-                            <label
-                              :for="`check-${shift_data.shift}-${el.id}-is-justified`"
-                              class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
-                            ></label>
-                          </div>
-                        </div>
-                        <icon-button
-                          v-if="
-                            !is_mobile ||
-                            itemsToShowTrashButton[`abs_student-${idx}-${i}`]
-                          "
-                          data-test="absent_student_delete_button"
-                          class="bg-red-light hover-effect md:ml-4"
-                          :class="[
-                            is_mobile
-                              ? 'ml-24 my-8 !rounded-md h-full w-full'
-                              : 'max-h-10',
-                          ]"
-                          @click.native="
-                            remove_student_from_list(el.id, el.shift)
-                          "
-                        >
-                          <img src="~/assets/images/trash.svg" alt="Eliminar" />
-                        </icon-button>
-                      </template>
-                      <transition
-                        :name="`slide-${
-                          itemsToShowTrashButton[`abs_student-${idx}-${i}`]
-                            ? 'left'
-                            : 'right'
-                        }`"
-                        mode="out-in"
-                        v-else
+                        ]"
+                        :value="shift_data.shift"
+                        @change.native="
+                          changeShift(
+                            el.shifts[i].real_index,
+                            $event.target.value
+                          )
+                        "
+                        class="text-xs !w-32"
                       >
-                        <div
-                          v-if="
-                            !itemsToShowTrashButton[`abs_student-${idx}-${i}`]
-                          "
-                          class="w-32 ml-auto p-2"
-                        >
-                          <label
-                            class="text-xs text-right font-bold"
-                            :class="[
-                              !shift_data.is_justified
-                                ? 'text-yellow-600'
-                                : 'text-green-600 ml-6',
-                            ]"
+                        {{ shift_data.shift }}</VDropdown
+                      >
+                      <label v-else class="text-xs pl-2.5 w-32">
+                        {{ shift_data.shift }}
+                      </label>
+                      <ClientOnly>
+                        <template v-if="!is_mobile">
+                          <div
+                            v-if="
+                              !itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                            "
+                            class="w-32 ml-auto p-2"
                           >
-                            {{
-                              !shift_data.is_justified
-                                ? "No Justificado"
-                                : "Justificado"
-                            }}</label
-                          >
-                          <div class="mt-4 toggle colour">
-                            <input
-                              :id="`check-${shift_data.shift}-${el.id}-is-justified`"
-                              class="toggle-checkbox hidden"
-                              type="checkbox"
-                              v-model="shift_data.is_justified"
-                              @click="
-                                openJustificationModal(
-                                  el.id,
-                                  !!shift_data.is_justified,
-                                  shift_data.shift
-                                )
-                              "
-                            />
                             <label
-                              :for="`check-${shift_data.shift}-${el.id}-is-justified`"
-                              class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
-                            ></label>
+                              class="text-xs text-right font-bold"
+                              :class="[
+                                !shift_data.is_justified
+                                  ? 'text-yellow-600'
+                                  : 'text-green-600 ml-6',
+                              ]"
+                            >
+                              {{
+                                !shift_data.is_justified
+                                  ? "No Justificado"
+                                  : "Justificado"
+                              }}</label
+                            >
+                            <div class="mt-4 toggle colour">
+                              <input
+                                :id="`check-${shift_data.shift}-${el.id}-is-justified`"
+                                class="toggle-checkbox hidden"
+                                type="checkbox"
+                                v-model="shift_data.is_justified"
+                                @click="
+                                  openJustificationModal(
+                                    el.id,
+                                    !!shift_data.is_justified,
+                                    shift_data.shift
+                                  )
+                                "
+                              />
+                              <label
+                                :for="`check-${shift_data.shift}-${el.id}-is-justified`"
+                                class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
+                              ></label>
+                            </div>
                           </div>
-                        </div>
-                        <icon-button
-                          v-if="
-                            !is_mobile ||
+                          <icon-button
+                            v-if="
+                              !is_mobile ||
+                              itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                            "
+                            data-test="absent_student_delete_button"
+                            class="bg-red-light hover-effect md:ml-4"
+                            :class="[
+                              is_mobile
+                                ? 'ml-24 my-8 !rounded-md h-full w-full'
+                                : 'max-h-10',
+                            ]"
+                            @click.native="
+                              remove_student_from_list(el.id, el.shift)
+                            "
+                          >
+                            <img
+                              src="~/assets/images/trash.svg"
+                              alt="Eliminar"
+                            />
+                          </icon-button>
+                        </template>
+                        <transition
+                          :name="`slide-${
                             itemsToShowTrashButton[`abs_student-${idx}-${i}`]
-                          "
-                          data-test="absent_student_delete_button"
-                          class="bg-red-light hover-effect md:ml-4"
-                          :class="[
-                            is_mobile
-                              ? 'ml-24 my-8 !rounded-md h-full w-full'
-                              : 'max-h-10',
-                          ]"
-                          @click.native="
-                            remove_student_from_list(el.id, el.shift)
-                          "
+                              ? 'left'
+                              : 'right'
+                          }`"
+                          mode="out-in"
+                          v-else
                         >
-                          <img src="~/assets/images/trash.svg" alt="Eliminar" />
-                        </icon-button>
-                      </transition>
-                    </ClientOnly>
+                          <div
+                            v-if="
+                              !itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                            "
+                            class="w-32 ml-auto p-2"
+                          >
+                            <label
+                              class="text-xs text-right font-bold"
+                              :class="[
+                                !shift_data.is_justified
+                                  ? 'text-yellow-600'
+                                  : 'text-green-600 ml-6',
+                              ]"
+                            >
+                              {{
+                                !shift_data.is_justified
+                                  ? "No Justificado"
+                                  : "Justificado"
+                              }}</label
+                            >
+                            <div class="mt-4 toggle colour">
+                              <input
+                                :id="`check-${shift_data.shift}-${el.id}-is-justified`"
+                                class="toggle-checkbox hidden"
+                                type="checkbox"
+                                v-model="shift_data.is_justified"
+                                @click="
+                                  openJustificationModal(
+                                    el.id,
+                                    !!shift_data.is_justified,
+                                    shift_data.shift
+                                  )
+                                "
+                              />
+                              <label
+                                :for="`check-${shift_data.shift}-${el.id}-is-justified`"
+                                class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
+                              ></label>
+                            </div>
+                          </div>
+                          <icon-button
+                            v-if="
+                              !is_mobile ||
+                              itemsToShowTrashButton[`abs_student-${idx}-${i}`]
+                            "
+                            data-test="absent_student_delete_button"
+                            class="bg-red-light hover-effect md:ml-4"
+                            :class="[
+                              is_mobile
+                                ? 'ml-24 my-8 !rounded-md h-full w-full'
+                                : 'max-h-10',
+                            ]"
+                            @click.native="
+                              remove_student_from_list(el.id, el.shift)
+                            "
+                          >
+                            <img
+                              src="~/assets/images/trash.svg"
+                              alt="Eliminar"
+                            />
+                          </icon-button>
+                        </transition>
+                      </ClientOnly>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </transition-group>
-          </transition>
-          <div
-            class="md:!m-0 w-screen md:!w-auto md:!static sticky bottom-0 -mx-6 mt-4 md:!bg-white-full md:!border-0"
-          >
-            <add-button
-              data-test="add_absent_student"
-              :disabled="!have_absent_students_changed"
-              @click.native="save_data()"
-              class="w-full sm:w-32 !rounded-none md:!rounded-md h-14 md:h-auto"
-              :class="[absent_students.length === 0 ? 'mt-32' : 'mt-2']"
+              </transition-group>
+            </transition>
+            <PillButton
+              v-if="
+                absent_students.length === 0 &&
+                class_id &&
+                hasAutocompleteBeenTouch
+              "
+              @click.native="save_data_without_absent_students"
             >
-              Guardar
-            </add-button>
+              Sin ausentes
+            </PillButton>
+            <div
+              class="md:!m-0 w-screen md:!w-auto md:!static sticky bottom-0 -mx-4 mt-4 md:!bg-white-full md:!border-0"
+            >
+              <add-button
+                data-test="add_absent_student"
+                :disabled="!have_absent_students_changed"
+                @click.native="save_data()"
+                class="w-full sm:w-32 !rounded-none md:!rounded-md h-14 md:h-auto"
+                :class="[absent_students?.length === 0 ? 'mt-32' : 'mt-2']"
+              >
+                Guardar
+              </add-button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <transition name="fade">
-      <feedback-card
-        v-if="show_notification"
-        class="top-auto mr-2 mb-12 right-0 bottom-0 w-72 z-50 fixed !shadow-lg"
-        :is-success="show_notification !== 'error'"
-        :title="
-          show_notification !== 'error' ? '¡Guardado!' : 'Ha ocurrido un error'
-        "
-      />
-    </transition>
-    <transition name="fade">
-      <client-only>
-        <lazy-v-sidebar
-          v-if="show_sidebar"
-          :apply-text-margin="!is_mobile"
+      <transition name="fade">
+        <feedback-card
+          v-if="show_notification"
+          class="top-auto mr-2 mb-12 right-0 bottom-0 w-72 z-50 fixed !shadow-lg"
+          :is-success="show_notification !== 'error'"
           :title="
-            show_sidebar === 'reason_of_deletion'
-              ? 'Motivo de corrección'
-              : show_sidebar === 'justification'
-              ? 'Justificación'
-              : null
+            show_notification !== 'error'
+              ? '¡Guardado!'
+              : 'Ha ocurrido un error'
           "
-          :sidebar-classes="
-            is_mobile ? '!h-60 !min-w-full z-50 mt-auto' : 'z-50'
-          "
-          @closeSidebar="closeSidebar"
-        >
-          <template #content>
-            <div class="h-full flex justify-between items-center flex-col">
-              <div
-                v-if="show_sidebar === 'reason_of_deletion'"
-                class="flex w-full h-full mt-4 items-center justify-between"
-              >
-                <outlined-primary-button
-                  class="mr-6 !h-12 !w-full"
-                  @click.native="addAbsentStudentThatWasDeleted(true)"
-                >
-                  Llegó tarde
-                </outlined-primary-button>
-                <outlined-primary-button
-                  class="!h-12 !w-full"
-                  @click.native="addAbsentStudentThatWasDeleted(false)"
-                >
-                  Error en listado
-                </outlined-primary-button>
-              </div>
-              <div
-                class="flex max-w-full px-2 pt-2 gap-2"
-                :class="[
-                  absence_reason === 'Otra'
-                    ? 'justify-between items-end'
-                    : 'justify-center items-start',
-                ]"
-                v-else-if="show_sidebar === 'justification'"
-              >
-                <v-dropdown
-                  :options="possible_absence_reasons"
-                  v-model="absence_reason"
-                  class="max-w-min h-9"
-                ></v-dropdown>
+        />
+      </transition>
+      <transition name="fade">
+        <client-only>
+          <lazy-v-sidebar
+            v-if="show_sidebar"
+            :apply-text-margin="!is_mobile"
+            :title="
+              show_sidebar === 'reason_of_deletion'
+                ? 'Motivo de corrección'
+                : show_sidebar === 'justification'
+                ? 'Justificación'
+                : null
+            "
+            :sidebar-classes="
+              is_mobile ? '!h-60 !min-w-full z-50 mt-auto' : 'z-50'
+            "
+            @closeSidebar="closeSidebar"
+          >
+            <template #content>
+              <div class="h-full flex justify-between items-center flex-col">
                 <div
-                  class="flex flex-col items-start justify-between"
-                  v-if="absence_reason === 'Otra'"
+                  v-if="show_sidebar === 'reason_of_deletion'"
+                  class="flex w-full h-full mt-4 items-center justify-between"
                 >
-                  <v-label class="mb-1 !text-white">Motivo</v-label>
-                  <v-text-input
-                    class="!w-full"
-                    @input="new_justification = $event.target.value"
-                    :value="new_justification"
-                  ></v-text-input>
+                  <outlined-primary-button
+                    class="mr-6 !h-12 !w-full"
+                    @click.native="addAbsentStudentThatWasDeleted(true)"
+                  >
+                    Llegó tarde
+                  </outlined-primary-button>
+                  <outlined-primary-button
+                    class="!h-12 !w-full"
+                    @click.native="addAbsentStudentThatWasDeleted(false)"
+                  >
+                    Error en listado
+                  </outlined-primary-button>
+                </div>
+                <div
+                  class="flex max-w-full px-2 pt-2 gap-2"
+                  :class="[
+                    absence_reason === 'Otra'
+                      ? 'justify-between items-end'
+                      : 'justify-center items-start',
+                  ]"
+                  v-else-if="show_sidebar === 'justification'"
+                >
+                  <v-dropdown
+                    :options="possible_absence_reasons"
+                    v-model="absence_reason"
+                    class="max-w-min h-9"
+                  ></v-dropdown>
+                  <div
+                    class="flex flex-col items-start justify-between"
+                    v-if="absence_reason === 'Otra'"
+                  >
+                    <v-label class="mb-1 !text-white">Motivo</v-label>
+                    <v-text-input
+                      class="!w-full"
+                      @input="new_justification = $event.target.value"
+                      :value="new_justification"
+                    ></v-text-input>
+                  </div>
+                </div>
+                <div
+                  :class="{ 'p-4': is_mobile }"
+                  class="min-w-full my-4 self-center"
+                >
+                  <small-button
+                    class="min-w-full !py-3"
+                    @click.native="updateJustificationReason()"
+                    v-if="show_sidebar === 'justification'"
+                    :disabled="
+                      absence_reason === 'Otra'
+                        ? !new_justification
+                        : !absence_reason
+                    "
+                    >Continuar</small-button
+                  >
                 </div>
               </div>
-              <div
-                :class="{ 'p-4': is_mobile }"
-                class="min-w-full my-4 self-center"
-              >
-                <small-button
-                  class="min-w-full !py-3"
-                  @click.native="updateJustificationReason()"
-                  v-if="show_sidebar === 'justification'"
-                  :disabled="
-                    absence_reason === 'Otra'
-                      ? !new_justification
-                      : !absence_reason
-                  "
-                  >Continuar</small-button
-                >
-              </div>
-            </div>
-          </template>
-        </lazy-v-sidebar>
-      </client-only>
-    </transition>
+            </template>
+          </lazy-v-sidebar>
+        </client-only>
+      </transition>
+    </template>
+    <AssistanceVisualize
+      v-else
+      :is-mobile="is_mobile"
+      :classes="classes"
+      :students="students"
+    />
   </main>
 </template>
 
@@ -562,14 +634,24 @@ export default {
         ),
       },
     });
+    const get_checked_classes = $axios.$get("/api/checked-classes", {
+      params: {
+        date: removeTimeFromDate(getNearestPastWorkday()),
+        classes_ids: JSON.stringify(
+          store.state.authentication.user_data.classes_ids
+        ),
+      },
+    });
     try {
       // eslint-disable-next-line prefer-const
-      let [students, classes, slots, late_students] = await Promise.all([
-        get_students,
-        get_classes,
-        get_slots,
-        get_late_students,
-      ]);
+      let [students, classes, slots, late_students, checked_classes] =
+        await Promise.all([
+          get_students,
+          get_classes,
+          get_slots,
+          get_late_students,
+          get_checked_classes,
+        ]);
 
       let class_id =
         // management team
@@ -632,6 +714,9 @@ export default {
         extra_curricular_classes_slots: slots,
         teacher_slots: await getTeacherSlots(),
         late_students,
+        // TODO: Check users permissions (if teacher) and set true
+        visualize: false,
+        checked_classes,
       };
     } catch (error) {
       $reportNetworkError(error);
@@ -833,6 +918,11 @@ export default {
     },
   },
   watch: {
+    visualize(new_val) {
+      if (!new_val) {
+        this.setupListeners();
+      }
+    },
     async date(new_val, old_val) {
       await this.update_absent_students_and_class(new_val);
       const day_index_in_arr = new_val.getDay() - 1;
@@ -874,6 +964,18 @@ export default {
     }
   },
   methods: {
+    async save_data_without_absent_students() {
+      const formatted_date = removeTimeFromDate(this.date);
+      await this.$axios.$post("/api/checked-classes", {
+        date: formatted_date,
+        classes_ids: [this.class_id],
+      });
+      this.checked_classes = [...this.checked_classes, this.class_id];
+      this.show_notification = true;
+      setTimeout(() => {
+        this.show_notification = !this.show_notification;
+      }, 2000);
+    },
     setupListeners() {
       this.$nextTick(() => {
         Object.values(this.$refs)
@@ -1164,6 +1266,7 @@ body {
 .calendar :deep(.vc-title) {
   text-transform: capitalize;
 }
+
 #autosuggest :deep(#autosuggest-input) {
   @apply relative !px-0.5 !py-0.5 !min-w-full !min-h-full focus-visible:!outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue;
 }

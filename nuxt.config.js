@@ -89,7 +89,6 @@ export default {
 
   axios: {
     baseUrl: process.env.BASE_URL,
-    retry: { retries: 2 },
   },
 
   pwa: {

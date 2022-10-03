@@ -5,6 +5,9 @@ const {
   get_absent_students,
   get_suspicious_cases,
   get_late_students,
+  get_student_absence_dates,
+  get_checked_classes,
+  add_checked_classes,
 } = require("../controllers/students");
 const auth = require("../middlewares/auth");
 
@@ -42,6 +45,27 @@ router.get(
   (req, res, next) =>
     auth(req, res, next, ["management_team", "preceptor", "teacher"]),
   get_late_students
+);
+
+router.get(
+  "/student-absence-dates",
+  (req, res, next) =>
+    auth(req, res, next, ["management_team", "preceptor", "teacher"]),
+  get_student_absence_dates
+);
+
+router.get(
+  "/checked-classes",
+  (req, res, next) =>
+    auth(req, res, next, ["management_team", "preceptor", "teacher"]),
+  get_checked_classes
+);
+
+router.post(
+  "/checked-classes",
+  (req, res, next) =>
+    auth(req, res, next, ["management_team", "preceptor", "teacher"]),
+  add_checked_classes
 );
 
 module.exports = router;

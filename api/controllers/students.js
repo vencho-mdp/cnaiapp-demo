@@ -5,6 +5,9 @@ const {
   get_absent_students,
   get_suspicious_cases,
   get_late_students,
+  get_student_absence_dates,
+  add_checked_classes,
+  get_checked_classes,
 } = require("../services/students");
 
 class students_controller {
@@ -66,6 +69,21 @@ class students_controller {
     }
   }
 
+  async get_student_absence_dates(req, res) {
+    try {
+      const dates = await get_student_absence_dates(
+        req.query.student_id,
+        req.query.since_date
+      );
+      res.status(200).json(dates);
+    } catch (error) {
+      console.error(error);
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
   async get_suspicious_cases(req, res) {
     try {
       const students = await get_suspicious_cases();
@@ -82,6 +100,32 @@ class students_controller {
     try {
       const { date, classes_ids } = req.query;
       const students = await get_late_students(date, JSON.parse(classes_ids));
+      res.status(200).json(students);
+    } catch (error) {
+      console.error(error);
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
+  async add_checked_classes(req, res) {
+    try {
+      const { date, classes_ids } = req.body;
+      const students = await add_checked_classes(classes_ids, date);
+      res.status(200).json(students);
+    } catch (error) {
+      console.error(error);
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
+  async get_checked_classes(req, res) {
+    try {
+      const { date } = req.query;
+      const students = await get_checked_classes(date);
       res.status(200).json(students);
     } catch (error) {
       console.error(error);

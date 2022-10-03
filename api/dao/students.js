@@ -122,6 +122,7 @@ class students_DAO {
     const formatted_date = new Date(date).toISOString();
     const deleted_students = list.filter((el) => el.deleted_because);
     const added_students = list.filter((el) => !el.deleted_because);
+    const classes_ids = added_students.map((el) => el.class_id);
     // TODO:
     // in case shift was one from the extra curricular activities
     // validate user has permissions using auth header
@@ -186,6 +187,13 @@ class students_DAO {
                 reported_by: user_id,
               })
           ),
+          classes_ids.map((el) =>
+            db("checked_classes").insert({
+              class_id: el,
+              date: formatted_date,
+              is_checked: true,
+            })
+          ),
         ].flat()
       );
     } catch (error) {
@@ -193,8 +201,38 @@ class students_DAO {
     }
   }
 
+  async add_checked_classes(classes_ids, date) {
+    const formatted_date = new Date(date).toISOString();
+    console.log(classes_ids, formatted_date);
+    await db("checked_classes").insert(
+      classes_ids.map((el) => ({
+        class_id: el,
+        date: formatted_date,
+        is_checked: true,
+      }))
+    );
+  }
+
+  async get_checked_classes(date) {
+    const formatted_date = new Date(date).toISOString();
+    const data = await db("checked_classes")
+      .select("class_id AS id")
+      .where("date", formatted_date);
+    return data.map((el) => el.id);
+  }
+
   async get_absent_students(date, classes_ids, u_id) {
     return await get_absent_students(date, classes_ids, u_id);
+  }
+
+  async get_student_absence_dates(student_id, since_date) {
+    const data = await db("student_absence")
+      .select("date", "shift", "is_justified")
+      .where("student_id", student_id)
+      .andWhere(db.raw("date ::date"), ">=", since_date)
+      .andWhere("reason_of_deletion", null)
+      .orderBy("date", "desc");
+    return data;
   }
 
   async get_suspicious_cases() {

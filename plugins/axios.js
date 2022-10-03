@@ -16,7 +16,6 @@ export default function ({ store, app, app: { $axios }, redirect }) {
       const refreshToken = store.state.authentication.refresh_token;
       if (refreshToken) {
         if (!store.state.authentication.tried) {
-          // catch any error while refreshing the token
           await store.dispatch("authentication/logout");
           return Promise.resolve(redirect("/iniciar-sesion"));
         }
