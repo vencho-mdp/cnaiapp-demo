@@ -48,9 +48,9 @@ class students_service {
       };
     }
   }
-  async get_student_absence_dates(student_id, since_date) {
+  async get_student_absence_dates(student_id, class_id, since_date) {
     try {
-      return await get_student_absence_dates(student_id, since_date);
+      return await get_student_absence_dates(student_id, class_id, since_date);
     } catch (error) {
       console.log(error);
       throw {

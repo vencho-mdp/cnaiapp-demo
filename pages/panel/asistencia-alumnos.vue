@@ -2,7 +2,7 @@
   <main
     v-if="renderPage"
     :class="{ 'p-4': !is_mobile }"
-    class="flex flex-col min-h-full pl-4 pt-8 justify-center sm:px-24 overflow-x-hidden"
+    class="flex flex-col min-h-full pl-4 pt-8 justify-center md:justify-start sm:px-24 overflow-x-hidden"
   >
     <span class="flex items-end">
       <v-title>
@@ -593,7 +593,6 @@ import removeTimeFromDate from "@/utils/removeTimeFromDate.js";
 import getNearestPastWorkday from "@/utils/getNearestPastWorkday.js";
 import filterMap from "@/utils/filterMap.js";
 import "@/assets/css/toggle.css";
-import { setTimeout } from "timers";
 import { VueAutosuggest } from "vue-autosuggest";
 import { addHorizontalSwipeHandler } from "@/utils/addHorizontalSwipeHandler.js";
 import { transformSlots } from "../../utils/transformSlots";

@@ -73,6 +73,7 @@ class students_controller {
     try {
       const dates = await get_student_absence_dates(
         req.query.student_id,
+        req.query.class_id,
         req.query.since_date
       );
       res.status(200).json(dates);

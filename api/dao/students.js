@@ -225,14 +225,26 @@ class students_DAO {
     return await get_absent_students(date, classes_ids, u_id);
   }
 
-  async get_student_absence_dates(student_id, since_date) {
-    const data = await db("student_absence")
+  async get_student_absence_dates(student_id, class_id, since_date) {
+    const query = db("student_absence")
       .select("date", "shift", "is_justified")
-      .where("student_id", student_id)
       .andWhere(db.raw("date ::date"), ">=", since_date)
       .andWhere("reason_of_deletion", null)
       .orderBy("date", "desc");
-    return data;
+    if (student_id !== "all") {
+      query.modify(function (queryBuilder) {
+        queryBuilder.where("student_id", student_id);
+      });
+    }
+    if (student_id === "all") {
+      query.modify(function (queryBuilder) {
+        queryBuilder
+          .join("user_class", "user_class.user_id", "student_id")
+          .where("user_class.class_id", class_id)
+          .select("student_id");
+      });
+    }
+    return await query;
   }
 
   async get_suspicious_cases() {
