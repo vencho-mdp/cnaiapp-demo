@@ -70,7 +70,7 @@
     <transition name="fade">
       <outlined-primary-button
         v-if="data.length > limit"
-        class="bg-white-full my-3 text-black p-1 duration-500 hover:-translate-y-1"
+        class="bg-white-full !w-full my-3 text-black p-1 duration-500 hover:-translate-y-1"
         @click.native="limit += 3"
       />
     </transition>

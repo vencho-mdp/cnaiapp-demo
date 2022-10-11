@@ -112,7 +112,6 @@ class students_DAO {
         }
       })
       .andWhere("name", "student")
-      .having(db.raw("COUNT(student_id) < 5"))
       .groupBy("user.id", "class_id", "first_name", "last_name")
       .orderBy("last_name");
     return data;
@@ -227,7 +226,7 @@ class students_DAO {
 
   async get_student_absence_dates(student_id, class_id, since_date) {
     const query = db("student_absence")
-      .select("date", "shift", "is_justified")
+      .select("date", "shift", "is_justified", "reason_of_deletion")
       .andWhere(db.raw("date ::date"), ">=", since_date)
       .andWhere("reason_of_deletion", null)
       .orderBy("date", "desc");

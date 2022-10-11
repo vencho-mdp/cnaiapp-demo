@@ -2,15 +2,7 @@
   <div class="h-full">
     <transition name="fade" mode="out-in">
       <div v-if="!loading">
-        <SmallButton
-          @click.native="exportFile"
-          class="mt-8 !w-min whitespace-nowrap"
-          :disabled="!(class_id && term)"
-        >
-          Exportar Datos
-          {{ selectedStudent ? "de Estudiante" : class_id ? "de Clase" : "" }}
-        </SmallButton>
-        <div class="flex flex-col mt-12 items-start w-2/3 md:w-auto">
+        <div class="flex flex-col mt-4 items-start w-2/3 md:w-auto">
           <span
             class="flex md:justify-start md:gap-4 justify-between w-full mb-2"
           >
@@ -46,6 +38,14 @@
             :options="valid_students"
           />
         </div>
+        <SmallButton
+          @click.native="exportFile"
+          class="mt-8 !w-min whitespace-nowrap"
+          :disabled="!(class_id && term)"
+        >
+          Exportar Datos
+          {{ selectedStudent ? "de Estudiante" : class_id ? "de Clase" : "" }}
+        </SmallButton>
         <transition name="fade">
           <div
             v-if="formatted_absence_dates"
@@ -61,6 +61,7 @@
               :is-expanded="isMobile"
               :max-date="new Date()"
               class="calendar"
+              :min-date="dateOfFirstDayInCurrentMonth"
               locale="es"
             />
             <!-- <span class="flex justify-between my-4 items-center px-12 w-full">
@@ -104,7 +105,6 @@ const daysSinceAugust01 = (date = new Date()) => {
 // if date > august 01, is second quarter
 const isSecondQuarter = daysSinceAugust01() > 0;
 const TERMS_MAPPER_TO_DATES = {
-  current_day: new Date(),
   last_week: new Date(new Date().setDate(new Date().getDate() - 7)),
   last_month: new Date(new Date().setDate(new Date().getDate() - 30)),
   // last_quarter: if current date is greater than 01 aug, then it's the distance between that date and 01 aug
@@ -133,12 +133,13 @@ export default {
   },
   data() {
     return {
-      term: "last_day",
+      dateOfFirstDayInCurrentMonth: new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        1
+      ),
+      term: null,
       terms: [
-        {
-          label: "Hoy",
-          value: "current_day",
-        },
         {
           label: "Semana",
           value: "last_week",
@@ -147,14 +148,14 @@ export default {
           label: "Mes",
           value: "last_month",
         },
-        {
-          label: "Cuatrimestre",
-          value: "last_quarter",
-        },
-        {
-          label: "Año",
-          value: "last_year",
-        },
+        // {
+        //   label: "Cuatrimestre",
+        //   value: "last_quarter",
+        // },
+        // {
+        //   label: "Año",
+        //   value: "last_year",
+        // },
       ],
       selectedStudent: "",
       class_id: null,
@@ -203,23 +204,33 @@ export default {
         ({ label, value }) => {
           const entries = datesThatAreIncludedInTerm.map((date) => {
             const formattedDate = formatDate(date);
-            const absenceInfo = data.find(
+            const absenceInfo = data.filter(
               (absence) =>
                 absence.student_id === value &&
                 formatDate(absence.date) === formattedDate
             );
-            return absenceInfo
+            return absenceInfo[0]
               ? [
                   formattedDate,
                   {
-                    v: "A",
-                    t: "s",
+                    v: absenceInfo
+                      .map((absence) =>
+                        absence.reason_of_deletion === "Llegó tarde"
+                          ? `T (${absence.shift} - ${absence.is_justified})`
+                          : `A (${absence.shift}${
+                              absence.is_justified === "false"
+                                ? ""
+                                : " - " + absence.is_justified
+                            })`
+                      )
+                      .join("\n"),
                     s: {
                       font: {
-                        color: {
-                          rgb: CSS_TO_HEX[SHIFT_COLOR[absenceInfo.shift]],
-                        },
                         bold: true,
+                        color: {
+                          //red
+                          rgb: "FF0000",
+                        },
                       },
                     },
                   },
@@ -228,7 +239,6 @@ export default {
                   formattedDate,
                   {
                     v: "P",
-                    t: "s",
                     s: {
                       font: {
                         color: { rgb: "098f14" },

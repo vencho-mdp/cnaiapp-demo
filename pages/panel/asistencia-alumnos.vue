@@ -4,24 +4,21 @@
     :class="{ 'p-4': !is_mobile }"
     class="flex flex-col min-h-full pl-4 pt-8 justify-center md:justify-start sm:px-24 overflow-x-hidden"
   >
-    <span class="flex items-end">
-      <v-title>
-        {{ visualize ? "Ver" : "Tomar" }} Asistencia{{ visualize ? "s" : "" }}
-      </v-title>
-      <div class="ml-8 mb-1 toggle colour">
-        <input
-          class="toggle-checkbox hidden"
-          type="checkbox"
-          v-model="visualize"
-          @click="visualize = !visualize"
-          id="mode-switcher"
-        />
-        <label
-          for="mode-switcher"
-          class="rounded-full mr-2 ml-auto h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
-        ></label>
-      </div>
-    </span>
+    <Tabs
+      :options="[
+        {
+          label: 'Tomar asistencia',
+          // set visualize to true
+          click: false,
+        },
+        {
+          label: 'Ver asistencia',
+          // set visualize to false
+          click: true,
+        },
+      ]"
+      @tabClick="tabClick"
+    />
     <template v-if="!visualize">
       <div class="flex flex-wrap mb-auto mt-12 w-full items-start">
         <div
@@ -40,7 +37,7 @@
               :disabled-dates="{ weekdays: [1, 7] }"
             />
           </client-only>
-          <div class="flex flex-col mt-8 items-start w-2/3 md:w-auto">
+          <div class="flex flex-col mt-8 items-start w-full md:w-auto">
             <v-label class="mb-2 !text-sm"> Clase </v-label>
             <v-dropdown
               v-model="class_id"
@@ -49,9 +46,7 @@
               :options="
                 classes
                   ? classes.map((c) => ({
-                      label: `${c.class} ${
-                        checked_classes.some((el) => el === c.id) ? '✅' : '❕'
-                      }`,
+                      label: c.class,
                       value: c.id,
                     }))
                   : []
@@ -85,7 +80,7 @@
           class="flex flex-col min-w-full mt-8 gap-12 justify-between items-start w-full md:w-auto"
         >
           <div
-            class="flex flex-col min-w-full gap-2 justify-between items-start"
+            class="flex flex-col min-w-full gap-2 justify-between items-start pr-2"
           >
             <v-label class="mb-2 !text-sm"> Alumnos ausentes </v-label>
             <vue-autosuggest
@@ -95,7 +90,7 @@
               :suggestions="suggestions"
               v-click-outside="turnHasAutocompleteBeenTouchFalse"
               id="autosuggest"
-              class="mb-8 w-2/3 md:max-w-xs"
+              class="mb-8 w-full md:max-w-xs"
               v-model="absentStudentQuery"
               @focus="hasAutocompleteBeenTouch = true"
               @selected="(item) => item && addAbsentStudent(item.item)"
@@ -633,24 +628,15 @@ export default {
         ),
       },
     });
-    const get_checked_classes = $axios.$get("/api/checked-classes", {
-      params: {
-        date: removeTimeFromDate(getNearestPastWorkday()),
-        classes_ids: JSON.stringify(
-          store.state.authentication.user_data.classes_ids
-        ),
-      },
-    });
+
     try {
       // eslint-disable-next-line prefer-const
-      let [students, classes, slots, late_students, checked_classes] =
-        await Promise.all([
-          get_students,
-          get_classes,
-          get_slots,
-          get_late_students,
-          get_checked_classes,
-        ]);
+      let [students, classes, slots, late_students] = await Promise.all([
+        get_students,
+        get_classes,
+        get_slots,
+        get_late_students,
+      ]);
 
       let class_id =
         // management team
@@ -715,7 +701,6 @@ export default {
         late_students,
         // TODO: Check users permissions (if teacher) and set true
         visualize: false,
-        checked_classes,
       };
     } catch (error) {
       $reportNetworkError(error);
@@ -917,10 +902,8 @@ export default {
     },
   },
   watch: {
-    visualize(new_val) {
-      if (!new_val) {
-        this.setupListeners();
-      }
+    visualize() {
+      this.setupListeners();
     },
     async date(new_val, old_val) {
       await this.update_absent_students_and_class(new_val);
@@ -938,11 +921,23 @@ export default {
           })
         );
       });
+      this.checked_classes = await this.$axios.$get("/api/checked-classes", {
+        params: {
+          date: removeTimeFromDate(this.date),
+          classes_ids: [this.class_id],
+        },
+      });
     },
     async class_id() {
       await this.update_absent_students_and_class(this.date, true);
       this.alreadyAddedListeners = [];
       this.setupListeners();
+      this.checked_classes = await this.$axios.$get("/api/checked-classes", {
+        params: {
+          date: removeTimeFromDate(this.date),
+          classes_ids: [this.class_id],
+        },
+      });
     },
     absent_students() {
       this.alreadyAddedListeners = [];
@@ -963,6 +958,9 @@ export default {
     }
   },
   methods: {
+    tabClick(params) {
+      this.visualize = params.click;
+    },
     async save_data_without_absent_students() {
       const formatted_date = removeTimeFromDate(this.date);
       await this.$axios.$post("/api/checked-classes", {
@@ -1126,6 +1124,7 @@ export default {
         class_id: data.class_id,
         is_justified: false,
       };
+      this.checked_classes.push(data.class_id);
       // if data to push has no duplicates
       // push it
       if (
