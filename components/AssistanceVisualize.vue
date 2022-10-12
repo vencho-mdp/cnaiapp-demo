@@ -61,6 +61,7 @@
               :is-expanded="isMobile"
               :max-date="new Date()"
               class="calendar"
+              v-if="term === 'last_week' || term === 'last_month'"
               :min-date="dateOfFirstDayInCurrentMonth"
               locale="es"
             />
@@ -285,7 +286,7 @@ export default {
           popover: {
             label:
               el.is_justified === "false"
-                ? "Ausencia no justificada"
+                ? "Ausencia no justificada" + " - " + el.shift
                 : el.is_justified,
             visibility: "focus",
           },

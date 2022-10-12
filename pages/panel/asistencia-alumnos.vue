@@ -921,23 +921,11 @@ export default {
           })
         );
       });
-      this.checked_classes = await this.$axios.$get("/api/checked-classes", {
-        params: {
-          date: removeTimeFromDate(this.date),
-          classes_ids: [this.class_id],
-        },
-      });
     },
     async class_id() {
       await this.update_absent_students_and_class(this.date, true);
       this.alreadyAddedListeners = [];
       this.setupListeners();
-      this.checked_classes = await this.$axios.$get("/api/checked-classes", {
-        params: {
-          date: removeTimeFromDate(this.date),
-          classes_ids: [this.class_id],
-        },
-      });
     },
     absent_students() {
       this.alreadyAddedListeners = [];
@@ -967,7 +955,6 @@ export default {
         date: formatted_date,
         classes_ids: [this.class_id],
       });
-      this.checked_classes = [...this.checked_classes, this.class_id];
       this.show_notification = true;
       setTimeout(() => {
         this.show_notification = !this.show_notification;
@@ -1124,7 +1111,7 @@ export default {
         class_id: data.class_id,
         is_justified: false,
       };
-      this.checked_classes.push(data.class_id);
+
       // if data to push has no duplicates
       // push it
       if (
@@ -1235,13 +1222,22 @@ export default {
         this.original_absent_students = structuredClonePolyfilled(
           this.absent_students
         );
-        await this.$axios.$post("/api/absent-students", {
-          list: [
-            ...absent_students_without_absolute_duplicates,
-            ...this.deleted_students,
-          ],
-          date: removeTimeFromDate(this.date),
-        });
+        await Promise.all([
+          this.$axios.$post("/api/absent-students", {
+            list: [
+              ...absent_students_without_absolute_duplicates,
+              ...this.deleted_students,
+            ],
+            date: removeTimeFromDate(this.date),
+          }),
+          await this.$axios.$post("/api/checked-classes", {
+            // get classes ids of every absent student
+            classes_ids: JSON.stringify(
+              this.absent_students.map((el) => el.class_id)
+            ),
+            date: removeTimeFromDate(this.date),
+          }),
+        ]);
         this.show_notification = true;
       } catch (error) {
         this.show_notification = "error";
