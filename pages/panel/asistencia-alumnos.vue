@@ -1232,9 +1232,7 @@ export default {
           }),
           await this.$axios.$post("/api/checked-classes", {
             // get classes ids of every absent student
-            classes_ids: JSON.stringify(
-              this.absent_students.map((el) => el.class_id)
-            ),
+            classes_ids: this.absent_students.map((el) => el.class_id),
             date: removeTimeFromDate(this.date),
           }),
         ]);

@@ -46,7 +46,7 @@
           Exportar Datos
           {{ selectedStudent ? "de Estudiante" : class_id ? "de Clase" : "" }}
         </SmallButton>
-        <transition name="fade">
+        <transition name="fade" mode="out-in">
           <div
             v-if="formatted_absence_dates"
             :key="`${selectedStudent}${term}`"
@@ -55,16 +55,43 @@
             <span class="font-bold text-xs mb-2">
               Ausencias: {{ formatted_absence_dates.length }}</span
             >
+            <transition name="fade">
+              <v-calendar
+                :attributes="formatted_absence_dates"
+                ref="calendar-ref"
+                :is-expanded="isMobile"
+                :max-date="
+                  term === 'last_week' || term === 'last_month'
+                    ? new Date()
+                    : undefined
+                "
+                class="calendar"
+                v-show="
+                  term === 'last_week' ||
+                  term === 'last_month' ||
+                  !!selectedMonth
+                "
+                :min-date="dateOfFirstDayInMonth"
+                locale="es"
+              />
+            </transition>
 
-            <v-calendar
-              :attributes="formatted_absence_dates"
-              :is-expanded="isMobile"
-              :max-date="new Date()"
-              class="calendar"
-              v-if="term === 'last_week' || term === 'last_month'"
-              :min-date="dateOfFirstDayInCurrentMonth"
-              locale="es"
-            />
+            <div
+              v-if="term === 'last_year' || term === 'last_quarter'"
+              class="flex items-center flex-wrap"
+            >
+              <PillButton
+                v-for="month in months"
+                :key="month"
+                class="m-2"
+                @click.native="selectedMonth = month"
+                >{{ month }} ({{
+                  (absencesPerMonth[month] &&
+                    absencesPerMonth[month].length - 1) ||
+                  0
+                }})
+              </PillButton>
+            </div>
             <!-- <span class="flex justify-between my-4 items-center px-12 w-full">
           <PillButton> ⬅️ </PillButton>
           <PillButton> ➡️ </PillButton>
@@ -103,11 +130,22 @@ const daysSinceAugust01 = (date = new Date()) => {
   const august01 = new Date(date.getFullYear(), 7, 1);
   return Math.round((date - august01) / (1000 * 60 * 60 * 24));
 };
+const MONTHS = [
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
 // if date > august 01, is second quarter
 const isSecondQuarter = daysSinceAugust01() > 0;
 const TERMS_MAPPER_TO_DATES = {
-  last_week: new Date(new Date().setDate(new Date().getDate() - 7)),
-  last_month: new Date(new Date().setDate(new Date().getDate() - 30)),
   // last_quarter: if current date is greater than 01 aug, then it's the distance between that date and 01 aug
   // if not, it's the distance between that date and march 01
   last_quarter: isSecondQuarter
@@ -149,19 +187,20 @@ export default {
           label: "Mes",
           value: "last_month",
         },
-        // {
-        //   label: "Cuatrimestre",
-        //   value: "last_quarter",
-        // },
-        // {
-        //   label: "Año",
-        //   value: "last_year",
-        // },
+        {
+          label: "Cuatrimestre",
+          value: "last_quarter",
+        },
+        {
+          label: "Año",
+          value: "last_year",
+        },
       ],
       selectedStudent: "",
       class_id: null,
       formatted_absence_dates: null,
       loading: false,
+      selectedMonth: null,
     };
   },
   watch: {
@@ -173,6 +212,14 @@ export default {
     },
     selectedStudent() {
       this.formatAbsenceDates();
+    },
+    selectedMonth() {
+      const calendar = this.$refs["calendar-ref"];
+      calendar.move({
+        // jan is 1, feb is 2, etc
+        month: MONTHS.indexOf(this.selectedMonth) + 2,
+        year: new Date().getFullYear(),
+      });
     },
   },
   methods: {
@@ -278,7 +325,7 @@ export default {
           since_date: TERMS_MAPPER_TO_DATES[this.term],
         },
       });
-      this.formatted_absence_dates = data.map((el) => {
+      this.formatted_absence_dates = data?.map((el) => {
         const res = {
           dates: new Date(el.date),
           highlight: true,
@@ -297,6 +344,32 @@ export default {
     },
   },
   computed: {
+    dateOfFirstDayInMonth() {
+      return this.term === "last_month" || this.term === "last_week"
+        ? this.dateOfFirstDayInCurrentMonth
+        : TERMS_MAPPER_TO_DATES[this.term];
+    },
+    absencesPerMonth() {
+      if (!this.class_id || !this.selectedStudent || !this.term) return null;
+      // object of each month and array of the absences
+      // { 'Enero': [absence1, absence2], 'Febrero': [absence3, absence4] }
+      return this.formatted_absence_dates.reduce((acc, el) => {
+        const month = MONTHS[el.dates.getMonth() - 1];
+        if (!acc[month]) acc[month] = [];
+        acc[month].push(el);
+        return acc;
+      }, {});
+    },
+    months() {
+      if (this.term === "last_year") {
+        return MONTHS;
+      }
+      if (this.term === "last_quarter") {
+        // remove first 5
+        const months_copy = MONTHS.slice(0);
+        return months_copy.splice(5);
+      }
+    },
     valid_students() {
       return this.students
         .filter((s) => s.class_id === this.class_id)

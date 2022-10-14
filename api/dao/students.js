@@ -202,16 +202,16 @@ class students_DAO {
 
   async add_checked_classes(classes_ids, date) {
     const formatted_date = new Date(date).toISOString();
-    await db("checked_classes").insert(
-      classes_ids
-        .map((el) => ({
+    await db("checked_classes")
+      .insert(
+        classes_ids.map((el) => ({
           class_id: el,
           date: formatted_date,
           is_checked: true,
         }))
-        .onConflict()
-        .ignore()
-    );
+      )
+      .onConflict()
+      .ignore();
   }
 
   async get_checked_classes(date) {
