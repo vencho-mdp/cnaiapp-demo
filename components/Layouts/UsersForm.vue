@@ -126,7 +126,7 @@
         </v-label>
         <multiselect
           v-model="form.classes"
-          class="border-2 rounded-xl !w-full border-gray-light bg-white !box-border py-1"
+          class="border-2 rounded-xl !w-full border-gray-light bg-white-full !box-border py-1"
           :options="classes"
           :multiple="true"
           :hide-selected="true"
@@ -234,40 +234,5 @@ export default {
 };
 </script>
 <style scoped>
-.multiselect :deep(.multiselect__tags) {
-  @apply rounded-xl !min-h-0 !border-transparent !bg-transparent !pt-0 flex flex-col justify-center;
-}
-
-.multiselect :deep(.multiselect__tags-wrap) {
-  @apply flex justify-start flex-wrap items-center gap-1 h-full;
-}
-
-.multiselect :deep(.multiselect__input) {
-  @apply !align-middle m-0;
-}
-.multiselect :deep(.multiselect__option) {
-  @apply text-center;
-  font-size: 14px;
-}
-
-/* https://github.com/shentao/vue-multiselect/issues/594 */
-.multiselect :deep(.multiselect__option--highlight) {
-  @apply !bg-transparent;
-}
-.multiselect :deep(.multiselect__content-wrapper) {
-  @apply min-w-min px-0.5 !max-h-64;
-}
-.multiselect :deep(.multiselect__tag) {
-  @apply !bg-primary-blue text-white;
-}
-.multiselect :deep(.multiselect__element):hover {
-  @apply bg-gray-light;
-}
-.multiselect :deep(.multiselect__tag > span) {
-  @apply text-white;
-}
-.multiselect :deep(.multiselect--above),
-.multiselect :deep(.multiselect__content-wrapper) {
-  @apply !bottom-auto;
-}
+@import "~/assets/css/multiselect.css";
 </style>

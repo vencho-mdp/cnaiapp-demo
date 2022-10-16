@@ -6,10 +6,14 @@
           <th
             scope="col"
             class="p-2 text-xs font-bold"
+            :class="header.classes"
             v-for="header in headers"
             :key="header.label"
           >
-            {{ header.label }}
+            <span :class="header.spanClasses" class="flex items-center">
+              {{ header.label }}
+              <slot name="nextToHeader" :header="header" />
+            </span>
           </th>
         </tr>
       </thead>
@@ -27,15 +31,20 @@
           </th> -->
           <td
             class="p-2 text-xs text-black"
-            v-for="header in headers"
+            :class="header.classes"
+            v-for="(header, idx) in headers"
             :key="header.label"
           >
-            {{
-              header.props
-                .flatMap((el) => item[el])
-                .filter((el) => !!el)
-                .join(",\n")
-            }}
+            <span v-if="header.mode !== 'edit' || idx === 0">
+              {{
+                header.props
+                  .flatMap((el) => item[el])
+                  .filter((el) => !!el)
+                  .join(",\n") || header.fallback
+              }}
+            </span>
+            <slot v-else name="edit" :header="header" :item="item" />
+            <v-text-input v-else v-on="item.listeners" class="!w-full" />
           </td>
           <td class="p-1" v-for="action in actions" :key="action.label">
             <icon-button

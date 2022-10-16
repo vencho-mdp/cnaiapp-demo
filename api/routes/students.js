@@ -8,6 +8,7 @@ const {
   get_student_absence_dates,
   get_checked_classes,
   add_checked_classes,
+  get_student_grades,
 } = require("../controllers/students");
 const auth = require("../middlewares/auth");
 
@@ -66,6 +67,12 @@ router.post(
   (req, res, next) =>
     auth(req, res, next, ["management_team", "preceptor", "teacher"]),
   add_checked_classes
+);
+
+router.get(
+  "/students/:student_id/grades",
+  (req, res, next) => auth(req, res, next, ["student"]),
+  get_student_grades
 );
 
 module.exports = router;

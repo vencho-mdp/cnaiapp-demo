@@ -68,6 +68,14 @@ export default {
               "management_team"
             ),
         },
+        {
+          img: "grades",
+          route: "calificaciones",
+          should_render:
+            this.$store.state.authentication.user_data.groups.includes(
+              "teacher"
+            ),
+        },
       ],
     };
   },
@@ -93,4 +101,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@import "~/assets/css/multiselect.css";
+</style>

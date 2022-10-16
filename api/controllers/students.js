@@ -8,6 +8,7 @@ const {
   get_student_absence_dates,
   add_checked_classes,
   get_checked_classes,
+  get_student_grades,
 } = require("../services/students");
 
 class students_controller {
@@ -25,7 +26,7 @@ class students_controller {
       res.status(201).json(students);
     } catch (error) {
       console.error(error);
-      return res.status(error.status).send({
+      return res.status(500).send({
         error,
       });
     }
@@ -128,6 +129,19 @@ class students_controller {
       const { date } = req.query;
       const students = await get_checked_classes(date);
       res.status(200).json(students);
+    } catch (error) {
+      console.error(error);
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
+  async get_student_grades(req, res) {
+    try {
+      const { student_id } = req.params;
+      const grades = await get_student_grades(student_id);
+      res.status(200).json(grades);
     } catch (error) {
       console.error(error);
       return res.status(error.status).send({

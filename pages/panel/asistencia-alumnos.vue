@@ -63,7 +63,7 @@
                   },
                 },
                 {
-                  label: 'Ciclo Avanzado',
+                  label: 'Ciclo Superior',
                   filter(opt) {
                     return (
                       opt.includes('4to') ||
@@ -604,7 +604,16 @@ export default {
     VueAutosuggest,
   },
   middleware: "authentication",
-  async asyncData({ $axios, store, $reportNetworkError }) {
+  async asyncData({ $axios, store, $reportNetworkError, redirect }) {
+    const groups = store.state.authentication.user_data.groups;
+    if (
+      !groups.some(
+        (el) =>
+          el === "teacher" || el === "preceptor" || el === "management_team"
+      )
+    ) {
+      redirect("/panel");
+    }
     const get_students = $axios.$get("/api/students", {
       params: {
         classes_ids: JSON.stringify(
@@ -640,7 +649,7 @@ export default {
 
       let class_id =
         // management team
-        classes.length >= 25
+        classes?.length >= 25
           ? ""
           : // preceptor
             classes.find(
@@ -1247,7 +1256,6 @@ export default {
       }, 2000);
     },
   },
-  fetchOnServer: false,
 };
 </script>
 

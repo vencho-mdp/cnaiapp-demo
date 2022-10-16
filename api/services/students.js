@@ -7,6 +7,7 @@ const {
   get_student_absence_dates,
   get_checked_classes,
   add_checked_classes,
+  get_student_grades,
 } = require("../dao/students");
 
 class students_service {
@@ -108,6 +109,19 @@ class students_service {
         status: 400,
         code: "BAD_REQUEST",
         msg: "You don't have enough permissions to perform this action.",
+      };
+    }
+  }
+
+  async get_student_grades(student_id) {
+    try {
+      return await get_student_grades(student_id);
+    } catch (error) {
+      console.log(error);
+      throw {
+        status: 500,
+        code: "INTERNAL_ERROR",
+        msg: "Internal server error.",
       };
     }
   }

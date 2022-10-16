@@ -323,6 +323,32 @@ class students_DAO {
       .where({ reason_of_deletion: "Llegó tarde" })
       .orderBy("last_name");
   }
+
+  async get_student_grades(student_id) {
+    return await db("grades")
+      .select(
+        "evaluative_activity.id AS evaluative_activity_id",
+        "grade",
+        "dates",
+        "title",
+        "grade_type",
+        "min_grade_to_pass",
+        db.raw("ARRAY_AGG(subject.name) AS subjects")
+      )
+      .join(
+        "evaluative_activity",
+        "evaluative_activity.id",
+        "evaluative_activity_id"
+      )
+      .join(
+        "evaluative_activity_subjects_teachers",
+        "evaluative_activity_subjects_teachers.evaluative_activity_id",
+        "evaluative_activity.id"
+      )
+      .join("subject", "subject.id", "subject_id")
+      .groupBy("evaluative_activity.id", "grade", "dates", "title")
+      .where("student_id", student_id);
+  }
 }
 
 module.exports = new students_DAO();

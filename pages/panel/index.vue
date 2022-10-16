@@ -149,7 +149,26 @@
     v-else-if="$store.state.authentication.user_data"
     class="flex h-96 w-full items-center justify-center"
   >
-    <coming-soon-card>Proximamente...</coming-soon-card>
+    <VCard
+      :change-records="false"
+      title="Calificaciones"
+      :data="
+        (student_grades || []).map((el) => ({
+          label: el.title + ' - ' + el.grade,
+          desc:
+            el.subjects.join(', ') +
+            ' - ' +
+            el.dates
+              .map((el) =>
+                new Date(el).toLocaleDateString('es-AR', {
+                  month: 'short',
+                  day: 'numeric',
+                })
+              )
+              .join(', '),
+        }))
+      "
+    />
   </main>
 </template>
 
@@ -187,6 +206,13 @@ export default {
           )
         : {};
 
+    const get_students_grades = async () =>
+      store.state.authentication.user_data.groups.includes("student")
+        ? await $axios.$get(
+            `api/students/${store.state.authentication.user_data.id}/grades`
+          )
+        : {};
+
     try {
       const result = await Promise.allSettled([
         get_news(),
@@ -194,6 +220,7 @@ export default {
         get_classes(),
         get_teacher_slots(),
         get_events(),
+        get_students_grades(),
       ]);
       const [
         news = [],
@@ -201,8 +228,16 @@ export default {
         classes = [],
         teacher_slots = [],
         events = [],
+        student_grades = [],
       ] = result.map((res) => res.value);
-      return { teacher_slots, news, absent_teachers, classes, events };
+      return {
+        teacher_slots,
+        news,
+        absent_teachers,
+        classes,
+        events,
+        student_grades,
+      };
     } catch (error) {
       $reportNetworkError(error);
     }

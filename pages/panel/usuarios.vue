@@ -9,7 +9,9 @@
         <img src="~/assets/images/plus.svg" class="h-4 w-4" alt="Eliminar" />
       </icon-button>
     </span>
-    <h3 class="text-sm font-bold mr-auto mt-6 w-5/6 mb-2">Filtros</h3>
+    <h3 class="text-sm font-bold mr-auto mt-6 w-5/6 mb-2 text-black">
+      Filtros
+    </h3>
     <span
       class="flex flex-wrap md:flex-nowrap max-w-lg items-end justify-start md:justify-around mb-8 mt-1 px-4 py-2 border rounded-md w-5/6 mr-auto border-gray-light"
     >
