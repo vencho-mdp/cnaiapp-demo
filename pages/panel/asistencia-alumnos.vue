@@ -1062,7 +1062,6 @@ export default {
         deleted_because: reason,
         shift: this.absent_students[student_index].shift,
       });
-      this.absent_students.splice(student_index, 1);
       this.itemsToShowTrashButton = Object.fromEntries(
         Object.keys(this.itemsToShowTrashButton).map((el) => [el, false])
       );
@@ -1075,10 +1074,11 @@ export default {
           id: this.current_abs_student,
         });
       }
+      this.absent_students.splice(student_index, 1);
       this.show_sidebar = false;
       this.new_justification = null;
       this.absence_reason = null;
-      this.save_data();
+      this.save_data(true);
     },
     async addAbsentStudent(data) {
       if (!data) {
@@ -1213,7 +1213,7 @@ export default {
         behavior: "smooth",
       });
     },
-    async save_data() {
+    async save_data(dont_update_checked_classes = false) {
       try {
         const absent_students_without_absolute_duplicates =
           this.absent_students.filter(
@@ -1239,11 +1239,14 @@ export default {
             ],
             date: removeTimeFromDate(this.date),
           }),
-          await this.$axios.$post("/api/checked-classes", {
-            // get classes ids of every absent student
-            classes_ids: this.absent_students.map((el) => el.class_id),
-            date: removeTimeFromDate(this.date),
-          }),
+
+          dont_update_checked_classes
+            ? () => {}
+            : this.$axios.$post("/api/checked-classes", {
+                // get classes ids of every absent student
+                classes_ids: this.absent_students.map((el) => el.class_id),
+                date: removeTimeFromDate(this.date),
+              }),
         ]);
         this.show_notification = true;
       } catch (error) {
