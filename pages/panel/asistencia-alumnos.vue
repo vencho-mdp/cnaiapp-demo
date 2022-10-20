@@ -1266,4 +1266,23 @@ export default {
 body {
   max-width: 100vw;
 }
+.calendar :deep(.vc-title) {
+  text-transform: capitalize;
+}
+
+#autosuggest :deep(#autosuggest-input) {
+  @apply relative !px-0.5 !py-0.5 !min-w-full !min-h-full focus-visible:!outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue;
+}
+#autosuggest :deep(.suggestions) {
+  @apply !border-none shadow rounded-md min-w-full mt-2 bg-white-full;
+}
+#autosuggest :deep(.autosuggest-autosuggest__results) {
+  @apply border-none absolute z-30 w-full md:w-auto;
+}
+#autosuggest :deep(.hover) {
+  @apply !bg-gray-light;
+}
+#autosuggest :deep(.autosuggest__results-item) {
+  @apply !my-1 !p-3 text-black w-full md:w-auto;
+}
 </style>

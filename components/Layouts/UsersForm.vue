@@ -233,3 +233,6 @@ export default {
   },
 };
 </script>
+<style scoped>
+@import "~/assets/css/third_party_components.css";
+</style>

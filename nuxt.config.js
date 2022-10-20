@@ -39,7 +39,6 @@ export default {
     "~/assets/css/default_text_color.css",
     "~/assets/css/scrollbar.css",
     "~/assets/css/tailwind_abstractions.css",
-    "~/assets/css/third_party_components.css",
   ],
 
   plugins: [

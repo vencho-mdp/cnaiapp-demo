@@ -38,7 +38,3 @@
 .multiselect :deep(.multiselect__content-wrapper) {
   @apply !bottom-auto;
 }
-
-.v-calendar :deep(.vc-popover-content-wrapper) {
-  @apply !hidden;
-}
