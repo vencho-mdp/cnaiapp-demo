@@ -41,7 +41,7 @@
         <SmallButton
           @click.native="exportFile"
           class="mt-8 !w-min whitespace-nowrap"
-          :disabled="!(class_id && term)"
+          :disabled="!class_id || !term"
         >
           Exportar Datos
           {{ selectedStudent ? "de Estudiante" : class_id ? "de Clase" : "" }}
@@ -146,6 +146,13 @@ const MONTHS = [
 // if date > august 01, is second quarter
 const isSecondQuarter = daysSinceAugust01() > 0;
 const TERMS_MAPPER_TO_DATES = {
+  // first day of the current week
+  last_week: new Date(
+    new Date().setDate(new Date().getDate() - new Date().getDay())
+  ),
+  // get last month, not last thirty days
+  // return first day of current month
+  last_month: new Date().setDate(1),
   // last_quarter: if current date is greater than 01 aug, then it's the distance between that date and 01 aug
   // if not, it's the distance between that date and march 01
   last_quarter: isSecondQuarter
@@ -313,7 +320,18 @@ export default {
           };
         }
       }
-      XLSX.utils.book_append_sheet(wb, ws, "Ausencias");
+      const class_name = this.classes.find((c) => c.id === this.class_id).class;
+      XLSX.utils.book_append_sheet(
+        wb,
+        ws,
+        "Ausencias " +
+          class_name +
+          " " +
+          new Date().toLocaleDateString("es-AR", {
+            month: "short",
+            day: "numeric",
+          })
+      );
       XLSX.writeFile(wb, "Ausencias.xlsx");
       this.loading = false;
     },

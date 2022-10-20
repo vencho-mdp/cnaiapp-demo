@@ -6,3 +6,7 @@ b,
 strong, p, u, em, li {
   @apply text-white;
 }
+
+.calendar :deep(.vc-title) {
+  text-transform: capitalize;
+}
