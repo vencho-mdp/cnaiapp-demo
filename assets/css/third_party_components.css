@@ -40,5 +40,5 @@
 }
 
 .v-calendar :deep(.vc-popover-content-wrapper) {
-  @apply !display-none;
+  @apply !hidden;
 }
