@@ -1,49 +1,7 @@
 <template>
   <main class="p-8" v-if="shouldRender">
-    <span class="flex justify-between gap-8">
-      <div>
-        <v-subtitle class="mb-8"> Calificaciones </v-subtitle>
-        <span
-          class="flex max-w-lg flex-col justify-start mb-8 mt-8 p-4 border rounded-md w-min mr-auto border-gray-light"
-        >
-          <h3 class="text-sm font-bold text-black mb-4">Calificar</h3>
-          <span class="flex flex-wrap md:flex-nowrap items-end justify-start">
-            <div class="flex flex-col mr-16">
-              <v-label class="mb-2">Examen</v-label>
-              <v-dropdown
-                v-model="examToCorrect"
-                :options="
-                  evaluativeActivities
-                    .filter((el) =>
-                      this.selectedClassFilter && el && el.classes
-                        ? el.classes.includes(this.selectedClassFilter)
-                        : true
-                    )
-                    .map((el) => ({
-                      value: JSON.stringify(el),
-                      label: el.title,
-                    }))
-                "
-              ></v-dropdown>
-            </div>
-            <div class="flex flex-col">
-              <v-label class="mb-2">Clase</v-label>
-              <v-dropdown
-                v-model="selectedClassFilter"
-                :options="
-                  classes
-                    .filter((el) =>
-                      examToCorrect && examToCorrect.classes
-                        ? examToCorrect.classes.includes(el.id)
-                        : []
-                    )
-                    .map((el) => ({ value: el.id, label: el.class }))
-                "
-              ></v-dropdown>
-            </div>
-          </span>
-        </span>
-      </div>
+    <div>
+      <!-- <v-subtitle class="mb-8"> Calificaciones </v-subtitle> -->
       <span class="p-4 shadow rounded-lg flex flex-col flex-wrap w-fit h-fit">
         <span class="flex justify-between items-center">
           <h3 class="text-sm font-bold text-black">Exámenes</h3>
@@ -72,7 +30,52 @@
           </OutlinedPrimaryButton>
         </span>
       </span>
-    </span>
+      <span
+        class="flex max-w-lg flex-col mb-8 mt-8 p-4 border rounded-md w-min mr-auto border-gray-light"
+      >
+        <h3 class="text-sm font-bold text-black mb-4">Calificar</h3>
+        <span class="flex flex-wrap md:flex-nowrap items-center">
+          <div class="flex flex-col mr-16">
+            <v-label class="mb-2">Examen</v-label>
+            <v-dropdown
+              v-model="examToCorrect"
+              ref="dropdown-filter-exam"
+              :options="evaluativeActivitiesForFilter"
+            ></v-dropdown>
+          </div>
+          <div class="flex flex-col">
+            <v-label class="mb-2">Clase</v-label>
+            <v-dropdown
+              v-model="selectedClassFilter"
+              ref="dropdown-filter-class"
+              :options="classesForFilter"
+            ></v-dropdown>
+          </div>
+          <!-- remove filters buttons -->
+          <icon-button
+            :disabled="!(selectedClassFilter || parsedExamToCorrect)"
+            class="hover-effect ml-20 h-9 w-9 mt-2"
+            :class="[
+              selectedClassFilter || parsedExamToCorrect
+                ? 'bg-red-light'
+                : 'bg-gray-light',
+            ]"
+            @click.native="removeFilters()"
+          >
+            <img
+              src="~/assets/images/trash.svg"
+              :style="{
+                filter: !(selectedClassFilter || parsedExamToCorrect)
+                  ? 'brightness(0) invert(0.45)'
+                  : null,
+              }"
+              alt="Eliminar Filtros"
+            />
+          </icon-button>
+        </span>
+      </span>
+    </div>
+
     <transition name="fade">
       <VTable
         v-if="examToCorrect"
@@ -214,7 +217,7 @@ export default {
         teacherClassesNames.includes(subject.name)
       );
       const studentGrades = Object.fromEntries(
-        evaluativeActivities.flatMap((el) => {
+        evaluativeActivities?.flatMap((el) => {
           return el.grades.map((el2) => [
             el2.student_id,
             { [el.id]: el2.grade },
@@ -293,13 +296,56 @@ export default {
         })),
       ];
     },
+    classesForFilter() {
+      return this.classes
+        .filter(
+          (el) =>
+            (this.parsedExamToCorrect &&
+              this.parsedExamToCorrect.classes.includes(el.id)) ||
+            (!this.parsedExamToCorrect &&
+              this.evaluativeActivities.some((exam) =>
+                exam.classes.includes(el.id)
+              ))
+        )
+        .map((el) => ({ value: el.id, label: el.class }));
+    },
+    evaluativeActivitiesForFilter() {
+      return this.evaluativeActivities
+        .filter((el) =>
+          this.selectedClassFilter && el && el.classes
+            ? el.classes.includes(this.selectedClassFilter)
+            : true
+        )
+        .map((el) => ({
+          value: JSON.stringify(el),
+          label: el.title,
+        }));
+    },
   },
   watch: {
     class_id() {
-      this.examToCorrect = {};
+      this.examToCorrect = "";
+    },
+    classesForFilter(new_val, old_val) {
+      if (
+        new_val.length === 1 &&
+        new_val[0] &&
+        JSON.stringify(new_val) !== JSON.stringify(old_val)
+      ) {
+        this.selectedClassFilter = new_val[0].value;
+      }
     },
   },
   methods: {
+    removeFilters() {
+      this.selectedClassFilter = "";
+      this.examToCorrect = "";
+      // remove value from dropdowns
+      this.$nextTick(() => {
+        this.$refs["dropdown-filter-class"].$el.value = "";
+        this.$refs["dropdown-filter-exam"].$el.value = "";
+      });
+    },
     updateExamSelected(exam) {
       const not_user = exam.teachers_subjects.filter(
         (el) => el.teacher_id !== this.$store.state.authentication.user_data.id

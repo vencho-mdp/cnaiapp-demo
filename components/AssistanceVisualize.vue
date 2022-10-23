@@ -55,21 +55,18 @@
             <span class="font-bold text-xs mb-2">
               Ausencias: {{ formatted_absence_dates.length }}</span
             >
-            <transition name="fade">
+            <transition name="fade" mode="out-in">
               <v-calendar
                 :attributes="formatted_absence_dates"
                 ref="calendar-ref"
                 :is-expanded="isMobile"
-                :max-date="
-                  term === 'last_week' || term === 'last_month'
-                    ? new Date()
-                    : undefined
-                "
+                :max-date="new Date()"
                 class="calendar"
                 v-show="
-                  term === 'last_week' ||
-                  term === 'last_month' ||
-                  !!selectedMonth
+                  selectedStudent &&
+                  (term === 'last_week' ||
+                    term === 'last_month' ||
+                    selectedMonth)
                 "
                 :min-date="dateOfFirstDayInMonth"
                 locale="es"
@@ -86,8 +83,7 @@
                 class="m-2"
                 @click.native="selectedMonth = month"
                 >{{ month }} ({{
-                  (absencesPerMonth[month] &&
-                    absencesPerMonth[month].length - 1) ||
+                  (absencesPerMonth[month] && absencesPerMonth[month].length) ||
                   0
                 }})
               </PillButton>
@@ -147,12 +143,12 @@ const MONTHS = [
 const isSecondQuarter = daysSinceAugust01() > 0;
 const TERMS_MAPPER_TO_DATES = {
   // first day of the current week
-  last_week: new Date(
-    new Date().setDate(new Date().getDate() - new Date().getDay())
-  ),
+  // last_week: new Date(
+  //   new Date().setDate(new Date().getDate() - new Date().getDay())
+  // ),
   // get last month, not last thirty days
   // return first day of current month
-  last_month: new Date().setDate(1),
+  last_month: new Date(new Date().setDate(1)),
   // last_quarter: if current date is greater than 01 aug, then it's the distance between that date and 01 aug
   // if not, it's the distance between that date and march 01
   last_quarter: isSecondQuarter
@@ -186,10 +182,10 @@ export default {
       ),
       term: null,
       terms: [
-        {
-          label: "Semana",
-          value: "last_week",
-        },
+        // {
+        //   label: "Semana",
+        //   value: "last_week",
+        // },
         {
           label: "Mes",
           value: "last_month",
@@ -220,7 +216,12 @@ export default {
     selectedStudent() {
       this.formatAbsenceDates();
     },
-    selectedMonth() {
+    selectedMonth(new_val) {
+      if (
+        !new_val ||
+        this.dateOfFirstDayInMonth.getTime() > new Date().getTime()
+      )
+        return;
       const calendar = this.$refs["calendar-ref"];
       calendar.move({
         // jan is 1, feb is 2, etc
@@ -321,18 +322,23 @@ export default {
         }
       }
       const class_name = this.classes.find((c) => c.id === this.class_id).class;
-      XLSX.utils.book_append_sheet(
-        wb,
-        ws,
+      let worksheet_name =
         "Ausencias " +
-          class_name +
-          " " +
-          new Date().toLocaleDateString("es-AR", {
-            month: "short",
-            day: "numeric",
-          })
-      );
-      XLSX.writeFile(wb, "Ausencias.xlsx");
+        (this.selectedStudent
+          ? this.students
+              .find((el) => el.id === this.selectedStudent)
+              .student_name.split(",")[0]
+          : class_name) +
+        " " +
+        new Date().toLocaleDateString("es-AR", {
+          month: "short",
+          day: "numeric",
+        });
+      if (worksheet_name.length > 31) {
+        worksheet_name = worksheet_name.slice(0, 31);
+      }
+      XLSX.utils.book_append_sheet(wb, ws, "Listado");
+      XLSX.writeFile(wb, worksheet_name + ".xlsx");
       this.loading = false;
     },
     async formatAbsenceDates() {
