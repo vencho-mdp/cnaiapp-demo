@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const db = require("../db/db");
+const cachePassword = [];
 class user_dao {
   async change_email(user_id, password, new_email) {
     const { password: real_password } = await db("user")
@@ -91,10 +92,70 @@ class user_dao {
   }
 
   async add_user(data) {
-    console.log(data);
+    try {
+      const {
+        email,
+        first_name,
+        last_name,
+        groups: groups_names,
+        classes,
+        subjects,
+      } = data;
+
+      const encrypted_password =
+        cachePassword[0] || (await bcrypt.hash("Illia", 10));
+      if (!cachePassword[0]) cachePassword.push(encrypted_password);
+      let user_id = await db("user")
+        .insert({
+          password: encrypted_password,
+          email,
+          first_name,
+          last_name,
+        })
+        .returning("id");
+      user_id = user_id[0].id;
+      await db.transaction(async (trx) => {
+        const groups = await db("group")
+          .select("id")
+          .whereIn("name", groups_names)
+          .transacting(trx);
+        await db("user_group")
+          .insert(
+            groups.map((group) => ({
+              user_id,
+              group_id: group.id,
+            }))
+          )
+          .transacting(trx);
+        await db("user_class")
+          .insert(
+            classes.map((class_id) => {
+              return {
+                user_id,
+                class_id,
+              };
+            })
+          )
+          .transacting(trx);
+        if (subjects.length > 0)
+          await db("subject_teacher").insert(
+            subjects.map((subject_id) => {
+              return {
+                teacher_id: user_id,
+                subject_id,
+              };
+            })
+          );
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error();
+    }
   }
 
-  async edit_user({ user_id, data }) {}
+  async edit_user(data) {
+    console.log(data);
+  }
 }
 
 module.exports = new user_dao();

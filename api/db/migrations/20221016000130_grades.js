@@ -9,10 +9,6 @@ exports.up = function (knex) {
       .references("id")
       .inTable("evaluative_activity")
       .onDelete("CASCADE");
-    // special types
-    // 'Nota trayectoria', 'Nota final'
-    table.text("special_type");
-    table.boolean("is_second_quarter");
     table
       .uuid("student_id")
       .notNullable()
@@ -27,13 +23,7 @@ exports.up = function (knex) {
       .references("id")
       .inTable("user")
       .onDelete("CASCADE");
-    table.primary([
-      "evaluative_activity_id",
-      "student_id",
-      "teacher_id",
-      "special_type",
-      "is_second_quarter",
-    ]);
+    table.primary(["evaluative_activity_id", "student_id", "teacher_id"]);
   });
 };
 

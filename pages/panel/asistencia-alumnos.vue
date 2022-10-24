@@ -123,19 +123,8 @@
                     "
                     :disabled="true"
                     class="m-2 text-white shadow font-semibold p-1 rounded bg-primary-darkblue"
-                    >Agregado ({{
-                      absent_students.filter(
-                        (el) => el.id === suggestion.item.value
-                      ).length
-                    }}
-                    ve{{
-                      absent_students.filter(
-                        (el) => el.id === suggestion.item.value
-                      ).length === 1
-                        ? "z"
-                        : "eces"
-                    }})</span
-                  >
+                    >Agregado
+                  </span>
                 </transition>
               </template>
             </vue-autosuggest>

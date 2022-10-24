@@ -27,7 +27,7 @@
         @input="(e) => (filters.subject = e.target.value)"
       ></form-input>
       <div class="flex flex-col">
-        <v-label>Rol</v-label>
+        <v-label class="mb-2">Rol</v-label>
         <v-dropdown
           v-model="filters.group"
           :options="possible_groups"
@@ -79,9 +79,11 @@
       <feedback-card
         v-if="show_notification"
         class="top-auto mr-2 mb-12 right-0 bottom-0 w-72 z-50 fixed !shadow-lg"
-        :is-success="show_notification !== 'error'"
+        :is-success="show_notification === 'success'"
         :title="
-          show_notification !== 'error' ? '¡Guardado!' : 'Ha ocurrido un error'
+          show_notification === 'success'
+            ? '¡Guardado!'
+            : 'Ha ocurrido un error'
         "
       />
     </transition>
@@ -97,6 +99,7 @@ const groups_translations = {
   teacher: "Profesor",
   student: "Estudiante",
 };
+
 export default {
   data() {
     return {
@@ -121,7 +124,7 @@ export default {
       show_notification: false,
       filters: {
         name: "",
-        group: "",
+        group: "teacher",
         subject: "",
       },
     };
@@ -137,31 +140,8 @@ export default {
         name: subject.name,
         id: subject.id,
       }));
-      const tableHeaders = [
-        {
-          label: "Nombre",
-          props: ["first_name", "last_name"],
-        },
-        {
-          label: "Email",
-          props: ["email"],
-        },
-        {
-          label: "Rol/es",
-          props: ["groups"],
-        },
-        {
-          label: "Materias",
-          props: ["subjects"],
-        },
-        {
-          label: "Clases",
-          props: ["classes"],
-        },
-      ];
       return {
         users,
-        tableHeaders,
         subjects,
         classes,
       };
@@ -185,11 +165,23 @@ export default {
         behavior: "smooth",
       });
     },
-    closeSidebar() {
+    closeSidebar(mode) {
       this.isDeletingUser = false;
       this.isEditingOrAddingUser = false;
       this.sidebarTitle = null;
       this.sidebarSubtitle = null;
+      if (mode === "success") {
+        this.show_notification = "success";
+        setTimeout(() => {
+          this.show_notification = false;
+        }, 2000);
+      } else if (mode === "error") {
+        this.show_notification = "error";
+        setTimeout(() => {
+          this.show_notification = false;
+        }, 2000);
+      }
+      this.$nuxt.refresh();
     },
     async deleteUser(user, isConfirmation = true) {
       if (!isConfirmation) {
@@ -198,7 +190,7 @@ export default {
             data: { user_id: user.id },
           });
           this.users = this.users.filter((u) => u.id !== user.id);
-          this.show_notification = true;
+          this.show_notification = "success";
           setTimeout(() => {
             this.show_notification = false;
           }, 5000);
@@ -212,12 +204,31 @@ export default {
       }
       this.sidebarTitle = "¿Estás seguro de eliminar este usuario?";
       this.sidebarSubtitle =
-        "Los datos relacionados (por ej: clases) con este usuario serán eliminados";
+        "Los datos relacionados con este usuario (por ejemplo: horarios) serán eliminados";
       this.isDeletingUser = user.id;
     },
     editUser(el) {
       this.sidebarTitle = "Usuario";
-      this.isEditingOrAddingUser = el;
+      const groupsAsEntries = Object.entries(groups_translations);
+      this.isEditingOrAddingUser = {
+        first_name: el.first_name,
+        last_name: el.last_name,
+        groups: el.groups.map((el) => ({
+          value: groupsAsEntries.find((entry) => entry[1] === el)[0],
+          label: el,
+        })),
+        subjects: el.subjects.filter(Boolean).map((el) => {
+          const subject_information = this.subjects.find(
+            (subject) => subject.name === el
+          );
+          return {
+            id: subject_information.id,
+            name: subject_information.name,
+          };
+        }),
+        classes: el.classes,
+        email: el.email,
+      };
     },
     addUser() {
       this.sidebarTitle = "Usuario";
@@ -225,10 +236,51 @@ export default {
     },
   },
   computed: {
+    tableHeaders() {
+      const all = [
+        {
+          label: "Nombre",
+          props: ["first_name", "last_name"],
+        },
+        {
+          label: "Email",
+          props: ["email"],
+        },
+        {
+          label: "Rol/es",
+          props: ["groups"],
+        },
+        {
+          label: "Materias",
+          props: ["subjects"],
+        },
+        {
+          label: "Clases",
+          props: ["classes"],
+        },
+      ];
+      let res = all;
+      if (
+        this.filters.group === "Estudiante" ||
+        this.filters.group === "Preceptor"
+      ) {
+        res = res.filter((header) => header.label !== "Materias");
+      }
+      if (this.filters.group === "Estudiante") {
+        res = res.filter((header) => header.label !== "Rol/es");
+      }
+      if (this.filters.group === "Directivo") {
+        res = res.filter(
+          (header) =>
+            !(header.label === "Clases" || header.label === "Materias")
+        );
+      }
+      return res;
+    },
     possible_groups() {
       return [
         ...new Set(
-          this.users.flatMap((u) =>
+          this.users?.flatMap((u) =>
             u.groups.map((el) => groups_translations[el])
           )
         ),

@@ -16,7 +16,7 @@
             v-for="(exam, idx) in evaluativeActivities"
             :class="{ ' ml-8 ': idx > 0 }"
             :key="exam.id"
-            class="!text-xs !font-medium !px-3 !rounded-full m-1 inline-block !border-primary-blue"
+            class="!text-xs !font-medium !px-3 !rounded-full m-1 inline-block !border-primary-blue !shadow-none"
             @click.native="updateExamSelected(exam)"
           >
             <span class="inline-flex items-center">
@@ -32,6 +32,10 @@
       </span>
       <span
         class="flex max-w-lg flex-col mb-8 mt-8 p-4 border rounded-md w-min mr-auto border-gray-light"
+        v-if="
+          evaluativeActivitiesForFilter.length > 0 &&
+          classesForFilter.length > 0
+        "
       >
         <h3 class="text-sm font-bold text-black mb-4">Calificar</h3>
         <span class="flex flex-wrap md:flex-nowrap items-center">
@@ -261,7 +265,15 @@ export default {
         ...el,
         listeners: {
           input($event, item, header) {
-            console.log($event);
+            // remove any that had same student_id and same evaluative_activity_id before pushing the new one
+            const prevGrade = updatedGrades.findIndex(
+              (el) =>
+                el.student_id === item.id &&
+                el.evaluative_activity_id === header.id
+            );
+            if (prevGrade !== -1) {
+              updatedGrades.splice(prevGrade, 1);
+            }
             updatedGrades.push({
               student_id: item.id,
               evaluative_activity_id: header.id,
@@ -398,9 +410,18 @@ export default {
       this.itemThatIsBeingEdited = item.id;
     },
     async updateGrades() {
+      console.log(
+        this.updatedGrades.map((el) => ({
+          ...el,
+          teacher_id: this.$store.state.authentication.user_data.id,
+        }))
+      );
       try {
         this.$axios.put("/api/evaluative-activities/grades", {
-          grades: this.updatedGrades,
+          grades: this.updatedGrades.map((el) => ({
+            ...el,
+            teacher_id: this.$store.state.authentication.user_data.id,
+          })),
         });
         this.show_notification = true;
         // update updated grades client-side

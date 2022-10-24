@@ -312,8 +312,10 @@ export default {
       }
     },
     "form.grade_type"() {
-      if (this.grade_type === "Conceptual") {
-        this.min_grade_to_pass = "Regular";
+      if (this.form.grade_type === "Conceptual") {
+        this.form.min_grade_to_pass = "Bien";
+      } else if (this.form.grade_type === "Numérica") {
+        this.form.min_grade_to_pass = 7;
       }
     },
   },

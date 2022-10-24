@@ -44,7 +44,7 @@
       <multiselect
         v-model="form.groups"
         class="border-2 rounded-xl !w-full border-gray-light bg-white !box-border py-1"
-        :options="groups"
+        :options="filteredGroups"
         :multiple="true"
         :hide-selected="true"
         select-label=""
@@ -156,7 +156,7 @@
       </div>
     </transition>
     <form-buttons
-      :is-add-button-invalid="isFormValid"
+      :is-add-button-invalid="!isFormValid"
       class="my-10"
       type="submit"
       @handleCancelButtonClick="$emit('closeSidebar', 'cancel')"
@@ -166,6 +166,10 @@
 <script>
 import multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.min.css";
+const isValidEmail = (email) => {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(email);
+};
 
 export default {
   components: {
@@ -177,7 +181,7 @@ export default {
       default: false,
     },
     isEditingOrAddingUser: {
-      type: [String, Object],
+      type: [String, Object, Boolean],
       default: false,
     },
     subjects: {
@@ -191,6 +195,7 @@ export default {
   },
   data() {
     return {
+      showPassword: this.isEditingOrAddingUser === "add",
       form: {
         first_name: this.isEditingOrAddingUser.first_name ?? "",
         last_name: this.isEditingOrAddingUser.last_name ?? "",
@@ -224,11 +229,52 @@ export default {
     };
   },
   methods: {
-    async send_data() {},
+    async send_data() {
+      const formatted_form = {
+        ...this.form,
+        groups: this.form.groups.map((el) => el.value),
+        subjects: this.form.subjects.map((el) => el.id),
+        classes: this.form.classes.map((el) => el.id),
+      };
+      try {
+        if (this.isEditingOrAddingUser === "add") {
+          await this.$axios.post("/api/users/", formatted_form);
+        } else {
+          await this.$axios.put(
+            `/api/users/${this.isEditingOrAddingUser.id}/`,
+            formatted_form
+          );
+        }
+        this.$emit("closeSidebar", "success");
+      } catch (error) {
+        this.$emit("closeSidebar", "error");
+        console.log(error);
+      }
+    },
   },
   computed: {
+    filteredGroups() {
+      return this.groups.filter((el) =>
+        el.value === "student"
+          ? this.form.groups.length === 0
+          : !this.form.groups.some((el) => el.value === "student")
+      );
+    },
     isFormValid() {
-      return true;
+      return (
+        this.form.first_name &&
+        this.form.last_name &&
+        this.form.groups.length &&
+        isValidEmail(this.form.email) &&
+        (this.form.groups.some(
+          (el) => el.value === "student" || el.value === "teacher"
+        )
+          ? this.form.classes.length > 0
+          : true) &&
+        (this.form.groups.some((el) => el.value === "teacher")
+          ? this.form.subjects.length > 0
+          : true)
+      );
     },
   },
 };

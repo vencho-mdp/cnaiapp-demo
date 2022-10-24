@@ -52,14 +52,14 @@ export default {
                 this.$store.state.EXTRA_CURRICULAR_SUBJECTS.includes(subject)
             ),
         },
-        // {
-        //   img: "users",
-        //   route: "usuarios",
-        //   should_render:
-        //     this.$store.state.authentication.user_data.groups.includes(
-        //       "management_team"
-        //     ),
-        // },
+        {
+          img: "users",
+          route: "usuarios",
+          should_render:
+            this.$store.state.authentication.user_data.groups.includes(
+              "management_team"
+            ),
+        },
         {
           img: "auditory",
           route: "auditoria",

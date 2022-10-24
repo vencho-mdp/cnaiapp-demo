@@ -10,7 +10,7 @@ class evaluative_activity_DAO {
         "grade_type",
         "min_grade_to_pass",
         db.raw(
-          "json_agg(json_build_object('teacher_id', teacher_id, 'subject_id', subject_id)) AS teachers_subjects"
+          "json_agg(json_build_object('teacher_id', evaluative_activity_subjects_teachers.teacher_id, 'subject_id', subject_id)) AS teachers_subjects"
         ),
         db.raw("ARRAY_AGG(class_id) AS classes"),
         db.raw(
@@ -27,13 +27,15 @@ class evaluative_activity_DAO {
         "evaluative_activity.id",
         "evaluative_activity_classes.evaluative_activity_id"
       )
-      .leftJoin(
-        "grades",
-        "evaluative_activity.id",
-        "grades.evaluative_activity_id"
-      )
+      .leftJoin("grades", function () {
+        this.on(
+          "evaluative_activity.id",
+          "=",
+          "grades.evaluative_activity_id"
+        ).andOn("grades.teacher_id", "=", db.raw("?", [user_id]));
+      })
       .join("class", "evaluative_activity_classes.class_id", "class.id")
-      .where("teacher_id", user_id)
+      .where("evaluative_activity_subjects_teachers.teacher_id", user_id)
       .groupBy("evaluative_activity.id")
       .orderBy("evaluative_activity.dates", "desc");
 
@@ -122,8 +124,8 @@ class evaluative_activity_DAO {
   async updateGrades(grades) {
     return await db("grades")
       .insert(grades)
-      .onConflict(["student_id", "evaluative_activity_id"])
-      .merge();
+      .onConflict(["student_id", "evaluative_activity_id", "teacher_id"])
+      .merge(["grade"]);
   }
 }
 
