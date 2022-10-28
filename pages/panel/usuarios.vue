@@ -22,6 +22,7 @@
       />
       <form-input
         label="Materia"
+        v-if="filters.group === 'Profesor'"
         class="my-4 md:mx-6 md:my-0"
         :value="filters.subject"
         @input="(e) => (filters.subject = e.target.value)"
@@ -46,15 +47,22 @@
       No se encontraron usuarios con los filtros seleccionados
     </warning-sign>
     <span class="flex justify-between w-1/12" v-if="filtered_users.length > 0">
-      <outlined-primary-button
-        class="mr-4"
-        @click.native="moveOffset(true, false)"
-      >
+      <!-- <outlined-primary-button class="mr-4" @click.native="moveOffset(true)">
         ⬅️
       </outlined-primary-button>
+      <outlined-primary-button
+        class="mr-4 !shadow-none px-2"
+        @click.native="n < offset ? moveOffset(true) : moveOffset(false)"
+        v-for="n in amountOfPaginationPagesAsArray"
+        :key="n"
+        :class="{ 'bg-primary-blue': n === offset }"
+      >
+        {{ n }}
+      </outlined-primary-button>
+
       <outlined-primary-button @click.native="moveOffset(false, true)">
         ➡️
-      </outlined-primary-button>
+      </outlined-primary-button> -->
     </span>
     <transition name="fade">
       <lazy-v-sidebar
@@ -124,7 +132,7 @@ export default {
       show_notification: false,
       filters: {
         name: "",
-        group: "teacher",
+        group: "Profesor",
         subject: "",
       },
     };
@@ -172,6 +180,7 @@ export default {
       this.sidebarSubtitle = null;
       if (mode === "success") {
         this.show_notification = "success";
+        this.$nuxt.refresh();
         setTimeout(() => {
           this.show_notification = false;
         }, 2000);
@@ -181,7 +190,6 @@ export default {
           this.show_notification = false;
         }, 2000);
       }
-      this.$nuxt.refresh();
     },
     async deleteUser(user, isConfirmation = true) {
       if (!isConfirmation) {
@@ -209,6 +217,18 @@ export default {
     },
     editUser(el) {
       this.sidebarTitle = "Usuario";
+      const removeSpaces = (str) => str.replace(/\s/g, "");
+      console.log(
+        this.classes.map((el) => ({ ...el, class: removeSpaces(el.class) })),
+        el.classes.map((el) => removeSpaces(el))
+      );
+      const classesWithIdAndClass = el.classes.map((c) => ({
+        class: c,
+        id: this.classes.find(
+          (cl) => removeSpaces(cl.class) === removeSpaces(c.normalize("NFC"))
+        ).id,
+      }));
+      console.log(classesWithIdAndClass);
       const groupsAsEntries = Object.entries(groups_translations);
       this.isEditingOrAddingUser = {
         first_name: el.first_name,
@@ -226,7 +246,7 @@ export default {
             name: subject_information.name,
           };
         }),
-        classes: el.classes,
+        classes: classesWithIdAndClass,
         email: el.email,
       };
     },
@@ -236,6 +256,16 @@ export default {
     },
   },
   computed: {
+    amountOfPaginationPagesAsArray() {
+      return (
+        Array.from(
+          { length: Math.ceil(this.users.length / this.limit) },
+          (_, i) => i + 1
+        )
+          // max 10
+          .slice(0, 10)
+      );
+    },
     tableHeaders() {
       const all = [
         {
@@ -296,29 +326,30 @@ export default {
       }));
     },
     filtered_users() {
+      const filters = this.filters;
       return this.users_with_correct_groups
         .filter(({ first_name, last_name, groups, subjects }) => {
           const conditions_with_valid_filters =
-            (this.filters.name.length === 0 ||
+            (filters.name.length === 0 ||
               first_name
                 ?.toLowerCase()
-                ?.includes(this.filters.name?.toLowerCase()) ||
+                ?.includes(filters.name?.toLowerCase()) ||
               last_name
                 ?.toLowerCase()
-                ?.includes(this.filters.name?.toLowerCase())) &&
-            (this.filters.group.length === 0 ||
+                ?.includes(filters.name?.toLowerCase())) &&
+            (filters.group.length === 0 ||
               groups.some((el) =>
                 el
                   ?.toLowerCase()
                   ?.replace(/[\u0300-\u036f]/g, "")
-                  ?.includes(this.filters.group.toLowerCase())
+                  ?.includes(filters.group.toLowerCase())
               )) &&
-            (this.filters.subject.length === 0 ||
+            (filters.subject.length === 0 ||
               subjects.some((el) =>
                 el
                   ?.toLowerCase()
                   ?.replace(/[\u0300-\u036f]/g, "")
-                  ?.includes(this.filters.subject.toLowerCase())
+                  ?.includes(filters.subject.toLowerCase())
               ));
           return conditions_with_valid_filters;
         })

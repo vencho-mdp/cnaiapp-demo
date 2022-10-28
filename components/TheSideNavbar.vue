@@ -29,7 +29,18 @@ export default {
   name: "SideNavbar",
   data() {
     return {
-      links: [
+      is_mobile: true,
+    };
+  },
+  mounted() {
+    this.is_mobile = window.innerWidth < 768;
+  },
+  computed: {
+    filtered_links() {
+      return this.links.filter((link) => link.should_render);
+    },
+    links() {
+      return [
         {
           img: "home",
           route: "",
@@ -58,7 +69,7 @@ export default {
           should_render:
             this.$store.state.authentication.user_data.groups.includes(
               "management_team"
-            ),
+            ) && !this.is_mobile,
         },
         {
           img: "auditory",
@@ -74,14 +85,9 @@ export default {
           should_render:
             this.$store.state.authentication.user_data.groups.includes(
               "teacher"
-            ),
+            ) && !this.is_mobile,
         },
-      ],
-    };
-  },
-  computed: {
-    filtered_links() {
-      return this.links.filter((link) => link.should_render);
+      ];
     },
   },
   methods: {
