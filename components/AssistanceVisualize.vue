@@ -1,109 +1,127 @@
 <template>
   <div class="h-full">
-    <transition name="fade" mode="out-in">
-      <div v-if="!loading">
-        <div class="flex flex-col mt-4 items-start w-2/3 md:w-auto">
-          <span
-            class="flex md:justify-start md:gap-4 justify-between w-full mb-2"
-          >
-            <v-label class="!text-sm"> Plazo </v-label>
-            <!-- <PillButton>Elegir Fecha Exacta </PillButton> -->
-          </span>
-          <v-dropdown
-            v-model="term"
-            data-test="class_dropdown"
-            class="bg-white-full !w-full md:max-w-xs"
-            :options="terms"
-          />
-        </div>
-        <div class="flex flex-col mt-12 items-start w-2/3 md:w-auto">
-          <v-label class="mb-2 !text-sm"> Clase </v-label>
-          <v-dropdown
-            v-model="class_id"
-            data-test="class_dropdown"
-            class="bg-white-full !w-full md:max-w-xs"
-            :options="
-              classes
-                ? classes.map((c) => ({ label: c.class, value: c.id }))
-                : []
-            "
-          />
-        </div>
-        <div class="flex flex-col mt-12 items-start w-2/3 md:w-auto">
-          <v-label class="mb-2 !text-sm"> Alumnos </v-label>
-          <v-dropdown
-            v-model="selectedStudent"
-            data-test="class_dropdown"
-            class="bg-white-full !w-full md:max-w-xs"
-            :options="valid_students"
-          />
-        </div>
-        <SmallButton
-          @click.native="exportFile"
-          class="mt-8 !w-min whitespace-nowrap"
-          :disabled="!class_id || !term"
+    <div v-if="!loading">
+      <div class="flex flex-col mt-4 items-start w-2/3 md:w-auto">
+        <span
+          class="flex md:justify-start md:gap-4 justify-between w-full mb-2"
         >
-          Exportar Datos
-          {{ selectedStudent ? "de Estudiante" : class_id ? "de Clase" : "" }}
-        </SmallButton>
-        <transition name="fade" mode="out-in">
-          <div
-            v-if="formatted_absence_dates"
-            :key="`${selectedStudent}${term}`"
-            class="w-full flex flex-col items-start mt-12 pr-2 pb-2"
+          <v-label class="!text-sm"> Plazo </v-label>
+          <!-- <PillButton>Elegir Fecha Exacta </PillButton> -->
+        </span>
+        <v-dropdown
+          v-model="term"
+          data-test="class_dropdown"
+          class="bg-white-full !w-full md:max-w-xs"
+          :options="terms"
+        />
+      </div>
+      <div class="flex flex-col mt-12 items-start w-2/3 md:w-auto">
+        <v-label class="mb-2 !text-sm"> Clase </v-label>
+        <v-dropdown
+          v-model="class_id"
+          data-test="class_dropdown"
+          class="bg-white-full !w-full md:max-w-xs"
+          :options="
+            classes ? classes.map((c) => ({ label: c.class, value: c.id })) : []
+          "
+        />
+      </div>
+      <div class="flex flex-col mt-12 items-start w-2/3 md:w-auto">
+        <v-label class="mb-2 !text-sm"> Alumnos </v-label>
+        <v-dropdown
+          v-model="selectedStudent"
+          data-test="class_dropdown"
+          class="bg-white-full !w-full md:max-w-xs"
+          :options="valid_students"
+        />
+      </div>
+      <SmallButton
+        @click.native="exportFile"
+        class="mt-6 flex items-center justify-center !w-min"
+        :disabled="!class_id || !term"
+      >
+        <img
+          src="~/assets/images/export.svg"
+          class="h-8 w-6 !max-w-max"
+          alt="Exportar"
+        />
+      </SmallButton>
+      <transition name="fade" mode="out-in">
+        <div
+          v-if="formatted_absence_dates"
+          :key="`${selectedStudent}${term}`"
+          class="w-full flex flex-col items-start mt-12 pr-2 pb-2"
+        >
+          <span class="font-bold text-xs mb-2">
+            Ausencias: {{ formatted_absence_dates.length }}</span
           >
-            <span class="font-bold text-xs mb-2">
-              Ausencias: {{ formatted_absence_dates.length }}</span
+          <transition name="fade" mode="out-in">
+            <v-calendar
+              :attributes="formatted_absence_dates"
+              ref="calendar-ref"
+              :is-expanded="isMobile"
+              :max-date="new Date()"
+              class="calendar mb-8"
+              v-show="
+                selectedStudent &&
+                (term === 'last_week' || term === 'last_month' || selectedMonth)
+              "
+              :min-date="dateOfFirstDayInMonth"
+              locale="es"
             >
-            <transition name="fade" mode="out-in">
-              <v-calendar
-                :attributes="formatted_absence_dates"
-                ref="calendar-ref"
-                :is-expanded="isMobile"
-                :max-date="new Date()"
-                class="calendar"
-                v-show="
-                  selectedStudent &&
-                  (term === 'last_week' ||
-                    term === 'last_month' ||
-                    selectedMonth)
-                "
-                :min-date="dateOfFirstDayInMonth"
-                locale="es"
-              />
-            </transition>
+              <!-- <template #day-popover="{ day, dayTitle, attributes }">
+                <div class="text-xs text-gray-300 font-bold text-center">
+                  {{ dayTitle }}
+                </div>
+              </template> -->
+            </v-calendar>
+          </transition>
 
-            <div
-              v-if="term === 'last_year' || term === 'last_quarter'"
-              class="flex items-center flex-wrap"
-            >
-              <PillButton
-                v-for="month in months"
-                :key="month"
-                class="m-2"
-                @click.native="selectedMonth = month"
-                >{{ month }} ({{
-                  (absencesPerMonth[month] && absencesPerMonth[month].length) ||
-                  0
-                }})
-              </PillButton>
-            </div>
-            <!-- <span class="flex justify-between my-4 items-center px-12 w-full">
+          <VTable
+            class="min-w-full"
+            v-if="term === 'last_year' || term === 'last_quarter'"
+            :items="
+              months.map((m) => ({
+                month: m,
+                // 0 as number is falsy
+                absences:
+                  (absencesPerMonth[m] && absencesPerMonth[m].length) || '0',
+                listeners: {
+                  click(e) {
+                    selectedMonth = e.target.innerText;
+                  },
+                },
+                classes: [
+                  `!bg-[${heatMap[m] || heatMapColorScheme[0]}]`,
+                  '!bg-opacity-40',
+                ],
+              }))
+            "
+            :headers="[
+              {
+                label: 'Mes',
+                props: ['month'],
+                classes: 'font-bold',
+              },
+              { label: 'Ausencias', props: ['absences'] },
+            ]"
+          />
+          <!-- <span class="flex justify-between my-4 items-center px-12 w-full">
           <PillButton> ⬅️ </PillButton>
           <PillButton> ➡️ </PillButton>
         </span> -->
-          </div>
-        </transition>
-      </div>
-      <div v-else class="flex justify-center items-center h-64 p-4">
-        <div class="spinner"></div>
-      </div>
-    </transition>
+        </div>
+      </transition>
+    </div>
+    <div v-else class="flex justify-center items-center h-64 p-4">
+      <div class="spinner"></div>
+    </div>
   </div>
 </template>
 <script>
 import getDates from "../utils/getDates.js";
 import formatDate from "../utils/formatDate.js";
+import { heatMapColorScheme } from "../utils/heatMapColorScheme";
 const SHIFT_COLOR = {
   Turno: "blue",
   Informática: "teal",
@@ -112,12 +130,12 @@ const SHIFT_COLOR = {
   Inglés: "black",
   Teatro: "red",
 };
-const CSS_TO_HEX = {
-  blue: "3B82F6",
-  teal: "10B981",
-  red: "EF4444",
-  black: "000000",
-};
+// const CSS_TO_HEX = {
+//   blue: "3B82F6",
+//   teal: "10B981",
+//   red: "EF4444",
+//   black: "000000",
+// };
 const daysSinceMarch01 = (date = new Date()) => {
   const march01 = new Date(date.getFullYear(), 2, 1);
   return Math.round((date - march01) / (1000 * 60 * 60 * 24));
@@ -175,6 +193,8 @@ export default {
   },
   data() {
     return {
+      SHIFT_COLOR,
+      heatMapColorScheme,
       dateOfFirstDayInCurrentMonth: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
@@ -228,6 +248,12 @@ export default {
         month: MONTHS.indexOf(this.selectedMonth) + 2,
         year: new Date().getFullYear(),
       });
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      }, 100);
     },
   },
   methods: {
@@ -349,18 +375,33 @@ export default {
           since_date: TERMS_MAPPER_TO_DATES[this.term],
         },
       });
+      const datesWhereStudentHasTwoAbsencesOrMore = Object.entries(
+        data.reduce((acc, absence) => {
+          const formattedDate = absence.date;
+          if (acc[formattedDate]) {
+            acc[formattedDate].push(absence);
+          } else {
+            acc[formattedDate] = [absence];
+          }
+          return acc;
+        }, {})
+      )
+        .filter(([, absences]) => absences.length >= 2)
+        .map(([date]) => date);
       this.formatted_absence_dates = data?.map((el) => {
         const res = {
           dates: new Date(el.date),
-          highlight: true,
-          color: SHIFT_COLOR[el.justification],
+          highlight: {
+            color: SHIFT_COLOR[el.shift],
+            fillMode: "light",
+          },
           popover: {
             label:
               el.is_justified === "false"
                 ? "Ausencia no justificada" + " - " + el.shift
                 : el.is_justified,
-            visibility: "focus",
           },
+          visibility: "focus",
         };
         // if (el.is_justified === "false") delete res.popover;
         return res;
@@ -368,6 +409,25 @@ export default {
     },
   },
   computed: {
+    heatMap() {
+      const totalAmountOfAbsences = this.formatted_absence_dates?.length;
+      const percentages = Object.entries(this.absencesPerMonth).map((el) => {
+        const [month, absences] = el;
+        return {
+          month,
+          percentage: (absences.length / totalAmountOfAbsences) * 100,
+        };
+      });
+      const result = {};
+      percentages.forEach((el) => {
+        const { month, percentage } = el;
+        const colorIndex = Math.floor(
+          (percentage / 100) * (heatMapColorScheme.length - 1)
+        );
+        result[month] = heatMapColorScheme[colorIndex];
+      });
+      return result;
+    },
     dateOfFirstDayInMonth() {
       return this.term === "last_month" || this.term === "last_week"
         ? this.dateOfFirstDayInCurrentMonth
@@ -385,13 +445,13 @@ export default {
       }, {});
     },
     months() {
+      const months_copy = MONTHS.slice(0).slice(0, new Date().getMonth());
       if (this.term === "last_year") {
-        return MONTHS;
+        //  remove months that are yet to come
+        return months_copy;
       }
       if (this.term === "last_quarter") {
-        // remove first 5
-        const months_copy = MONTHS.slice(0);
-        return months_copy.splice(5);
+        return months_copy.splice(6);
       }
     },
     valid_students() {

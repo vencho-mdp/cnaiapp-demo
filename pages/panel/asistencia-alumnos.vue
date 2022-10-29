@@ -103,10 +103,26 @@
               :get-suggestion-value="(item) => item.label"
             >
               <template v-slot="{ suggestion }">
-                <span class="cursor-pointer font-bold">{{
-                  suggestion.item.label
-                }}</span>
-                <transition name="fade">
+                <span
+                  class="cursor-pointer"
+                  :class="[
+                    absent_students.some(
+                      (el) =>
+                        el.shift ===
+                          (((date.getHours() < 12 ? true : false) &&
+                            isClassAdvanced) ||
+                          (!(date.getHours() < 12 ? true : false) &&
+                            !isClassAdvanced)
+                            ? 'Turno'
+                            : nearest_item_in_extra_curricular_shift ||
+                              'Turno') && el.id === suggestion.item.value
+                    )
+                      ? 'text-primary-darkblue font-bold'
+                      : 'text-black',
+                  ]"
+                  >{{ suggestion.item.label }}</span
+                >
+                <!-- <transition name="fade">
                   <span
                     v-if="
                       absent_students.some(
@@ -125,7 +141,7 @@
                     class="m-2 text-white shadow font-semibold p-1 rounded bg-primary-darkblue"
                     >Agregado
                   </span>
-                </transition>
+                </transition> -->
               </template>
             </vue-autosuggest>
             <transition name="fade">
@@ -448,6 +464,7 @@
                 hasAutocompleteBeenTouch
               "
               @click.native="save_data_without_absent_students"
+              class="!w-full !py-2"
             >
               Sin ausentes
             </PillButton>
@@ -641,7 +658,7 @@ export default {
         classes?.length >= 25
           ? ""
           : // preceptor
-            classes.find(
+            classes?.find(
               (c) =>
                 c?.id === store.state.authentication.user_data.classes_ids[0]
             )?.id;
@@ -764,7 +781,7 @@ export default {
       return this.class_id
         ? ["4to", "5to", "6to"].includes(
             this.classes
-              .find((el) => el.id === this.class_id)
+              ?.find((el) => el.id === this.class_id)
               .class.split(" ")[0]
           )
         : false;
@@ -843,7 +860,7 @@ export default {
         const amount_of_times_student_appears =
           student_appearances_in_absence_list.length;
         return (
-          (this.absent_students.find((el2) => el2.id === el.id)?.shift ===
+          (this.absent_students?.find((el2) => el2.id === el.id)?.shift ===
             idealShiftPrediction ||
             (!hasSubjects
               ? amount_of_times_student_appears <=
@@ -1260,7 +1277,7 @@ body {
 }
 
 #autosuggest :deep(#autosuggest-input) {
-  @apply relative !px-0.5 !py-0.5 !min-w-full !min-h-full focus-visible:!outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue;
+  @apply relative !p-1.5 !min-w-full !min-h-full focus-visible:!outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue;
 }
 #autosuggest :deep(.suggestions) {
   @apply !border-none shadow rounded-md min-w-full mt-2 bg-white-full;
@@ -1272,6 +1289,6 @@ body {
   @apply !bg-gray-light;
 }
 #autosuggest :deep(.autosuggest__results-item) {
-  @apply !my-1 !p-3 text-black w-full md:w-auto;
+  @apply !my-2 !p-3 text-black w-full bg-gray-light rounded md:w-auto;
 }
 </style>

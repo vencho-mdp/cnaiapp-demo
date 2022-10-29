@@ -7,7 +7,6 @@ export const state = () => ({
   access_token: null,
   refresh_token: null,
   user_data: undefined,
-  tried: false,
 });
 
 export const mutations = {

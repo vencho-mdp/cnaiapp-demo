@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 export default function ({ store, app, app: { $axios }, redirect }) {
   $axios.onRequest((config) => {
     // check if the user is authenticated
@@ -15,16 +16,16 @@ export default function ({ store, app, app: { $axios }, redirect }) {
       // get the refresh token from the state if it exists
       const refreshToken = store.state.authentication.refresh_token;
       if (refreshToken) {
-        if (!store.state.authentication.tried) {
-          await store.dispatch("authentication/logout");
-          return Promise.resolve(redirect("/iniciar-sesion"));
-        }
         try {
           // attempt to refresh access token using refresh token
           await store.dispatch("authentication/refresh");
-          return $axios(error.config);
+          if (
+            JSON.parse(Cookies.get("authentication-cookie"))?.authentication
+              ?.access_token
+          ) {
+            return redirect("/panel");
+          }
         } catch (e) {
-          store.commit("authentication/SET_TRIED", true);
           // catch any error while refreshing the token
           await store.dispatch("authentication/logout");
           return Promise.resolve(redirect("/iniciar-sesion"));

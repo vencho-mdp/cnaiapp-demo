@@ -21,7 +21,9 @@
         <tr
           class="bg-white border-b hover:bg-gray-50"
           v-for="item in items"
+          :class="item.classes"
           :key="item.id"
+          v-on="item.listeners"
         >
           <!-- <th
             scope="row"
