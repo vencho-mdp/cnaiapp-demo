@@ -85,7 +85,10 @@
                 month: m,
                 // 0 as number is falsy
                 absences:
-                  (absencesPerMonth[m] && absencesPerMonth[m].length) || '0',
+                  (absencesPerMonth &&
+                    absencesPerMonth[m] &&
+                    absencesPerMonth[m].length) ||
+                  '0',
                 listeners: {
                   click(e) {
                     selectedMonth = e.target.innerText;
@@ -231,7 +234,8 @@ export default {
       this.formatAbsenceDates();
     },
     class_id() {
-      this.formatAbsenceDates();
+      this.formatted_absence_dates = null;
+      this.selectedStudent = "";
     },
     selectedStudent() {
       this.formatAbsenceDates();
@@ -375,19 +379,6 @@ export default {
           since_date: TERMS_MAPPER_TO_DATES[this.term],
         },
       });
-      const datesWhereStudentHasTwoAbsencesOrMore = Object.entries(
-        data.reduce((acc, absence) => {
-          const formattedDate = absence.date;
-          if (acc[formattedDate]) {
-            acc[formattedDate].push(absence);
-          } else {
-            acc[formattedDate] = [absence];
-          }
-          return acc;
-        }, {})
-      )
-        .filter(([, absences]) => absences.length >= 2)
-        .map(([date]) => date);
       this.formatted_absence_dates = data?.map((el) => {
         const res = {
           dates: new Date(el.date),
@@ -411,13 +402,15 @@ export default {
   computed: {
     heatMap() {
       const totalAmountOfAbsences = this.formatted_absence_dates?.length;
-      const percentages = Object.entries(this.absencesPerMonth).map((el) => {
-        const [month, absences] = el;
-        return {
-          month,
-          percentage: (absences.length / totalAmountOfAbsences) * 100,
-        };
-      });
+      const percentages = Object.entries(this.absencesPerMonth || {}).map(
+        (el) => {
+          const [month, absences] = el;
+          return {
+            month,
+            percentage: (absences.length / totalAmountOfAbsences) * 100,
+          };
+        }
+      );
       const result = {};
       percentages.forEach((el) => {
         const { month, percentage } = el;
