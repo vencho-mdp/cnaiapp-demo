@@ -194,7 +194,7 @@ export default {
   data() {
     return {
       SHIFT_COLOR,
-      heatMapColorScheme,
+      heatMapColorScheme: heatMapColorScheme.reverse(),
       dateOfFirstDayInCurrentMonth: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
@@ -422,9 +422,9 @@ export default {
       percentages.forEach((el) => {
         const { month, percentage } = el;
         const colorIndex = Math.floor(
-          (percentage / 100) * (heatMapColorScheme.length - 1)
+          (percentage / 100) * (this.heatMapColorScheme.length - 1)
         );
-        result[month] = heatMapColorScheme[colorIndex];
+        result[month] = this.heatMapColorScheme[colorIndex];
       });
       return result;
     },
