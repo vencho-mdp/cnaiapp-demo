@@ -64,6 +64,6 @@ export default {
     "bg-yellow-400",
     "mr-12",
     "mx-12",
-    ...heatMapColorScheme.map((el) => `!bg-${el}`),
+    ...heatMapColorScheme.map((el) => `!bg-[${el}]`),
   ],
 };
