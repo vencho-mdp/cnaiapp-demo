@@ -38,3 +38,8 @@
 .multiselect :deep(.multiselect__content-wrapper) {
   @apply !bottom-auto;
 }
+
+
+.is-disabled {
+  @apply !font-thin;
+}

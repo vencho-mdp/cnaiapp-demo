@@ -59,7 +59,7 @@
             <v-calendar
               :attributes="formatted_absence_dates"
               ref="calendar-ref"
-              :is-expanded="isMobile"
+              :is-expanded="true"
               :max-date="new Date()"
               class="calendar mb-8"
               v-show="
@@ -97,6 +97,7 @@
                 classes: [
                   `!bg-[${heatMap[m] || heatMapColorScheme[0]}]`,
                   '!bg-opacity-40',
+                  'cursor-pointer',
                 ],
               }))
             "
@@ -124,7 +125,7 @@
 <script>
 import getDates from "../utils/getDates.js";
 import formatDate from "../utils/formatDate.js";
-import { heatMapColorScheme } from "../utils/heatMapColorScheme";
+import { heatMapColorScheme as rawHeatMapColorScheme } from "../utils/heatMapColorScheme";
 const SHIFT_COLOR = {
   Turno: "blue",
   Informática: "teal",
@@ -189,15 +190,11 @@ export default {
       type: Array,
       default: () => [],
     },
-    isMobile: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
       SHIFT_COLOR,
-      heatMapColorScheme: heatMapColorScheme.reverse(),
+      heatMapColorScheme: rawHeatMapColorScheme.reverse(),
       dateOfFirstDayInCurrentMonth: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),

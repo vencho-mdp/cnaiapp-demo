@@ -2,7 +2,7 @@
   <main
     v-if="renderPage"
     :class="{ 'p-4': !is_mobile }"
-    class="flex flex-col min-h-full pl-4 pt-8 justify-center md:justify-start sm:px-24 overflow-x-hidden"
+    class="flex flex-col min-h-full pl-4 pt-8 justify-center md:justify-start sm:px-24 md:px-40 overflow-x-hidden"
   >
     <Tabs
       :options="[
@@ -22,27 +22,29 @@
     <template v-if="!visualize">
       <div class="flex flex-wrap mb-auto mt-12 w-full items-start">
         <div
-          class="flex flex-col min-h-full w-full md:w-2/3 justify-start items-start pr-2"
+          class="flex flex-col md:flex-row min-h-full w-full md:w-full md:gap-8 lg:gap-16 xl:gap-32 justify-start items-start pr-2"
         >
-          <v-label class="mb-4 !text-sm"> Fecha </v-label>
-          <client-only>
-            <v-date-picker
-              :is-expanded="is_mobile"
-              v-model="date"
-              :max-date="new Date()"
-              class="calendar"
-              :popover="{ visibility: null }"
-              locale="es"
-              is-required
-              :disabled-dates="{ weekdays: [1, 7] }"
-            />
-          </client-only>
-          <div class="flex flex-col mt-8 items-start w-full md:w-auto">
+          <div class="md:flex-grow w-full">
+            <v-label class="mb-6 !text-sm"> Fecha </v-label>
+            <client-only>
+              <v-date-picker
+                v-model="date"
+                :is-expanded="true"
+                :max-date="new Date()"
+                class="calendar"
+                :popover="{ visibility: null }"
+                locale="es"
+                is-required
+                :disabled-dates="{ weekdays: [1, 7] }"
+              />
+            </client-only>
+          </div>
+          <div class="flex flex-col mt-8 items-start w-full md:max-w-xs">
             <v-label class="mb-2 !text-sm"> Clase </v-label>
             <v-dropdown
               v-model="class_id"
               data-test="class_dropdown"
-              class="bg-white-full !w-full md:max-w-xs"
+              class="bg-white-full !w-full"
               :options="
                 classes
                   ? classes.map((c) => ({
@@ -77,7 +79,7 @@
           </div>
         </div>
         <div
-          class="flex flex-col min-w-full mt-8 gap-12 justify-between items-start w-full md:w-auto"
+          class="flex flex-col min-w-full mt-8 md:mt-12 gap-12 justify-between items-start w-full md:w-auto"
         >
           <div
             class="flex flex-col min-w-full gap-2 justify-between items-start pr-2"
@@ -90,7 +92,7 @@
               :suggestions="suggestions"
               v-click-outside="turnHasAutocompleteBeenTouchFalse"
               id="autosuggest"
-              class="mb-8 w-full md:max-w-xs"
+              class="mb-8 w-full"
               v-model="absentStudentQuery"
               @focus="hasAutocompleteBeenTouch = true"
               @selected="(item) => item && addAbsentStudent(item.item)"
@@ -99,7 +101,9 @@
                   limit: this.class_id ? Infinity : 12,
                 },
               }"
-              :should-render-suggestions="() => this.hasAutocompleteBeenTouch"
+              :should-render-suggestions="
+                () => !is_mobile || this.hasAutocompleteBeenTouch
+              "
               :get-suggestion-value="(item) => item.label"
             >
               <template v-slot="{ suggestion }">
@@ -150,7 +154,7 @@
                 mode="out-in"
                 tag="div"
                 name="list"
-                class="flex md:!w-auto flex-wrap pr-2 w-full items-start"
+                class="flex flex-wrap pr-2 w-full items-start"
                 :class="{ 'gap-12': !is_mobile }"
               >
                 <div
@@ -460,8 +464,9 @@
             <PillButton
               v-if="
                 absent_students.length === 0 &&
+                late_students.length === 0 &&
                 class_id &&
-                hasAutocompleteBeenTouch
+                is_mobile
               "
               @click.native="save_data_without_absent_students"
               class="!w-full !py-2"
@@ -471,7 +476,20 @@
             <div
               class="md:!m-0 w-screen md:!w-auto md:!static sticky bottom-0 -mx-4 mt-4 md:!bg-white-full md:!border-0"
             >
+              <PillButton
+                v-if="
+                  absent_students.length === 0 &&
+                  late_students.length === 0 &&
+                  class_id &&
+                  !is_mobile
+                "
+                @click.native="save_data_without_absent_students"
+                class="!py-2"
+              >
+                Sin ausentes
+              </PillButton>
               <add-button
+                v-else
                 data-test="add_absent_student"
                 :disabled="!have_absent_students_changed"
                 @click.native="save_data()"
@@ -762,19 +780,21 @@ export default {
   },
   computed: {
     suggestions() {
-      const result = filterMap(
-        this.valid_students,
-        (el) =>
-          el.student_name
-            .replace(/[\u0300-\u036f]/g, "")
-            ?.toLowerCase()
-            .includes(this.absentStudentQuery?.toLowerCase()),
-        ({ student_name, id, class_id }) => ({
-          label: student_name,
-          value: id,
-          class_id,
-        })
-      );
+      const result = this.class_id
+        ? filterMap(
+            this.valid_students,
+            (el) =>
+              el.student_name
+                .replace(/[\u0300-\u036f]/g, "")
+                ?.toLowerCase()
+                .includes(this.absentStudentQuery?.toLowerCase()),
+            ({ student_name, id, class_id }) => ({
+              label: student_name,
+              value: id,
+              class_id,
+            })
+          )
+        : [];
       return [{ data: result }];
     },
     isClassAdvanced() {
@@ -1277,7 +1297,7 @@ body {
 }
 
 #autosuggest :deep(#autosuggest-input) {
-  @apply relative !p-1.5 !min-w-full !min-h-full focus-visible:!outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue;
+  @apply relative !p-1.5 min-w-full md:w-96 md:min-w-min !min-h-full focus-visible:!outline-none border-primary-lightblue border-2 rounded-xl transition duration-500 focus:border-primary-blue;
 }
 #autosuggest :deep(.suggestions) {
   @apply !border-none shadow rounded-md min-w-full mt-2 bg-white-full;
@@ -1290,5 +1310,12 @@ body {
 }
 #autosuggest :deep(.autosuggest__results-item) {
   @apply !my-2 !p-3 text-black w-full bg-gray-light rounded md:w-auto;
+}
+#autosuggest :deep(.autosuggest__results-container),
+#autosuggest {
+  @apply md:!w-full md:flex-grow;
+}
+#autosuggest :deep(.autosuggest__results) > ul {
+  @apply md:flex md:flex-wrap md:gap-2 md:mt-4;
 }
 </style>
