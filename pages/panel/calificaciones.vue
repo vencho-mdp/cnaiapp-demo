@@ -1,46 +1,29 @@
 <template>
   <main class="p-8" v-if="shouldRender">
     <div>
-      <!-- <v-subtitle class="mb-8"> Calificaciones </v-subtitle> -->
-      <span class="p-4 shadow rounded-lg flex flex-col flex-wrap w-fit h-fit">
-        <span class="flex justify-between items-center">
-          <h3 class="text-sm font-bold text-black">Exámenes</h3>
-          <SmallButton
-            class="!w-min whitespace-nowrap my-2"
-            @click.native="addExam = true"
-            >Añadir Examen</SmallButton
-          >
-        </span>
-        <span class="w-96">
-          <OutlinedPrimaryButton
-            v-for="(exam, idx) in evaluativeActivities"
-            :class="{ ' ml-8 ': idx > 0 }"
-            :key="exam.id"
-            class="!text-xs !font-medium !px-3 !rounded-full m-1 inline-block !border-primary-blue !shadow-none"
-            @click.native="updateExamSelected(exam)"
-          >
-            <span class="inline-flex items-center">
-              {{ exam.title }}
-              <img
-                src="~/assets/images/pencil.svg"
-                class="h-4 w-4 ml-4"
-                alt="Editar"
-              />
-            </span>
-          </OutlinedPrimaryButton>
-        </span>
-      </span>
       <span
         class="flex max-w-lg flex-col mb-8 mt-8 p-4 border rounded-md w-min mr-auto border-gray-light"
-        v-if="
-          evaluativeActivitiesForFilter.length > 0 &&
-          classesForFilter.length > 0
-        "
       >
-        <h3 class="text-sm font-bold text-black mb-4">Calificar</h3>
+        <span class="flex items-center mb-4">
+          <h3 class="text-sm font-bold text-black">Calificar</h3>
+          <icon-button
+            class="bg-primary-darkblue shadow-md duration-500 hover:scale-105 h-6 w-6 !p-1.5 ml-4"
+            @click.native="addExam = true"
+          >
+            <img src="~/assets/images/plus.svg" alt="Eliminar" />
+          </icon-button>
+        </span>
         <span class="flex flex-wrap md:flex-nowrap items-center">
           <div class="flex flex-col mr-16">
-            <v-label class="mb-2">Examen</v-label>
+            <v-label class="mb-2">Tipo</v-label>
+            <v-dropdown
+              v-model="typeOfEval"
+              ref="dropdown-filter-exam"
+              :options="typesOfEval"
+            ></v-dropdown>
+          </div>
+          <div class="flex flex-col mr-16">
+            <v-label class="mb-2">Evaluación</v-label>
             <v-dropdown
               v-model="examToCorrect"
               ref="dropdown-filter-exam"
@@ -58,7 +41,7 @@
           <!-- remove filters buttons -->
           <icon-button
             :disabled="!(selectedClassFilter || parsedExamToCorrect)"
-            class="hover-effect ml-20 h-9 w-9 mt-2"
+            class="hover-effect ml-8 h-10 w-10 mt-2"
             :class="[
               selectedClassFilter || parsedExamToCorrect
                 ? 'bg-red-light'
@@ -73,13 +56,13 @@
                   ? 'brightness(0) invert(0.45)'
                   : null,
               }"
+              class="w-8 h-8"
               alt="Eliminar Filtros"
             />
           </icon-button>
         </span>
       </span>
     </div>
-
     <transition name="fade">
       <VTable
         v-if="examToCorrect"
@@ -172,6 +155,11 @@
 
 <script>
 import { grade_types } from "~/utils/grade_types.js";
+const EVAL_TYPES_NAMES = {
+  exam: "Examen",
+  practical_work: "Trabajo Práctico",
+  makeup: "Recuperatorio",
+};
 
 export default {
   data() {
@@ -186,6 +174,7 @@ export default {
       offset: 0,
       updatedGrades: [],
       examToCorrect: null,
+      typeOfEval: null,
       examData: {},
     };
   },
@@ -248,11 +237,17 @@ export default {
     }
   },
   computed: {
+    typesOfEval() {
+      return this.evaluativeActivities?.map((el) => ({
+        value: el.type,
+        label: EVAL_TYPES_NAMES[el.type],
+      }));
+    },
     parsedExamToCorrect() {
       return this.examToCorrect ? JSON.parse(this.examToCorrect) : null;
     },
     sidebarTitle() {
-      return this.addExam ? "Añadir Examen" : "Editar Examen";
+      return this.addExam ? "Añadir Evaluación" : "Editar Evaluación";
     },
     shouldRender() {
       return this.$store.state.authentication.user_data?.groups.includes(
@@ -384,6 +379,7 @@ export default {
         other_teachers: not_user.map((el) =>
           teachers.find((el2) => el2.id === el.teacher_id)
         ),
+        type_of_eval: exam.type,
       };
       this.addExam = true;
     },

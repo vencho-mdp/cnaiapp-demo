@@ -85,7 +85,7 @@
     </div>
     <transition name="fade">
       <lazy-v-sidebar
-        v-if="sidebarComponent"
+        v-if="sidebarComponent || unsavedChanges"
         :title="sidebarTitle"
         @closeSidebar="closeSidebar('cross_btn')"
       >
@@ -94,7 +94,22 @@
             :is="sidebarComponent"
             :form-data="componentProps"
             v-on="componentEvents"
+            ref="componentLayout"
             @closeSidebar="closeSidebar"
+            :unsavedChanges.sync="unsavedChanges"
+            v-show="showLayout"
+          />
+          <DeleteItemConfirmation
+            v-if="!showLayout"
+            cancelButtonText="Descartar"
+            addButtonText="Guardar"
+            v-on="{
+              handleCancelButtonClick: () => {
+                unsavedChanges = false;
+                closeSidebar('cross_btn');
+              },
+              click: saveDataFromComponentLayout,
+            }"
           />
         </template>
       </lazy-v-sidebar>
@@ -249,10 +264,17 @@ export default {
       componentProps: undefined,
       componentEvents: {},
       teachers_slots: [],
+      unsavedChanges: false,
+      showLayout: true,
     };
   },
-
   methods: {
+    saveDataFromComponentLayout() {
+      this.showLayout = true;
+      this.$refs.componentLayout.add();
+      this.unsavedChanges = false;
+      this.closeSidebar();
+    },
     deleteItem(id, route) {
       const closeSidebar = () => this.closeSidebar("cross_btn");
       const that = this;
@@ -280,6 +302,12 @@ export default {
       this.sidebarComponent = component;
     },
     closeSidebar(source) {
+      // source = null => comes from add method
+      if (this.unsavedChanges && source !== null) {
+        this.sidebarTitle = "Hay cambios sin guardar";
+        this.showLayout = false;
+        return;
+      }
       this.sidebarComponent = null;
       this.componentProps = null;
       if (source === "cross_btn" || source === "cancel") {
@@ -296,6 +324,7 @@ export default {
       this.$nuxt.refresh();
     },
     openSidebar(title, component, props) {
+      this.showLayout = true;
       this.sidebarTitle = title;
       this.sidebarComponent = component;
       if (props) {

@@ -135,7 +135,7 @@
           :max="form.groups.some((el) => el.value === 'student') ? 1 : null"
           placeholder=""
           label="class"
-          maxElements=" "
+          maxElements="Un estudiante solo puede estar en una clase"
           track-by="id"
         >
           <template #tag="{ option, remove }">
@@ -240,10 +240,10 @@ export default {
         if (this.isEditingOrAddingUser === "add") {
           await this.$axios.post("/api/users/", formatted_form);
         } else {
-          await this.$axios.put(
-            `/api/users/${this.isEditingOrAddingUser.id}/`,
-            formatted_form
-          );
+          await this.$axios.put(`/api/users`, {
+            ...formatted_form,
+            id: this.isEditingOrAddingUser.id,
+          });
         }
         this.$emit("closeSidebar", "success");
       } catch (error) {

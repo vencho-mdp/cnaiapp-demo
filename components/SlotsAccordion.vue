@@ -155,10 +155,9 @@ export default {
       if (!this.selectedTeachers[0]) {
         return this.subjects;
       }
+      const teachersIds = this.selectedTeachers.map((el) => el.value);
       const subjects = this.subjects.filter((el) =>
-        this.selectedTeachers
-          .map((el) => el.value)
-          .every((t) => el.teachers_ids.includes(t))
+        teachersIds.every((t) => el.teachers_ids.includes(t))
       );
       return subjects;
     },
@@ -227,6 +226,7 @@ export default {
       }
     },
     clickAccordion(title) {
+      this.showAddForm = false;
       this.$refs[`accordionHead${title}`].click();
     },
     addAssignment() {
@@ -279,12 +279,13 @@ export default {
         date.setMinutes(minutes);
         return date;
       };
-      this.selectedTeachers = item.teachers;
+      this.selectedTeachers = item.teachers.filter(Boolean);
       this.selectedSubjectId = item.subject_id;
       this.time.from = setHoursAndMinutes(item.start_time);
       this.time.to = setHoursAndMinutes(item.end_time);
       setTimeout(() => {
-        this.$refs[`accordionHead${item.weekday}`].click();
+        this.$refs[`accordionHead${item.weekday}`] &&
+          this.$refs[`accordionHead${item.weekday}`].click();
       }, 750);
     },
     scrollDown(el) {

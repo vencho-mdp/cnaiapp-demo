@@ -154,7 +154,59 @@ class user_dao {
   }
 
   async edit_user(data) {
-    console.log(data);
+    try {
+      const {
+        id,
+        email,
+        first_name,
+        last_name,
+        groups: groups_names,
+        classes,
+        subjects,
+      } = data;
+      await db.transaction(async (trx) => {
+        await trx("user").where("id", id).update({
+          email,
+          first_name,
+          last_name,
+        });
+        const groups = await trx("group")
+          .select("id")
+          .whereIn("name", groups_names);
+        await trx("user_group").where("user_id", id).del();
+        await trx("user_group").insert(
+          groups.map((group) => ({
+            user_id: id,
+            group_id: group.id,
+          }))
+        );
+        await trx("user_class").where("user_id", id).del();
+        await trx("user_class").insert(
+          classes.map((class_id) => {
+            return {
+              user_id: id,
+              class_id,
+            };
+          })
+        );
+
+        await trx("subject_teacher").where("teacher_id", id).del();
+
+        if (subjects.length > 0)
+          await trx("subject_teacher").insert(
+            subjects.map((subject_id) => {
+              return {
+                teacher_id: id,
+                subject_id,
+              };
+            })
+          );
+      });
+      return "success";
+    } catch (error) {
+      console.log(error);
+      throw new Error();
+    }
   }
 }
 

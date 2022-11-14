@@ -15,10 +15,19 @@
     <span
       class="flex flex-wrap md:flex-nowrap max-w-lg items-end justify-start md:justify-around mb-8 mt-1 px-4 py-2 border rounded-md w-5/6 mr-auto border-gray-light"
     >
+      <div class="flex flex-col">
+        <v-label class="mb-2">Rol</v-label>
+        <v-dropdown
+          v-model="filters.group"
+          :options="possible_groups"
+          class="mr-8"
+        ></v-dropdown>
+      </div>
       <form-input
         label="Nombre"
         :value="filters.name"
         @input="(e) => (filters.name = e.target.value)"
+        class="mr-8"
       />
       <form-input
         label="Materia"
@@ -27,13 +36,6 @@
         :value="filters.subject"
         @input="(e) => (filters.subject = e.target.value)"
       ></form-input>
-      <div class="flex flex-col">
-        <v-label class="mb-2">Rol</v-label>
-        <v-dropdown
-          v-model="filters.group"
-          :options="possible_groups"
-        ></v-dropdown>
-      </div>
     </span>
     <v-table
       @editUser="editUser"
@@ -228,7 +230,6 @@ export default {
           (cl) => removeSpaces(cl.class) === removeSpaces(c.normalize("NFC"))
         ).id,
       }));
-      console.log(classesWithIdAndClass);
       const groupsAsEntries = Object.entries(groups_translations);
       this.isEditingOrAddingUser = {
         first_name: el.first_name,
@@ -248,6 +249,7 @@ export default {
         }),
         classes: classesWithIdAndClass,
         email: el.email,
+        id: el.id,
       };
     },
     addUser() {

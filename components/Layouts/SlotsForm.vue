@@ -42,6 +42,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
+import areObjectsEqual from "@/utils/areObjectsEqual";
 
 const gradesNumbers = ["1ra", "2da", "3ra", "4ta", "5ta"];
 const grades = ["1ro", "2do", "3ro", "4to", "5to", "6to"];
@@ -59,6 +60,10 @@ export default {
       type: Object,
       default: () => null,
     },
+    unsavedChanges: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -69,7 +74,20 @@ export default {
       },
       teachers: [],
       classes: [],
+      hasFormBeenFormatted: false,
     };
+  },
+  watch: {
+    form: {
+      deep: true,
+      handler(new_val) {
+        if (areObjectsEqual(new_val, this.formatInitialData())) {
+          this.$emit("update:unsavedChanges", false);
+        } else {
+          this.$emit("update:unsavedChanges", true);
+        }
+      },
+    },
   },
   async fetch() {
     try {
@@ -116,8 +134,20 @@ export default {
         : gradesNumbersFiltered;
 
       return {
-        grades: [... new Set(grades.filter((el) => !gradesThatHaveAllDivisions.includes(el)).concat(this?.formData?.raw_label.split(" ")[0]))],
-        gradesNumbers: [... new Set(gradesNumbersFiltered.concat(this?.formData?.raw_label.split(" ")[1]))],
+        grades: [
+          ...new Set(
+            grades
+              .filter((el) => !gradesThatHaveAllDivisions.includes(el))
+              .concat(this?.formData?.raw_label.split(" ")[0])
+          ),
+        ],
+        gradesNumbers: [
+          ...new Set(
+            gradesNumbersFiltered.concat(
+              this?.formData?.raw_label.split(" ")[1]
+            )
+          ),
+        ],
       };
     },
   },
@@ -142,7 +172,7 @@ export default {
             subject,
             id,
             subject_id,
-            teachers_names
+            teachers_names,
           } = assignment;
           res.assignments.push({
             weekday: weekday.weekday,
@@ -150,12 +180,17 @@ export default {
             start_time: start_time.slice(0, -3),
             // ternary for teacher "Natalia Escudero", weird case there
             // TODO: fix this (maybe check seeds)
-            teachers: teachers_ids.length === 1 && teachers_names.length === 1 ? [{
-              label: teachers_names[0],
-              value: teachers_ids[0],
-            }] :  teachers_ids.map((el) =>
-              this.teachers.find((teacher) => teacher.value === el)
-            ),
+            teachers:
+              teachers_ids.length === 1 && teachers_names.length === 1
+                ? [
+                    {
+                      label: teachers_names[0],
+                      value: teachers_ids[0],
+                    },
+                  ]
+                : teachers_ids.map((el) =>
+                    this.teachers.find((teacher) => teacher.value === el)
+                  ),
             // delete & edit
             local_id: id,
             subject_name: subject,

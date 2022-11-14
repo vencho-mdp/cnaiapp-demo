@@ -11,7 +11,6 @@
         :hide-selected="true"
         select-label=""
         :show-no-results="false"
-        :searchable="false"
         placeholder=""
         label="label"
         track-by="value"
@@ -194,7 +193,7 @@ export default {
   font-size: 14px;
 }
 .multiselect :deep(.multiselect__option) :hover {
-  @apply !bg-primary-lightblue shadow;
+  @apply !bg-primary-lightblue p-2 rounded shadow;
 }
 /* https://github.com/shentao/vue-multiselect/issues/594 */
 .multiselect :deep(.multiselect__option--highlight) {

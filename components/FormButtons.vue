@@ -12,7 +12,7 @@
       type="button"
       @click.native="$emit('handleCancelButtonClick')"
     >
-      Cancelar
+      {{ cancelButtonText }}
     </cancel-button>
   </div>
 </template>
@@ -21,16 +21,20 @@
 export default {
   inheritAttrs: false,
   props: {
+    cancelButtonText: {
+      type: String,
+      default: "Cancelar",
+    },
     isAddButtonInvalid: {
       type: Boolean,
-      default: true
+      default: true,
     },
     addButtonText: {
       type: String,
-      default: 'Guardar'
-    }
-  }
-}
+      default: "Guardar",
+    },
+  },
+};
 </script>
 
 <style></style>

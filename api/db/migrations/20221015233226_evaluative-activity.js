@@ -11,6 +11,7 @@ exports.up = async function (knex) {
       .unique()
       .defaultTo(knex.raw("uuid_generate_v4()"));
     table.text("title").notNullable();
+    table.text("type").notNullable();
     table.text("grade_type").notNullable();
     table.text("min_grade_to_pass").notNullable();
     table.specificType("dates", "timestamp[]").notNullable();

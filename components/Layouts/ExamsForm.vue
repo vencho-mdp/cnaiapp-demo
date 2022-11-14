@@ -19,6 +19,21 @@
     </div>
     <div class="flex">
       <div class="flex flex-col flex-grow mr-2 justify-between">
+        <v-label class="mb-2 !text-white"> Tipo de evaluación </v-label>
+        <VDropdown
+          class="w-full"
+          :options="[
+            { value: 'exam', label: 'Examen' },
+            { value: 'practical_work', label: 'Trabajo Práctico' },
+            { value: 'makeup', label: 'Recuperatorio' },
+          ]"
+          :value="form.type_of_eval"
+          @change.native="form.type_of_eval = $event.target.value"
+        />
+      </div>
+    </div>
+    <div class="flex">
+      <div class="flex flex-col flex-grow mr-2 justify-between">
         <v-label class="mb-2 !text-white"> Tipo de nota </v-label>
         <VDropdown
           class="w-full"
@@ -252,6 +267,7 @@ export default {
         dates: this.examData.dates || [],
         grade_type: this.examData.grade_type || "",
         min_grade_to_pass: this.examData.min_grade_to_pass || "",
+        type_of_eval: this.examData.type_of_eval || "",
         // TODO:
         // typeOfGradeSystem: this.examData.typeOfGradeSystem || "Numérica",
       },
@@ -265,6 +281,7 @@ export default {
         classes: this.form.classes.map((el) => el.id),
         grade_type: this.form.grade_type,
         min_grade_to_pass: this.form.min_grade_to_pass,
+        type_of_eval: this.form.type_of_eval,
         subjects_and_teachers_involved: [
           {
             teacher_id: this.$store.state.authentication.user_data.id,

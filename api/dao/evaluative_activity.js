@@ -9,6 +9,7 @@ class evaluative_activity_DAO {
         "dates",
         "grade_type",
         "min_grade_to_pass",
+        "type",
         db.raw(
           "json_agg(json_build_object('teacher_id', evaluative_activity_subjects_teachers.teacher_id, 'subject_id', subject_id)) AS teachers_subjects"
         ),
@@ -49,6 +50,7 @@ class evaluative_activity_DAO {
       grade_type,
       min_grade_to_pass,
       classes,
+      type_of_eval: type,
       subjects_and_teachers_involved,
     } = evaluative_activity;
     await db.transaction(async (trx) => {
@@ -58,6 +60,7 @@ class evaluative_activity_DAO {
           title,
           grade_type,
           min_grade_to_pass,
+          type,
         })
         .returning("id");
       await trx("evaluative_activity_subjects_teachers").insert(
@@ -86,6 +89,7 @@ class evaluative_activity_DAO {
       grade_type,
       min_grade_to_pass,
       classes,
+      type_of_eval: type,
       subjects_and_teachers_involved,
     } = evaluative_activity;
     await db.transaction(async (trx) => {
@@ -95,6 +99,7 @@ class evaluative_activity_DAO {
           dates: dates.map((el) => new Date(el).toISOString()),
           title,
           grade_type,
+          type,
           min_grade_to_pass,
         });
       await trx("evaluative_activity_subjects_teachers")

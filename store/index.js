@@ -2,45 +2,46 @@ export const state = () => ({
   show_bug_reporting_sidebar: false,
   show_toast: false,
   see_img_bigger: false,
-  toast_content: '¡Guardado!',
+  toast_content: "¡Guardado!",
   EXTRA_CURRICULAR_SUBJECTS: [
-    'Música',
-    'Educación Física',
-    'Teatro',
-    'Plástica',
-    'Inglés'
-  ]
-})
+    "Música",
+    "Educación Física",
+    "Teatro",
+    "Informática",
+    "Plástica",
+    "Inglés",
+  ],
+});
 
 export const mutations = {
-  toggle_bug_reporting_sidebar (state) {
-    state.show_bug_reporting_sidebar = !state.show_bug_reporting_sidebar
+  toggle_bug_reporting_sidebar(state) {
+    state.show_bug_reporting_sidebar = !state.show_bug_reporting_sidebar;
   },
-  change_toast_content (state, content) {
-    state.toast_content = content
+  change_toast_content(state, content) {
+    state.toast_content = content;
   },
-  change_toast_state (state, payload) {
-    state.show_toast = payload
+  change_toast_state(state, payload) {
+    state.show_toast = payload;
   },
-  change_see_img_bigger_state (state, url) {
-    state.see_img_bigger = url
-  }
-}
+  change_see_img_bigger_state(state, url) {
+    state.see_img_bigger = url;
+  },
+};
 
-export const getters = {}
+export const getters = {};
 
 export const actions = {
-  async nuxtServerInit ({ dispatch, commit, state }) {
-    const { access_token = null, refresh_token = null } = state.authentication
+  async nuxtServerInit({ dispatch, commit, state }) {
+    const { access_token = null, refresh_token = null } = state.authentication;
     if (access_token) {
       try {
-        commit('authentication/SET_PAYLOAD', {
+        commit("authentication/SET_PAYLOAD", {
           token: access_token,
-          refresh_token
-        })
+          refresh_token,
+        });
       } catch (e) {
-        await dispatch('authentication/logout')
+        await dispatch("authentication/logout");
       }
     }
-  }
-}
+  },
+};
