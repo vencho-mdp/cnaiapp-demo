@@ -17,6 +17,6 @@ jobs:
           cd /var/www/html/cnaiapp      
           git pull git@github.com:vencho-mdp/cnaiapp.git
           npm install
-          npx nuxt build
+          npm run build
           pm2 stop all
           pm2 start
