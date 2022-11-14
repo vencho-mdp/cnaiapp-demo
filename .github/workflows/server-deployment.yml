@@ -17,7 +17,7 @@ jobs:
 	env:       
 		SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}     
 	run: |       
-		echo $SSH_KEY | base64 -d > ssh-key
+		echo $SSH_KEY
     cd /var/www/html/cnaiapp       
     git pull origin main
     npm run build
