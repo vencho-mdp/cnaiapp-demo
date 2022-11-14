@@ -16,7 +16,7 @@ jobs:
         script: |
           echo $SSH_KEY
           cd /var/www/html/cnaiapp      
-          git pull origin main
+          git pull git@github.com:vencho-mdp/cnaiapp.git
           npm run build
           pm2 stop all
           pm2 start
