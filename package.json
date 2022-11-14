@@ -1,6 +1,6 @@
 {
   "name": "cnai-app",
-  "version": "1.0.0-beta.2",
+  "version": "beta",
   "private": true,
   "engines": {
     "node": "16.x.x",
