@@ -14,7 +14,6 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          exec bash
           cd /var/www/html/cnaiapp      
           git pull git@github.com:vencho-mdp/cnaiapp.git
           npm install
