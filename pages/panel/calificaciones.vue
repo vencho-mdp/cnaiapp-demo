@@ -41,7 +41,7 @@
           <!-- remove filters buttons -->
           <icon-button
             :disabled="!(selectedClassFilter || parsedExamToCorrect)"
-            class="hover-effect ml-8 h-10 w-10 mt-2"
+            class="hover-effect ml-4 h-10 w-10 mt-2"
             :class="[
               selectedClassFilter || parsedExamToCorrect
                 ? 'bg-red-light'

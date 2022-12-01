@@ -73,7 +73,13 @@ export default {
     ],
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
+    ["nuxt-umami"],
   ],
+
+  umami: {
+    websiteId: "1de5c508-bc4f-47e7-b689-05baa109e902",
+    scriptUrl: "http://200.0.183.27:4000/umami.js",
+  },
 
   sitemap: {
     gzip: true,

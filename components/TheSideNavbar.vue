@@ -79,14 +79,14 @@ export default {
               "management_team"
             ),
         },
-        // {
-        //   img: "grades",
-        //   route: "calificaciones",
-        //   should_render:
-        //     this.$store.state.authentication.user_data.groups.includes(
-        //       "teacher"
-        //     ) && !this.is_mobile,
-        // },
+        {
+          img: "grades",
+          route: "calificaciones",
+          should_render:
+            this.$store.state.authentication.user_data.groups.includes(
+              "teacher"
+            ) && !this.is_mobile,
+        },
       ];
     },
   },

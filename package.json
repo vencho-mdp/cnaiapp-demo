@@ -61,10 +61,16 @@
     "eslint": "^8.11.0",
     "eslint-plugin-nuxt": "^3.2.0",
     "jest": "^27.5.1",
+    "nuxt-umami": "^1.1.2",
     "playwright": "^1.19.1",
     "start-server-and-test": "^1.14.0"
   },
   "resolutions": {
     "glob": "7.2.0"
+  },
+  "overrides": {
+    "@nuxtjs/tailwindcss": {
+      "@nuxt/kit": "3.0.0-rc.13"
+    }
   }
 }
