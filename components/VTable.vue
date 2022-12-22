@@ -7,7 +7,7 @@
             scope="col"
             class="p-2 text-xs font-bold"
             :class="header.classes"
-            v-for="header in headers"
+            v-for="header in sortedHeaders"
             :key="header.label"
           >
             <span :class="header.spanClasses" class="flex items-center">
@@ -34,10 +34,13 @@
           <td
             class="p-2 text-xs text-black"
             :class="header.classes"
-            v-for="(header, idx) in headers"
+            v-for="(header, idx) in sortedHeaders"
             :key="header.label"
           >
-            <span v-if="header.mode !== 'edit' || idx === 0">
+            <span
+              v-if="header.mode !== 'edit' || idx === 0"
+              :class="item[`classes_${header.id}`]"
+            >
               {{
                 header.props
                   .flatMap((el) => item[el])
@@ -65,9 +68,13 @@
   </div>
 </template>
 <script setup>
+import { computed } from "vue";
 const props = defineProps({
   headers: Array,
   items: Array,
   actions: Array,
+});
+const sortedHeaders = computed(() => {
+  return props.headers.sort((a, b) => a.order - b.order);
 });
 </script>

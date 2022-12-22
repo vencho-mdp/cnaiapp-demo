@@ -614,14 +614,11 @@ import filterMap from "@/utils/filterMap.js";
 import "@/assets/css/toggle.css";
 import { VueAutosuggest } from "vue-autosuggest";
 import { addHorizontalSwipeHandler } from "@/utils/addHorizontalSwipeHandler.js";
-import { transformSlots } from "../../utils/transformSlots";
+import { transformSlots } from "@/utils/transformSlots";
+import { structuredClone as structuredClonePolyfilled } from "@/utils/structuredClone.js";
+
 const pickRandomFromArray = (arr) =>
   arr[Math.floor(Math.random() * arr.length)];
-
-const structuredClonePolyfilled =
-  typeof structuredClone === "function"
-    ? structuredClone
-    : (obj) => JSON.parse(JSON.stringify(obj));
 
 export default {
   components: {

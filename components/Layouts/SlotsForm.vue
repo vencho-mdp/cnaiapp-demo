@@ -203,7 +203,7 @@ export default {
     async add() {
       const data = this.form.assignments.map(
         ({ local_id, subject_name, teachers, ...el }) => ({
-          teachers_ids: teachers.map((el) => el.value),
+          teachers_ids: teachers.map((el2) => el2?.value).filter(Boolean),
           ...el,
         })
       );

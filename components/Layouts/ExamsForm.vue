@@ -132,20 +132,22 @@
         @input.native="form.teacher_subject = $event.target.value"
       />
     </div>
-    <div
-      class="flex items-center justify-between shadow border border-gray-200 rounded p-2"
-    >
-      <v-label for="checked-checkbox" class="ml-2 !text-white"
-        >¿Es interdisciplinario?</v-label
-      >
-      <input
-        checked
-        id="checked-checkbox"
-        type="checkbox"
-        v-model="showSubjectsInput"
-        value=""
-        class="w-4 h-4 accent-primary-blue bg-white rounded border-primary-lightblue focus:ring-blue-500 focus:ring-2 shadow"
-      />
+    <div class="flex justify-between flex-col p-2">
+      <v-label class="!text-white">¿Es interdisciplinario?</v-label>
+      <!-- TODO: RENAME TOGGLE CLASSES -->
+      <!-- MAKE REUSABLE COMPONENT -->
+      <div class="toggle colour shift-toggler mt-2">
+        <input
+          id="more-than-one-subject"
+          class="toggle-checkbox hidden"
+          type="checkbox"
+          v-model="showSubjectsInput"
+        />
+        <label
+          for="more-than-one-subject"
+          class="rounded-full h-6 transition-color ease-out w-12 duration-150 toggle-label block justification-toggler"
+        ></label>
+      </div>
     </div>
     <div class="flex flex-col mb-1 justify-between" v-if="showSubjectsInput">
       <v-label class="mb-2 !text-white"> Materias </v-label>

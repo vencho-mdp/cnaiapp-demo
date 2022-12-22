@@ -1,79 +1,91 @@
 <template>
   <main class="p-8" v-if="shouldRender">
-    <div>
-      <span
-        class="flex max-w-lg flex-col mb-8 mt-8 p-4 border rounded-md w-min mr-auto border-gray-light"
-      >
-        <span class="flex items-center mb-4">
-          <h3 class="text-sm font-bold text-black">Calificar</h3>
-          <icon-button
-            class="bg-primary-darkblue shadow-md duration-500 hover:scale-105 h-6 w-6 !p-1.5 ml-4"
-            @click.native="addExam = true"
-          >
-            <img src="~/assets/images/plus.svg" alt="Eliminar" />
-          </icon-button>
-        </span>
-        <span class="flex flex-wrap md:flex-nowrap items-center">
-          <div class="flex flex-col mr-16">
-            <v-label class="mb-2">Tipo</v-label>
-            <v-dropdown
-              v-model="typeOfEval"
-              ref="dropdown-filter-exam"
-              :options="typesOfEval"
-            ></v-dropdown>
-          </div>
-          <div class="flex flex-col mr-16">
-            <v-label class="mb-2">Evaluación</v-label>
-            <v-dropdown
-              v-model="examToCorrect"
-              ref="dropdown-filter-exam"
-              :options="evaluativeActivitiesForFilter"
-            ></v-dropdown>
-          </div>
-          <div class="flex flex-col">
-            <v-label class="mb-2">Clase</v-label>
-            <v-dropdown
-              v-model="selectedClassFilter"
-              ref="dropdown-filter-class"
-              :options="classesForFilter"
-            ></v-dropdown>
-          </div>
-          <!-- remove filters buttons -->
-          <icon-button
-            :disabled="!(selectedClassFilter || parsedExamToCorrect)"
-            class="hover-effect ml-4 h-10 w-10 mt-2"
-            :class="[
-              selectedClassFilter || parsedExamToCorrect
-                ? 'bg-red-light'
-                : 'bg-gray-light',
-            ]"
-            @click.native="removeFilters()"
-          >
-            <img
-              src="~/assets/images/trash.svg"
-              :style="{
-                filter: !(selectedClassFilter || parsedExamToCorrect)
-                  ? 'brightness(0) invert(0.45)'
-                  : null,
-              }"
-              class="w-8 h-8"
-              alt="Eliminar Filtros"
-            />
-          </icon-button>
-        </span>
+    <span
+      class="flex flex-col mb-8 mt-8 p-4 border rounded-md mr-auto border-gray-light"
+    >
+      <span class="flex items-center mb-4">
+        <h3 class="text-sm font-bold text-black">Calificar</h3>
+        <icon-button
+          class="bg-primary-darkblue shadow-md duration-500 hover:scale-105 h-6 w-6 !p-1.5 ml-4"
+          @click.native="addExam = true"
+        >
+          <img src="~/assets/images/plus.svg" alt="Eliminar" />
+        </icon-button>
       </span>
-    </div>
+      <span class="flex flex-wrap md:flex-nowrap items-center"
+        ><div class="flex flex-col">
+          <v-label class="mb-2">Clase</v-label>
+          <v-dropdown
+            v-model="selectedClassFilter"
+            :options="classesForFilter"
+          ></v-dropdown>
+        </div>
+        <div class="flex flex-col mx-8">
+          <v-label class="mb-2">Materia</v-label>
+          <v-dropdown
+            v-model="selectedSubjectFilter"
+            :options="subjectsForFilter"
+          ></v-dropdown>
+        </div>
+        <div class="flex flex-col">
+          <v-label class="mb-2">Evaluación</v-label>
+          <v-dropdown
+            v-model="examToCorrect"
+            :options="evaluativeActivitiesForFilter"
+          ></v-dropdown>
+        </div>
+        <!-- remove filters buttons -->
+        <icon-button
+          :disabled="!(selectedClassFilter || parsedExamToCorrect)"
+          class="hover-effect ml-12 h-10 w-10 p-2 mt-2"
+          :class="[
+            selectedClassFilter || parsedExamToCorrect
+              ? 'bg-red-light'
+              : 'bg-gray-light',
+          ]"
+          @click.native="removeFilters()"
+        >
+          <img
+            src="~/assets/images/trash.svg"
+            :style="{
+              filter: !(selectedClassFilter || parsedExamToCorrect)
+                ? 'brightness(0) invert(0.45)'
+                : null,
+            }"
+            class="w-8 h-8"
+            alt="Eliminar Filtros"
+          />
+        </icon-button>
+        <SmallButton
+          @click.native="exportGrades"
+          class="!w-min ml-auto"
+          :disabled="!isExportGradesBtnValid"
+        >
+          <img
+            src="~/assets/images/export.svg"
+            class="h-8 w-6 !max-w-max"
+            alt="Exportar"
+          />
+        </SmallButton>
+      </span>
+    </span>
     <transition name="fade">
       <VTable
-        v-if="examToCorrect"
-        :items="filteredStudents"
+        v-if="
+          examToCorrect && selectedClassFilter && filteredStudents.length > 0
+        "
+        :items="filteredStudentsWithGradeColorIndicator"
         :headers="tableHeaders"
         @editGrades="editGrades"
       >
         <template #nextToHeader="{ header }">
           <icon-button
             class="w-8 h-8 hover-effect ml-2"
-            v-if="headerThatIsBeingEdited !== header.id && header.id"
+            v-if="
+              headerThatIsBeingEdited !== header.id &&
+              header.id &&
+              parsedExamToCorrect.id === header.id
+            "
             @click.native="headerThatIsBeingEdited = header.id"
           >
             <img src="~/assets/images/pencil.svg" alt="Editar" />
@@ -84,10 +96,14 @@
             type="number"
             :value="item[header.id]"
             @input.native="
-              () => {
+              function () {
+                const parsedVal = Number($event.target.value);
                 if (
-                  Number($event.target.value) > 10 ||
-                  Number($event.target.value) < 0
+                  parsedVal > 10 ||
+                  parsedVal < 0 ||
+                  (header.type === 'final_grade' &&
+                    parsedVal % 1 !== 0 &&
+                    parsedVal % 1 !== 0.5)
                 ) {
                   $event.target.value = '';
                 } else {
@@ -143,7 +159,7 @@
     </transition>
     <transition name="fade">
       <SmallButton
-        class="ml-2 !bg-green right-16 bottom-8 z-50 fixed"
+        class="ml-2 !bg-green mt-8"
         @click.native="updateGrades"
         v-if="updatedGrades.length > 0"
       >
@@ -155,6 +171,7 @@
 
 <script>
 import { grade_types } from "~/utils/grade_types.js";
+
 const EVAL_TYPES_NAMES = {
   exam: "Examen",
   practical_work: "Trabajo Práctico",
@@ -169,11 +186,10 @@ export default {
       grade_types,
       addExam: false,
       removeForm: false,
-      limit: 30,
       selectedClassFilter: null,
-      offset: 0,
       updatedGrades: [],
       examToCorrect: null,
+      selectedSubjectFilter: null,
       typeOfEval: null,
       examData: {},
     };
@@ -184,9 +200,14 @@ export default {
     const getAllClasses = $axios.$get("/api/classes/");
     const getSubjects = $axios.$get("/api/subjects/");
     const getEvaluativeActivities = $axios.$get("/api/evaluative-activities/");
+    const is_extracurricular_teacher =
+      store.state.authentication.user_data.subjects.some((el) =>
+        store.state.EXTRA_CURRICULAR_SUBJECTS.includes(el)
+      );
     const getStudents = $axios.$get("/api/students/", {
       params: {
         classes_ids: JSON.stringify(teacherClassesIds),
+        include_students_from_subjects: is_extracurricular_teacher,
       },
     });
     const getAllTeachers = $axios.$get("/api/teachers/");
@@ -215,20 +236,20 @@ export default {
             el2.student_id,
             { [el.id]: el2.grade },
           ]);
-        })
+        }) || []
       );
       return {
         classes,
         teacherClasses,
         teacher_subjects,
-        subjects: subjects?.map(({ name, ...el }) => ({
+        subjects: subjects?.map?.(({ name, ...el }) => ({
           class: name,
           ...el,
         })),
         teachers,
         evaluativeActivities,
         // add { exam_id: student_grade }
-        students: students.map((el) => {
+        students: students?.map((el) => {
           return { ...el, ...studentGrades[el.id] };
         }),
       };
@@ -237,14 +258,58 @@ export default {
     }
   },
   computed: {
+    filteredStudentsWithGradeColorIndicator() {
+      if (!this.examToCorrect) {
+        return this.filteredStudents;
+      }
+      const common_classes = "font-bold";
+      const failed_classes = `${common_classes} text-red-500`;
+      const passed_classes = `${common_classes} text-green-500`;
+      // const min_grade = this.parsedExamToCorrect?.min_grade_to_pass;
+      // const prop = `classes_${this.parsedExamToCorrect?.id}`;
+      return this.filteredStudents.map((s) => {
+        const { student_name, class_id, listeners, id, ...eval_activs } = s;
+        const result = { student_name, class_id, listeners, id };
+        for (const [key, value] of Object.entries(eval_activs)) {
+          result[key] = value;
+          const evaluative_activity = this.evaluativeActivities.find(
+            (el) => el.id === key
+          );
+          const prop = `classes_${evaluative_activity.id}`;
+          const min_grade = evaluative_activity.min_grade_to_pass;
+          if (evaluative_activity.grade_type === "Numérica") {
+            result[prop] =
+              Number(value) < min_grade ? failed_classes : passed_classes;
+          }
+          if (this.parsedExamToCorrect.grade_type === "Conceptual") {
+            const conceptualGrades = grade_types.find(
+              (el) => el.grade_type === "Conceptual"
+            ).grades;
+            result[prop] =
+              conceptualGrades.indexOf(value) <
+              conceptualGrades.indexOf(min_grade)
+                ? failed_classes
+                : passed_classes;
+          }
+        }
+        return result;
+      });
+    },
     typesOfEval() {
-      return this.evaluativeActivities?.map((el) => ({
+      const typesWithDuplicates = this.evaluativeActivities.map((el) => ({
         value: el.type,
         label: EVAL_TYPES_NAMES[el.type],
       }));
+      // remove duplicates
+      return typesWithDuplicates.filter(
+        (el, index, self) =>
+          index === self.findIndex((t) => t.value === el.value)
+      );
     },
     parsedExamToCorrect() {
-      return this.examToCorrect ? JSON.parse(this.examToCorrect) : null;
+      return this.examToCorrect
+        ? this.evaluativeActivities.find((el) => el.id === this.examToCorrect)
+        : null;
     },
     sidebarTitle() {
       return this.addExam ? "Añadir Evaluación" : "Editar Evaluación";
@@ -260,6 +325,7 @@ export default {
         ...el,
         listeners: {
           input($event, item, header) {
+            if (!item || !header) return;
             // remove any that had same student_id and same evaluative_activity_id before pushing the new one
             const prevGrade = updatedGrades.findIndex(
               (el) =>
@@ -278,33 +344,53 @@ export default {
         },
       }));
       return !this.parsedExamToCorrect
-        ? formattedStudents.slice(this.offset, this.offset + this.limit)
+        ? formattedStudents
         : formattedStudents.filter((el) =>
             this.selectedClassFilter
-              ? this.selectedClassFilter === el.class_id
+              ? this.selectedClassFilter.startsWith("[")
+                ? JSON.parse(this.selectedClassFilter).includes(el.class_id)
+                : this.selectedClassFilter === el.class_id
               : this.parsedExamToCorrect.classes.includes(el.class_id)
           );
     },
     tableHeaders() {
       return [
         { props: ["student_name"], label: "Nombre" },
-        ...(this.parsedExamToCorrect
+        ...(this.parsedExamToCorrect &&
+        this.parsedExamToCorrect.type !== "final_grade"
           ? [this.parsedExamToCorrect]
-          : this.evaluativeActivities
-        ).map((activity) => ({
-          ...activity,
-          props: [activity.id],
-          label: activity.title,
-          mode:
-            this.headerThatIsBeingEdited === activity.id ? "edit" : "default",
-          fallback: "-",
-          classes: ["text-center"],
-          spanClasses: ["justify-center"],
-        })),
+          : // move selected exam to first position
+            this.evaluativeActivities
+        )
+          .filter((el) => {
+            if (!this.selectedClassFilter) return true;
+            return (
+              el.classes.some((el) =>
+                this.selectedClassFilter[0] === "["
+                  ? !el
+                  : el === this.selectedClassFilter
+              ) &&
+              //  ensure that at least one student has a grade on the exam or it is the selected exam
+              (this.students.some((student) => student[el.id]) ||
+                this.parsedExamToCorrect.id === el.id)
+            );
+          })
+          .map((activity) => ({
+            ...activity,
+            props: [activity.id],
+            label: activity.title,
+            mode:
+              this.headerThatIsBeingEdited === activity.id ? "edit" : "default",
+            fallback: "-",
+            classes: ["text-center"],
+            spanClasses: ["justify-center"],
+            order:
+              this.parsedExamToCorrect?.id === activity.id ? Infinity : null,
+          })),
       ];
     },
     classesForFilter() {
-      return this.classes
+      const result = this.classes
         .filter(
           (el) =>
             (this.parsedExamToCorrect &&
@@ -315,43 +401,131 @@ export default {
               ))
         )
         .map((el) => ({ value: el.id, label: el.class }));
+      if (
+        this.$store.state.authentication.user_data.subjects.some((el) =>
+          this.$store.state.EXTRA_CURRICULAR_SUBJECTS.includes(el)
+        )
+      ) {
+        const all5thGradeIds = this.classes
+          .filter((el) => el.class.includes("5to"))
+          .map((el) => el.id);
+        const all6thGradeIds = this.classes
+          .filter((el) => el.class.includes("6to"))
+          .map((el) => el.id);
+        if (all5thGradeIds.length > 0) {
+          result.push({
+            value: JSON.stringify(all5thGradeIds),
+            label: "5tos",
+          });
+        }
+        if (all6thGradeIds.length > 0) {
+          result.push({
+            value: JSON.stringify(all6thGradeIds),
+            label: "6tos",
+          });
+        }
+      }
+      return result;
     },
     evaluativeActivitiesForFilter() {
-      return this.evaluativeActivities
-        .filter((el) =>
-          this.selectedClassFilter && el && el.classes
-            ? el.classes.includes(this.selectedClassFilter)
-            : true
+      if (!this.selectedClassFilter || !this.selectedSubjectFilter) return [];
+      const result = this.evaluativeActivities
+        .filter(
+          (el) =>
+            // is array
+            (this.selectedClassFilter[0] === "["
+              ? el.classes.includes(null)
+              : el.classes.includes(this.selectedClassFilter)) &&
+            el.teachers_subjects
+              .map((el) => el.subject_id)
+              .includes(this.selectedSubjectFilter)
         )
         .map((el) => ({
-          value: JSON.stringify(el),
+          value: el.id,
           label: el.title,
         }));
+      return result;
+    },
+    isExportGradesBtnValid() {
+      return (
+        this.filteredStudents.filter((el) => !el[this.parsedExamToCorrect?.id])
+          .length === 0 && this.parsedExamToCorrect?.type === "final_grade"
+      );
+    },
+    subjectsForFilter() {
+      return this.$store.state.authentication.user_data?.subjects.map((el) => ({
+        value: this.subjects.find((subject) => subject.class === el).id,
+        label: el,
+      }));
     },
   },
   watch: {
     class_id() {
-      this.examToCorrect = "";
-    },
-    classesForFilter(new_val, old_val) {
-      if (
-        new_val.length === 1 &&
-        new_val[0] &&
-        JSON.stringify(new_val) !== JSON.stringify(old_val)
-      ) {
-        this.selectedClassFilter = new_val[0].value;
-      }
+      this.examToCorrect = null;
     },
   },
   methods: {
-    removeFilters() {
-      this.selectedClassFilter = "";
-      this.examToCorrect = "";
-      // remove value from dropdowns
-      this.$nextTick(() => {
-        this.$refs["dropdown-filter-class"].$el.value = "";
-        this.$refs["dropdown-filter-exam"].$el.value = "";
+    async exportGrades() {
+      const gradeHeader = this.parsedExamToCorrect.title
+        .replaceAll("Nota", "Calificación")
+        .split(" - ")[0];
+      const students = this.parsedExamToCorrect.grades.map((el) => [
+        this.students.find((el2) => el2.id === el.student_id)?.student_name,
+        el.grade,
+      ]);
+      let [{ jsPDF }, autotable] = await Promise.all([
+        import("jspdf"),
+        import("jspdf-autotable"),
+      ]);
+      autotable = autotable.default;
+      const doc = new jsPDF({
+        compress: true,
       });
+      doc.setFontSize(17);
+      doc.setFont("Helvetica", "bold");
+      doc.text("Colegio Nacional Doctor Arturo Illia", 65, 22);
+      // add school loho
+      const img = new Image();
+      img.src = `${window.location.href.split("/")[0]}/icon.png`;
+      console.log(img.src);
+      doc.addImage(img, "png", 35, 10, 20, 20, undefined, "FAST");
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(14);
+      doc.text(
+        "Profesor: " + this.$store?.state.authentication.user_data.name,
+        15,
+        40
+      );
+      doc.setFontSize(14);
+      doc.text(
+        "Clase: " +
+          this.classes.find((el) => el.id === this.selectedClassFilter).class,
+        150,
+        40
+      );
+      autotable(doc, {
+        body: students,
+        head: [["Nombre", gradeHeader]],
+        startY: 50,
+        theme: "plain",
+        tableLineColor: [38, 38, 38],
+        tableLineWidth: 0.5,
+        styles: {
+          lineColor: [60, 68, 77],
+          lineWidth: 0.2,
+        },
+      });
+      doc.setFillColor(0, 0, 0);
+      doc.rect(15, doc.lastAutoTable.finalY + 25, 100, 0, "S");
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text("Firma", 55, 32 + doc.lastAutoTable.finalY);
+      doc.save("Reporte de calificaciones.pdf");
+    },
+    removeFilters() {
+      this.selectedClassFilter = null;
+      this.examToCorrect = null;
+      this.selectedSubjectFilter = null;
     },
     updateExamSelected(exam) {
       const not_user = exam.teachers_subjects.filter(
@@ -406,12 +580,6 @@ export default {
       this.itemThatIsBeingEdited = item.id;
     },
     async updateGrades() {
-      console.log(
-        this.updatedGrades.map((el) => ({
-          ...el,
-          teacher_id: this.$store.state.authentication.user_data.id,
-        }))
-      );
       try {
         this.$axios.put("/api/evaluative-activities/grades", {
           grades: this.updatedGrades.map((el) => ({

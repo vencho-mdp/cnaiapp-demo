@@ -18,12 +18,12 @@ class evaluative_activity_DAO {
           "json_agg(json_build_object('student_id', student_id, 'grade', grades.grade)) AS grades"
         )
       )
-      .join(
+      .leftJoin(
         "evaluative_activity_subjects_teachers",
         "evaluative_activity.id",
         "evaluative_activity_subjects_teachers.evaluative_activity_id"
       )
-      .join(
+      .leftJoin(
         "evaluative_activity_classes",
         "evaluative_activity.id",
         "evaluative_activity_classes.evaluative_activity_id"
@@ -35,7 +35,7 @@ class evaluative_activity_DAO {
           "grades.evaluative_activity_id"
         ).andOn("grades.teacher_id", "=", db.raw("?", [user_id]));
       })
-      .join("class", "evaluative_activity_classes.class_id", "class.id")
+      .leftJoin("class", "evaluative_activity_classes.class_id", "class.id")
       .where("evaluative_activity_subjects_teachers.teacher_id", user_id)
       .groupBy("evaluative_activity.id")
       .orderBy("evaluative_activity.dates", "desc");
@@ -114,15 +114,17 @@ class evaluative_activity_DAO {
           };
         })
       );
-      await trx("evaluative_activity_classes")
-        .where("evaluative_activity_id", id)
-        .del();
-      await trx("evaluative_activity_classes").insert(
-        classes.map((class_id) => ({
-          evaluative_activity_id: id,
-          class_id,
-        }))
-      );
+      if (classes) {
+        await trx("evaluative_activity_classes")
+          .where("evaluative_activity_id", id)
+          .del();
+        await trx("evaluative_activity_classes").insert(
+          classes.map((class_id) => ({
+            evaluative_activity_id: id,
+            class_id,
+          }))
+        );
+      }
     });
   }
 

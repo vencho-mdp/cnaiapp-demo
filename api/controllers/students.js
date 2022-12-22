@@ -20,7 +20,8 @@ class students_controller {
       ).id;
       const students = await get_students(
         JSON.parse(req.query.classes_ids),
-        user_id
+        user_id,
+        req.query.include_students_from_subjects
       );
 
       res.status(201).json(students);

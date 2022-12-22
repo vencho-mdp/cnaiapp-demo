@@ -51,8 +51,8 @@ export default {
   },
   computed: {
     optionsWithDefaultState() {
-      const addEmpty = !!this.value;
-      return addEmpty ? [...this.options].concat("") : [...this.options];
+      const addEmpty = !this.value;
+      return addEmpty ? ["", ...this.options] : [...this.options];
     },
   },
 };

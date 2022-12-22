@@ -266,12 +266,12 @@ export default {
       teachers_slots: [],
       unsavedChanges: false,
       showLayout: true,
+      cancelCounter: 0,
     };
   },
   methods: {
-    saveDataFromComponentLayout() {
-      this.showLayout = true;
-      this.$refs.componentLayout.add();
+    async saveDataFromComponentLayout() {
+      await this.$refs.componentLayout.add();
       this.unsavedChanges = false;
       this.closeSidebar();
     },
@@ -302,15 +302,24 @@ export default {
       this.sidebarComponent = component;
     },
     closeSidebar(source) {
-      // source = null => comes from add method
-      if (this.unsavedChanges && source !== null) {
+      if (this.unsavedChanges && this.cancelCounter === 0) {
         this.sidebarTitle = "Hay cambios sin guardar";
         this.showLayout = false;
+        this.cancelCounter++;
         return;
       }
-      this.sidebarComponent = null;
-      this.componentProps = null;
+      // source = null => comes from add method
+      if (this.cancelCounter > 0 || !source) {
+        this.unsavedChanges = false;
+        this.showLayout = true;
+        this.cancelCounter = 0;
+        this.sidebarComponent = null;
+        this.componentProps = null;
+      }
       if (source === "cross_btn" || source === "cancel") {
+        this.cancelCounter = 0;
+        this.sidebarComponent = null;
+        this.componentProps = null;
         return;
       }
       this.$store.commit("change_toast_state", "success");
@@ -324,7 +333,7 @@ export default {
       this.$nuxt.refresh();
     },
     openSidebar(title, component, props) {
-      this.showLayout = true;
+      this.unsavedChanges = false;
       this.sidebarTitle = title;
       this.sidebarComponent = component;
       if (props) {

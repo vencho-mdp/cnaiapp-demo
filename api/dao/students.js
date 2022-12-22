@@ -73,7 +73,11 @@ const get_absent_students = async (date, classes_ids, u_id) => {
 };
 
 class students_DAO {
-  async get_students(classes_ids, u_id) {
+  async get_students(
+    classes_ids,
+    u_id,
+    include_students_from_subjects = false
+  ) {
     const valid_grades = db("class")
       .select("grade")
       .whereIn(
@@ -84,9 +88,15 @@ class students_DAO {
       .whereIn("grade", valid_grades)
       .join("user_group", "user_group.user_id", db.raw(`'${u_id}'`))
       .join("group", "group.id", "user_group.group_id")
+      .leftJoin(
+        "subject_teacher",
+        "subject_teacher.teacher_id",
+        "user_group.user_id"
+      )
       .select(
         db.raw("ARRAY_AGG(class.id) AS classes_ids"),
-        db.raw("ARRAY_AGG(DISTINCT name) AS group_names")
+        db.raw("ARRAY_AGG(DISTINCT name) AS group_names"),
+        db.raw("ARRAY_AGG(DISTINCT subject_id) AS subjects_ids")
       )
       .first();
     if (
@@ -95,7 +105,7 @@ class students_DAO {
     ) {
       throw new Error("Invalid classes list");
     }
-    const data = await db("user")
+    const data = db("user")
       .select(
         "user.id AS id",
         db.raw("CONCAT(last_name, ', ', first_name) AS student_name"),
@@ -104,17 +114,28 @@ class students_DAO {
       .join("user_class", "user.id", "user_class.user_id")
       .join("class", "user_class.class_id", "class.id")
       .join("user_group", "user.id", "user_group.user_id")
-      .leftJoin("student_absence", "student_absence.student_id", "user.id")
+      .leftJoin("student_subject", "student_subject.student_id", "user.id")
       .join("group", "group.id", "user_group.group_id")
       .modify(function (queryBuilder) {
         if (!user_classes_and_role.group_names.includes("management_team")) {
-          queryBuilder.whereIn("class_id", user_classes_and_role.classes_ids);
+          const condition = include_students_from_subjects
+            ? ["subject_id", "in", user_classes_and_role.subjects_ids]
+            : ["class_id", "in", user_classes_and_role.classes_ids];
+          queryBuilder
+            .where((builder) => {
+              builder.whereIn("grade", ["5to", "6to"]).andWhere(...condition);
+            })
+            .orWhere((builder) => {
+              builder
+                .whereIn("class_id", user_classes_and_role.classes_ids)
+                .whereNotIn("grade", ["5to", "6to"]);
+            });
         }
       })
       .andWhere("name", "student")
       .groupBy("user.id", "class_id", "first_name", "last_name")
       .orderBy("last_name");
-    return data;
+    return await data;
   }
 
   async add_students_that_were_absent(list, date, user_id) {

@@ -73,7 +73,8 @@ export default {
     ],
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
-    ["nuxt-umami"],
+    // disable analytics till it uses https
+    // ["nuxt-umami"],
   ],
 
   umami: {
