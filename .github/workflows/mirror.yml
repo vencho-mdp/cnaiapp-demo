@@ -16,5 +16,6 @@ jobs:
         src_branch: develop
         dst_branch: main
         exclude: "*/seeds/real/*"
+        file_filter: "*.yml"
         commit_message: "Mirroring files from upstream repo"
         email: beniciocardozomdp@gmail.com 
